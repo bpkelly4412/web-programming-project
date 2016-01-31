@@ -1,11 +1,11 @@
 body {
   background-color: #333333;
-  height: 9999px;
+  height: 1000px;
 }
 
 .navbar-default {
   background-color: #00001a;
-
+  border-bottom: 2px solid #1a1a1a;
 }
 
 .navbar-inner {
@@ -17,7 +17,18 @@ body {
   margin: auto;
 }
 
-.search-bar{
+.search-bar {
   width: 500px !important;
 
+}
+
+.sidebar-separator {
+  padding-top: 60px;
+  padding-bottom: 1000px;
+  border-right: 2px solid #1a1a1a;
+}
+
+.white-text {
+  font-weight: bold;
+  color: #ffffff;
 }
