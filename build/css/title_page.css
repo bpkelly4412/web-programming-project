@@ -1,6 +1,11 @@
 body {
-  background-color: #80007F;
+  background-color: #333333;
   height: 9999px;
+}
+
+.navbar-default {
+  background-color: #00001a;
+
 }
 
 .navbar-inner {
