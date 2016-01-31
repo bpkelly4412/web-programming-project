@@ -1,6 +1,8 @@
 body {
   background-color: #333333;
   height: 1000px;
+  padding-top: 60px;
+  color: #ffffff;
 }
 
 .navbar-default {
@@ -11,7 +13,7 @@ body {
 .navbar-inner {
   position: absolute;
   width: 500px;
-  left: 400px;
+  left: 360px;
   top: 10px;
   text-align: center;
   margin: auto;
@@ -19,16 +21,21 @@ body {
 
 .search-bar {
   width: 500px !important;
-
 }
 
 .sidebar-separator {
-  padding-top: 60px;
   padding-bottom: 1000px;
   border-right: 2px solid #1a1a1a;
+  position: fixed;
 }
 
-.white-text {
+.sidebar-text {
   font-weight: bold;
-  color: #ffffff;
+  color: #808080;
+  padding-left: 10px;
+}
+
+.sidebar-text a,
+.sidebar-text a:visited {
+  color: #666666;
 }
