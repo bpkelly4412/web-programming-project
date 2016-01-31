@@ -1,0 +1,18 @@
+body {
+  background-color: #80007F;
+  height: 9999px;
+}
+
+.navbar-inner {
+  position: absolute;
+  width: 500px;
+  left: 400px;
+  top: 10px;
+  text-align: center;
+  margin: auto;
+}
+
+.search-bar{
+  width: 500px !important;
+
+}
