@@ -1,7 +1,7 @@
 body {
   background-color: #333333;
   height: 1000px;
-  padding-top: 60px;
+  padding-top: 53px;
   color: #ffffff;
 }
 
@@ -26,16 +26,27 @@ body {
 .sidebar-separator {
   padding-bottom: 1000px;
   border-right: 2px solid #1a1a1a;
+  background-color: #1a0000;
   position: fixed;
 }
 
 .sidebar-text {
   font-weight: bold;
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 10px;
 }
 
 .sidebar-text a,
 .sidebar-text a:visited {
   color: #666666;
+}
+
+#myCarousel {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  
+}
+
+#main-content {
+  background-image: url("../img/main_background.jpg");
 }
