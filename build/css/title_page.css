@@ -103,10 +103,11 @@ body {
 .sidebar-separator {
   /*padding-bottom: 1000px;*/
   padding-bottom: 20px;
+  /*margin-right: 200px;*/
   border-right: 2px solid #1a1a1a;
   background: rgba( 42, 63, 90, 0.6 );
   /*background-color: #1a0000;*/
-  /*position: fixed;*/
+  position: fixed;
 }
 
 .sidebar-text {
@@ -131,6 +132,7 @@ body {
   margin-top: 60px;
   margin-bottom: 600px;
   width: 500px;
+  align-items: center;
 }
 
 .carousel-caption {
@@ -140,4 +142,8 @@ body {
 
 #main-content {
   background-image: url("../img/main_background.jpg");
+}
+
+.test-content {
+  background-color: rgba(0, 0, 200, 0.2);
 }
