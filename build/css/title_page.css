@@ -28,6 +28,7 @@ body {
   background-color: transparent;
   border: none;
   color: #b8b6b4;
+  font-size: 12px;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -40,6 +41,27 @@ body {
   background: -o-linear-gradient(#444, #333); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient(#444, #333); /* For Firefox 3.6 to 15 */
   background: linear-gradient(#444, #333); /* Standard syntax */
+  color: #b8b6b4;
+}
+
+.navbar-right  .navbar-btn:focus {
+  background: transparent !important;
+  color: #b8b6b4 !important;
+  border: 0.5px solid #fff;
+  border-radius: 0px;
+}
+
+.navbar-right  .navbar-btn: active, .navbar-btn:visited  {
+  background: transparent !important;
+  border: none;
+}
+
+.navbar .dropdown-menu a {
+  color: #b8b6b4;
+}
+
+.navbar .dropdown-menu a:hover {
+  background-color: #2F3138;
   color: #b8b6b4;
 }
 
