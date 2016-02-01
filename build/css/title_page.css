@@ -101,11 +101,12 @@ body {
 }*/
 
 .sidebar-separator {
-  padding-bottom: 1000px;
+  /*padding-bottom: 1000px;*/
+  padding-bottom: 20px;
   border-right: 2px solid #1a1a1a;
   background: rgba( 42, 63, 90, 0.6 );
   /*background-color: #1a0000;*/
-  position: fixed;
+  /*position: fixed;*/
 }
 
 .sidebar-text {
