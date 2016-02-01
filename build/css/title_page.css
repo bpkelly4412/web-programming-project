@@ -83,6 +83,12 @@ body {
   padding-left: 10px;
 }
 
+.sidebar-text a:hover {
+  background: transparent !important;
+  color: #5fcdef !important;
+  font-weight: 500;
+}
+
 .sidebar-text a,
 .sidebar-text a:visited {
   font-weight: 300;
