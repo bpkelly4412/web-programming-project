@@ -5,10 +5,33 @@ body {
   color: #ffffff;
 }
 
+.navbar-brand {
+  color: #b8b6b4 !important;
+}
+
 .navbar-default {
   background-color: #171a21;
   color: #b8b6b4;
   border-bottom: 2px solid #171a21;
+}
+
+.navbar-form .form-group {
+  display:inline;
+}
+
+.navbar-form .input-group {
+  display:table;
+}
+
+.navbar-form .input-group .form-control {
+  border-right: none;
+  background-color: #eef;
+}
+
+.navbar-form .input-group .input-group-addon {
+  width: 10%;
+  background-color: #eef;
+  border-left: none;
 }
 
 .navbar-inner {
@@ -73,9 +96,9 @@ body {
   color: #b8b6b4;
 }
 
-.search-bar {
-  width: 500px !important;
-}
+/*.search-bar {
+  width: 100% !important;
+}*/
 
 .sidebar-separator {
   padding-bottom: 1000px;
