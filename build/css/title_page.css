@@ -43,8 +43,13 @@ body {
 
 #myCarousel {
   margin-top: 60px;
-  margin-bottom: 60px;
-  
+  margin-bottom: 600px;
+  width: 500px;
+}
+
+.carousel-caption {
+  color: #ffffff;
+  background-color: rgba(0,0,0,0.5);
 }
 
 #main-content {
