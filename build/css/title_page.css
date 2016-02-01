@@ -24,6 +24,14 @@ body {
   margin-right: 0px;
 }
 
+.navbar .message-button {
+  background: #222;
+  color: #b8b6b4;
+  font-size: 12px;
+  border: none;
+  border-radius: 0px;
+}
+
 .navbar .dropdown-toggle {
   background-color: transparent;
   border: none;
