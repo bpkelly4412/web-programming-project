@@ -1,13 +1,14 @@
 body {
-  background-color: #333333;
+  background-color: #171a21;
   height: 1000px;
   padding-top: 53px;
   color: #ffffff;
 }
 
 .navbar-default {
-  background-color: #00001a;
-  border-bottom: 2px solid #1a1a1a;
+  background-color: #171a21;
+  color: #b8b6b4;
+  border-bottom: 2px solid #171a21;
 }
 
 .navbar-inner {
@@ -19,6 +20,29 @@ body {
   margin: auto;
 }
 
+.navbar-text {
+  margin-right: 0px;
+}
+
+.navbar .dropdown-toggle {
+  background-color: transparent;
+  border: none;
+  color: #b8b6b4;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.navbar .dropdown-menu {
+  border: 1px solid #858585;
+  border-radius: 0px;
+  background-color: #333;
+  background: -webkit-linear-gradient(#444, #333); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#444, #333); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#444, #333); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#444, #333); /* Standard syntax */
+  color: #b8b6b4;
+}
+
 .search-bar {
   width: 500px !important;
 }
@@ -26,19 +50,21 @@ body {
 .sidebar-separator {
   padding-bottom: 1000px;
   border-right: 2px solid #1a1a1a;
-  background-color: #1a0000;
+  background: rgba( 42, 63, 90, 0.6 );
+  /*background-color: #1a0000;*/
   position: fixed;
 }
 
 .sidebar-text {
-  font-weight: bold;
-  color: #b3b3b3;
+  font-weight: 400;
+  color: #2f89bc;
   padding-left: 10px;
 }
 
 .sidebar-text a,
 .sidebar-text a:visited {
-  color: #666666;
+  font-weight: 300;
+  color: #c6d4df;
 }
 
 #myCarousel {
