@@ -183,6 +183,54 @@ body {
   border: 0 !important;
 }
 
+.cr-btn {
+  background-color: #222f43;
+  color: #FFFFFF;
+}
+
+.cr-btn:hover{
+  background-color: #222f43;
+  color: #5fcdef;
+}
+
+.cr-btn:focus {
+  background: transparent !important;
+  color: #b8b6b4 !important;
+  border: 0.5px solid #fff;
+  border-radius: 0px;
+}
+
+.cr-btn: active, .cr-btn:visited  {
+  background: transparent !important;
+  border: none;
+}
+
+.pagination {
+  margin: 0px;
+}
+
+.pagination > li> a{
+  background-color: #222f43;
+  color: #FFFFFF;
+}
+
+.pagination > li> a:hover{
+  background-color: #222f43;
+  color: #5fcdef;
+}
+
+.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
+  background-color: #222f43;
+  color: #FFFFFF;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+  background: transparent !important;
+  color: #b8b6b4 !important;
+  border: 0.5px solid #fff;
+  border-radius: 0px;
+}
+
 /*.test-content {
   background-color: rgba(0, 0, 200, 0.2);
 }*/
