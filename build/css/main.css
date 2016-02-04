@@ -140,7 +140,6 @@ body {
   color: #ffffff;
   background-color: rgba(0,0,0,0.5);
 }
-
 #main-content {
   /*background-image: url("../img/main_background.jpg");*/
 }
@@ -159,4 +158,44 @@ body {
   color: #5fcdef;
   font-size: 18px;
   font-weight: 200;
+}
+
+.main {
+  background-color: #2A3F5A;
+
+}
+.breadcrumb {
+  margin-top: 10px;
+  background: #222f43;
+}
+.breadcrumb a{
+  color: #ffffff
+}
+.breadcrumb a:hover{
+  color: #5fcdef;
+  text-decoration: none;
+}
+.active {
+  color: #2f89bc !important;
+}
+.panel-heading {
+  background: #222f43 !important;
+  color: #ffffff !important;
+}
+
+.table a{
+  color: #ffffff
+}
+.table  a:hover{
+  color: #5fcdef;
+  text-decoration: none;
+}
+.table-header {
+  background-color: #2F3138;
+}
+.board-title {
+  background-color: #222F43;
+}
+.board-title > td {
+  border: 0 !important;
 }
