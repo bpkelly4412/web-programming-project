@@ -1,5 +1,6 @@
 body {
   background-color: #171a21;
+  background-image: url("../img/main_background.jpg");
   height: 1000px;
   padding-top: 53px;
   color: #ffffff;
@@ -141,9 +142,21 @@ body {
 }
 
 #main-content {
-  background-image: url("../img/main_background.jpg");
+  /*background-image: url("../img/main_background.jpg");*/
 }
 
-/*.test-content {
-  background-color: rgba(0, 0, 200, 0.2);
-}*/
+/*
+    PLAYLIST CSS
+*/
+
+.playlist {
+  margin-top: 50px;
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+}
+
+.playlistTitle {
+  color: #5fcdef;
+  font-size: 18px;
+  font-weight: 200;
+}

@@ -25,7 +25,7 @@
           <span class="icon-bar"></span>
         </button>
         <!-- Use a "home" glyphicon as a logo. -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="title_page.html">
           <!-- This is how you display a glyphicon. -->
           <span class="glyphicon glyphicon-fire"></span> BBQ Forte
         </a>
@@ -88,8 +88,7 @@
       <li role="presentation"><a href="#">Username</a></li>
       <li role="presentation"><span class="glyphicon glyphicon-th-list"></span> BROWSE PLAYLISTS</li>
       <li role="presentation">
-        <!-- This is a temporary link to the sample playlist. -->
-        <a href="playlist.html">Your Saved Playlists</a>
+        <a href="#">Your Saved Playlists</a>
       </li>
       <li role="presentation">
         <a href="#">New Releases</a>
@@ -124,75 +123,47 @@
   </div>
 
   <div class="col-md-8 col-md-offset-2">
-    <!-- Carousel -->
+    <!-- Playlist -->
     <div class="row">
-      <div id="myCarousel" class="carousel slide center-block" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-          <li data-target="#myCarousel" data-slide-to="3"></li>
-          <li data-target="#myCarousel" data-slide-to="4"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-          <div class="item active">
-            <img src="img/steam_logo.jpg" alt="steam_logo.jpg">
-            <a href="#">
-              <div class="carousel-caption">
-                <h4>Sync your Steam library to BBQ Forte!</h4>
-              </div>
-            </a>
-          </div>
-
-          <div class="item">
-            <img src="img/blade_and_soul_logo.jpg" alt="blade_and_soul_logo.jpg">
-            <a href="#">
-              <div class="carousel-caption">
-                <h4>Check out playlists for the new release Blade and Soul</h4>
-              </div>
-            </a>
-          </div>
-
-          <div class="item">
-            <img src="img/ori_logo.jpg" alt="ori_logo.jpg">
-            <a href="#">
-              <div class="carousel-caption">
-                <h4>Browse popular single-player game playlists</h4>
-              </div>
-            </a>
-          </div>
-
-          <div class="item">
-            <img src="img/civ_five_logo.jpg" alt="civ_five_logo.jpg">
-            <a href="#">
-              <div class="carousel-caption">
-                <h4>Listen to the top-rated playlists from Civ V</h4>
-              </div>
-            </a>
-          </div>
-
-          <div class="item">
-            <img src="img/i_am_bread_game.jpg" alt="i_am_bread_game.jpg">
-            <a href="#">
-              <div class="carousel-caption">
-                <h4>Even bread needs some great music! Check out these playlists</h4>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
+      <div class="col-md-10 col-md-offset-1 playlist table-responsive">
+        <table class="table">
+          <thead>
+            <h3 class="playlistTitle">Game: Elite Dangerous</h3>
+            <tr>
+              <th>Track</th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Album</th>
+            </tr>
+          </thead>
+          <!-- SAMPLE PLAYLIST DATA -->
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Flight</td>
+              <td>Hans Zimmer</td>
+              <td>Man of Steel (Original Motion Picture Soundtrack)</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Requiem (for String Orchestra)</td>
+              <td>Takemitsu</td>
+              <td>Takemitsu: Orchestral Works</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Summa</td>
+              <td>Arvo Pärt</td>
+              <td>The Very Best of Arvo Pärt</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Morag</td>
+              <td>Tyler Bates</td>
+              <td>Guardians of the Galaxy (Original Score)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
