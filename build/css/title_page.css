@@ -231,6 +231,10 @@ body {
   border-radius: 0px;
 }
 
+.nav-btm{
+  margin-bottom: 20px;
+}
+
 /*.test-content {
   background-color: rgba(0, 0, 200, 0.2);
 }*/
