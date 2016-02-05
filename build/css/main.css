@@ -130,8 +130,8 @@ body {
 }
 
 #myCarousel {
-  margin-top: 60px;
-  margin-bottom: 600px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   width: 500px;
   align-items: center;
 }
@@ -143,6 +143,25 @@ body {
 
 #main-content {
   /*background-image: url("../img/main_background.jpg");*/
+}
+
+/*
+    Home Page Styling
+*/
+.panel-title-style {
+  background-color: #2A3F5A;
+  padding-top: 5px;
+  padding-left: 20px;
+}
+
+.panel-body-style {
+  background-color: #2A3F5A;
+  padding-top: 5px;
+  padding-left: 20px;
+}
+
+.small-indent {
+  padding-left: 6px;
 }
 
 /*
