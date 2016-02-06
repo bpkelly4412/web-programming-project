@@ -106,7 +106,7 @@ body {
   padding-bottom: 20px;
   /*margin-right: 200px;*/
   border-right: 2px solid #1a1a1a;
-  background: rgba( 42, 63, 90, 0.6 );
+  background: rgba(42, 63, 90, 0.6);
   /*background-color: #1a0000;*/
   position: fixed;
 }
@@ -140,9 +140,13 @@ body {
   align-items: center;
 }
 
+.carousel-inner img {
+  margin: auto;
+}
+
 .carousel-caption {
   color: #ffffff;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #main-content {
@@ -152,25 +156,46 @@ body {
 /*
     Home Page Styling
 */
+
+.panel {
+  border: 0;
+  border-radius: 30px;
+  background: none;
+}
+
 .panel-title-style {
-  background-color: #2A3F5A;
   padding-top: 5px;
   padding-left: 20px;
+  background: rgba(42, 63, 90, 0.7);
 }
 
 .panel-body-style {
-  background-color: #2A3F5A;
   padding-top: 5px;
   padding-left: 20px;
+  height: 200px;
+  background: rgba(42, 63, 90, 0.7);
 }
 
 .small-indent {
   padding-left: 6px;
 }
 
-.logo-padding {
-  padding-top: 10px;
+.date-stamp {
+  position: absolute;
+  bottom: 35px;
+  left: 50px;
 }
+
+.read-more {
+  position: absolute;
+  bottom: 35px;
+  right: 30px;
+}
+
+.panel a {
+  color: #ffffff;
+}
+
 /*
     PLAYLIST STYLING
 */
