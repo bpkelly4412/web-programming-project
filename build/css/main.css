@@ -136,8 +136,13 @@ body {
 #myCarousel {
   margin-top: 40px;
   margin-bottom: 40px;
-  width: 500px;
+  width: 1100px;
   align-items: center;
+}
+
+.carousel-control.left, .carousel-control.right {
+   background-image:none !important;
+   filter:none !important;
 }
 
 .carousel-inner img {
