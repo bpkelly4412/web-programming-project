@@ -121,34 +121,49 @@
     </div>
 
     <div class="col-md-10 col-md-offset-2">
-      <!-- playlist panel -->
-      <div class="panel-group" style="color: YELLOW;">
+      <!-- playlist panels group -->
+      <div class="panel-group" style="color: GRAY;">
+        <!-- first playlist panel -->
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 class="panel-title">
-              <a data-toggle="collapse" href="#collapse1" style="color:BLACK;">Collapsible panel</a>
-            </h4>
             <div class="row">
                 <div class="col-md-2">
                   <img src="img/playlist_disc.jpg" style="height:120px; width:120px;">
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-5">
                   <h4>Playlist 1</h4>
                   <h5>Genre: Classical</h5>
-                  <h5>Listened by: 2016 people</h5>
-                  <h5>Created on: 02/06/2016</h5>
+                  <h5>Number of songs: 50</h5>
+                  <button href="#"><span class="glyphicon glyphicon-play"></span></button>
+                  <span class="glyphicon glyphicon-heart-empty" style="padding-left: 50px;"></span>
+                  <div class="pull-right">
+                    <button data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-option-vertical"></span></button>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <h5>Last played on: 01/06/2016</h5>
+                  <h5>Popularity: 2016</h5>
+                  <h5>Duration: 5hr 34min </h5>
+                  <h5>Created by: Username on 02/06/2016</h5>
                 </div>
             </div>
           </div>
           <div id="collapse1" class="panel-collapse collapse">
             <div class="panel-body">
-              <ol>
+              <ol class="list-group">
+
+                <li class="list-group-item" style="display: list-item;"> Song 1</li>
+                <li class="list-group-item" style="display: list-item;"> Song 2</li>
+                <li class="list-group-item" style="display: list-item;"> Song 3</li>
+
+
+              </ol>
+              <!--<ol>
                 <li>Song 1 </li>
                 <li>Song 2</li>
                 <li>Song 3</li>
-              </ol>
+              </ol>-->
             </div>
-            <div class="panel-footer">Panel Footer</div>
           </div>
         </div>
       </div>
