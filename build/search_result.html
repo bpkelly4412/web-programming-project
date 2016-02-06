@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>BBQ Forte</title>
+
+  <!-- Bootstrap's CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Our BBQ Forte layout will go here. -->
+
+  <!-- Skeleton Code given in workshop 3: Navigation Bar-->
+  <nav class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          <span><img src="img/logo-xsmall.png" alt="BBQ Forte Logo"></span> BBQ Forte
+        </a>
+      </div>
+
+      <!-- On mobile, this div is hidden by default. The user hits the button
+      in the `navbar-header` to see the content of the div.
+      On desktop, this div is visible all of the time. -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <!-- Left-aligned items. -->
+        <div class="nav navbar-nav navbar-left">
+
+        </div>
+
+        <!-- Center items. -->
+
+        <!-- Right-aligned items. -->
+        <ul class="nav navbar-nav navbar-right">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default message-button navbar-btn">
+              <span class="glyphicon glyphicon-envelope"></span>
+            </button>
+            <button type="button" class="btn btn-default dropdown-toggle navbar-btn" data-toggle="dropdown">
+              Hello, Username! <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Log out</a></li>
+            </ul>
+          </div>
+          <!-- <div class="navbar-text">
+          Hello, Username!
+        </div> -->
+      </ul>
+
+      <form class="navbar-form" role="search">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search BBQ Forte">
+            <span class="input-group-addon">
+              <!-- <button type="submit" class="btn btn-default"> -->
+              <span class="glyphicon glyphicon-search"></span>
+              <!-- </button> -->
+            </span>
+          </div>
+        </div>
+      </form>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container -->
+  </nav>
+
+<div id="main-content" class="container-fluid">
+  <div class = "row">
+    <!-- Left sidebar -->
+    <div class="col-md-2 sidebar-separator">
+      <ul class="nav nav-pills nav-stacked sidebar-text">
+        <li role="presentation"><a href="#">Username</a></li>
+        <li role="presentation"><span class="glyphicon glyphicon-th-list"></span> BROWSE PLAYLISTS</li>
+        <li role="presentation">
+          <a href="playlist.html">Your Saved Playlists</a>
+        </li>
+        <li role="presentation">
+          <a href="#">New Releases</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Most Popular</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Highest Rated</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Rising</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Browse All Playlists...</a>
+        </li>
+        <li role="presentation"><span class="glyphicon glyphicon-comment"></span> SOCIAL</li>
+        <li role="presentation">
+          <a href="forums.html">Forums</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Private Chat <span class="badge badge-style pull-right">2</span></a>
+        </li>
+        <li role="presentation"><span class="glyphicon glyphicon-th-large"></span> MISCELLANEOUS</li>
+        <li role="presentation">
+          <a href="about.html">About</a>
+        </li>
+        <li role="presentation">
+          <a href="#">Contact Us</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-10 col-md-offset-2">
+      <!-- playlist panels group -->
+      <div class="panel-group" style="color: GRAY;">
+        <!-- first playlist panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-2">
+                  <img src="img/playlist_disc.jpg" style="height:120px; width:120px;">
+                </div>
+                <div class="col-md-5">
+                  <h4>Playlist 1</h4>
+                  <h5>Genre: Classical</h5>
+                  <h5>Number of songs: 50</h5>
+                  <button href="#"><span class="glyphicon glyphicon-play"></span></button>
+                  <span class="glyphicon glyphicon-heart-empty" style="padding-left: 50px;"></span>
+                  <div class="pull-right">
+                    <button data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-option-vertical"></span></button>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <h5>Last played on: 01/06/2016</h5>
+                  <h5>Popularity: 2016</h5>
+                  <h5>Duration: 5hr 34min </h5>
+                  <h5>Created by: Username on 02/06/2016</h5>
+                </div>
+            </div>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+              <ol class="list-group">
+
+                <li class="list-group-item" style="display: list-item;"> Song 1</li>
+                <li class="list-group-item" style="display: list-item;"> Song 2</li>
+                <li class="list-group-item" style="display: list-item;"> Song 3</li>
+
+
+              </ol>
+              <!--<ol>
+                <li>Song 1 </li>
+                <li>Song 2</li>
+                <li>Song 3</li>
+              </ol>-->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<footer><center> BBQ Forte © Copyright 2016 All rights reserved. </center></footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
