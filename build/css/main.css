@@ -129,6 +129,10 @@ body {
   color: #c6d4df;
 }
 
+.badge-style {
+  background-color: #2A3F5A;
+}
+
 #myCarousel {
   margin-top: 40px;
   margin-bottom: 40px;
@@ -164,6 +168,9 @@ body {
   padding-left: 6px;
 }
 
+.logo-padding {
+  padding-top: 10px;
+}
 /*
     PLAYLIST STYLING
 */
