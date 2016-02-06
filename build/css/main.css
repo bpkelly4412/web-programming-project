@@ -403,6 +403,10 @@ body {
   color: #00ff00;
 }
 
+.away {
+  color: #ffcc00;
+}
+
 .chat-split {
   border-bottom: 1px solid #ffffff;
   padding: 10px;
@@ -455,4 +459,34 @@ body {
 .right-speech::before {
   background-color: #5179ae;
   right: -9px;
+}
+
+.chat-tab-active {
+  border: 1px solid #5179ae;
+  color: #ffffff;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs a:hover {
+  background: transparent !important;
+  color: #5fcdef !important;
+  border: none;
+  font-weight: 500;
+}
+
+.user-list a {
+  text-decoration: none;
+}
+
+.user-list-padding {
+  padding-left: 10px;
+}
+
+.user-list-scroll {
+  height: 547px;
+  overflow-y: scroll;
+  width: 100%;
 }

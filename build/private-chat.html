@@ -11,6 +11,14 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/main.css" rel="stylesheet">
 </head>
+
+<!-- Used to prevent scrolling on this page in particular since most pages use scrollbars -->
+<style type="text/css">
+  html, body {
+    overflow: hidden;
+  }
+</style>
+
 <body>
   <!-- Our BBQ Forte layout will go here. -->
 
@@ -276,7 +284,7 @@
         </div>
       </div>
 
-      <div class="col-md-7">
+      <div class="col-md-6">
         <div class="panel panel-default">
 
           <div class="panel-body panel-title-style chat-split">
@@ -334,8 +342,71 @@
         </div>
       </div>
 
-      <div class="col-md-2">
-        Users
+      <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-body panel-title-style img-rounded user-list user-list-scroll">
+            <ul class="nav nav-tabs">
+              <li role="presentation"><a href="#">Friends</a></li>
+              <li role="presentation" class="chat-tab-active"><a href="#">Genre Help</a></li>
+            </ul>
+            <hr>
+            Rock
+              <ul class="user-list-padding">
+                <a href="#">Rock Expert 1 <span class="online">●</span></a>
+                <br>
+                <a href="#">Rock Expert 2 <span class="online">●</span></a>
+                <br>
+                <a href="#">Rock Expert 3 <span class="away">●</span></a>
+                <br>
+                <a href="#">Rock Expert 4 <span class="away">●</span></a>
+              </ul>
+
+            Electronic
+              <ul class="user-list-padding">
+                <a href="#">Electronic Expert 1 <span class="online">●</span></a>
+                <br>
+                <a href="#">Electronic Expert 2 <span class="online">●</span></a>
+                <br>
+                <a href="#">Electronic Expert 3 <span class="away">●</span></a>
+              </ul>
+
+            Ambient
+              <ul class="user-list-padding">
+                <a href="#">Ambient Expert 1 <span class="online">●</span></a>
+                <br>
+                <a href="#">Ambient Expert 2 <span class="online">●</span></a>
+              </ul>
+
+            Metal
+              <ul class="user-list-padding">
+                <a href="#">Metal Expert 1 <span class="away">●</span></a>
+                <br>
+                <a href="#">Metal Expert 2 <span class="away">●</span></a>
+              </ul>
+
+            Hip-Hop
+              <ul class="user-list-padding">
+                <a href="#">Hip-Hop Expert 1 <span class="online">●</span></a>
+                <br>
+                <a href="#">Hip-Hop Expert 2 <span class="online">●</span></a>
+                <br>
+                <a href="#">Hip-Hop Expert 3 <span class="online">●</span></a>
+              </ul>
+
+            Indie
+              <ul class="user-list-padding">
+                <a href="#">Indie Expert 1 <span class="online">●</span></a>
+                <br>
+                <a href="#">Indie Expert 2 <span class="online">●</span></a>
+                <br>
+                <a href="#">Indie Expert 3 <span class="online">●</span></a>
+                <br>
+                <a href="#">Indie Expert 4 <span class="online">●</span></a>
+                <br>
+                <a href="#">Indie Expert 5 <span class="away">●</span></a>
+              </ul>
+          </div>
+        </div>
       </div>
 
     </div>
