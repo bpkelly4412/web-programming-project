@@ -181,8 +181,9 @@ body {
   background: rgba(42, 63, 90, 0.7);
 }
 
-.small-indent {
+.news-text {
   padding-left: 6px;
+  color: #a6a6a6;
 }
 
 .date-stamp {
@@ -197,8 +198,9 @@ body {
   right: 30px;
 }
 
-.panel a {
-  color: #ffffff;
+.panel a,
+.panel a.visited {
+  color: #e6e6e6;
 }
 
 /*
