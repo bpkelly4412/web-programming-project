@@ -380,3 +380,79 @@ body {
 .media-heading {
   font-weight: bolder;
 }
+
+.chat-scroll {
+  height: 397px;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.input-group textarea {
+  resize: none;
+  box-shadow: none !important;
+  background-color: #2A3F5A;
+}
+
+.chat-button {
+  background-color: #2A3F5A;
+  padding-top: 9px;
+  color: #ffffff;
+}
+
+.online {
+  color: #00ff00;
+}
+
+.chat-split {
+  border-bottom: 1px solid #ffffff;
+  padding: 10px;
+  padding-left: 20px;
+}
+
+/*
+    Chat bubble formatting credited to http://jsfiddle.net/thinkingstiff/mek5z/
+*/
+
+.chat-bubble {
+  border-radius: 5px;
+  display: inline-block;
+  padding: 10px 18px;
+  position: relative;
+  vertical-align: top;
+}
+
+.chat-bubble::before {
+  content: "\00a0";
+  display: block;
+  height: 16px;
+  position: absolute;
+  top: 11px;
+  transform:             rotate( 29deg ) skew( -35deg );
+      -moz-transform:    rotate( 29deg ) skew( -35deg );
+      -ms-transform:     rotate( 29deg ) skew( -35deg );
+      -o-transform:      rotate( 29deg ) skew( -35deg );
+      -webkit-transform: rotate( 29deg ) skew( -35deg );
+  width:  20px;
+}
+
+.left-speech {
+  float: left;
+  margin: 5px 45px 5px 20px;
+  background-color: #40628c;
+}
+
+.left-speech::before {
+  background-color: #40628c;
+  left: -9px;
+}
+
+.right-speech {
+  float: right;
+  margin: 5px 20px 5px 45px;
+  background-color: #5179ae;
+}
+
+.right-speech::before {
+  background-color: #5179ae;
+  right: -9px;
+}
