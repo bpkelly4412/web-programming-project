@@ -571,3 +571,24 @@ body {
       -webkit-transform: rotate( 29deg ) skew( -35deg );
   width:  20px;
 }
+
+/*
+  Search Result styling
+*/
+h1.section-title {
+  color: #3385ff;
+  font-weight: bold;
+}
+
+.panel-default > .playlist {
+  margin-top: 20px;
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+}
+
+.panel-default > .panel-collapse > .playlist {
+  margin-top: 5px;
+  border-style: none;
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+}

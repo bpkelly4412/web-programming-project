@@ -123,54 +123,211 @@
     <div class="col-md-10 col-md-offset-2">
       <!-- playlist panels group -->
       <div class="panel-group" style="color: GRAY;">
+        <h1 class="section-title">Playlists</h1>
         <!-- first playlist panel -->
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading playlist">
             <div class="row">
                 <div class="col-md-2">
-                  <img src="img/playlist_disc.jpg" style="height:120px; width:120px;">
+                  <img src="img/league.jpg" class="img-responsive">
                 </div>
                 <div class="col-md-5">
-                  <h4>Playlist 1</h4>
-                  <h5>Genre: Classical</h5>
-                  <h5>Number of songs: 50</h5>
-                  <button href="#"><span class="glyphicon glyphicon-play"></span></button>
-                  <span class="glyphicon glyphicon-heart-empty" style="padding-left: 50px;"></span>
+                  <h4>League of Legends Playlist</h4>
+                  <h5>Genre: Rock, Nightcore</h5>
+                  <h5>Number of songs: 4</h5>
+                  <button type="button" class="btn btn-default playlist-button" href="#"><span class="glyphicon glyphicon-play"></span></button>
+                  <button type="button" class="btn btn-default playlist-button" href="#"  style="margin-left: 50px;"><span class="glyphicon glyphicon-heart-empty"></span></button>
                   <div class="pull-right">
-                    <button data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-option-vertical"></span></button>
+                    <button type="button" class="btn btn-default playlist-button" data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-option-vertical"></span></button>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <h5>Last played on: 02/06/2016</h5>
+                  <h5>Popularity: 2526</h5>
+                  <h5>Duration: 1hr 39min </h5>
+                  <h5>Created by: Username on 02/06/2015</h5>
+                </div>
+            </div>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body playlist">
+              <div class="table-responsive ">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Track</th>
+                      <th>Title</th>
+                      <th>Artist</th>
+                      <th>Album</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>The Beginning</td>
+                      <td>One Ok Rock</td>
+                      <td>The Beginning</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Monster</td>
+                      <td>Nightcore</td>
+                      <td>Nightcore</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Anima Libera</td>
+                      <td>Nightcore</td>
+                      <td>Nightcore</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Moonlight Shadow</td>
+                      <td>Nightcore</td>
+                      <td>Nightcore</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- second playlist panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading playlist">
+            <div class="row">
+                <div class="col-md-2">
+                  <img src="img/elite-dangerous.jpg" class="img-responsive">
+                </div>
+                <div class="col-md-5">
+                  <h4>Elite Dangerous Playlist</h4>
+                  <h5>Type: Instrumental</h5>
+                  <h5>Number of songs: 4</h5>
+                  <button type="button" class="btn btn-default playlist-button" href="#"><span class="glyphicon glyphicon-play"></span></button>
+                  <button type="button" class="btn btn-default playlist-button" href="#"  style="margin-left: 50px;"><span class="glyphicon glyphicon-heart-empty"></span></button>
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-default playlist-button" data-toggle="collapse" href="#collapse2"><span class="glyphicon glyphicon-option-vertical"></span></button>
                   </div>
                 </div>
                 <div class="col-md-5">
                   <h5>Last played on: 01/06/2016</h5>
                   <h5>Popularity: 2016</h5>
-                  <h5>Duration: 5hr 34min </h5>
+                  <h5>Duration: 1hr 34min </h5>
                   <h5>Created by: Username on 02/06/2016</h5>
                 </div>
             </div>
           </div>
-          <div id="collapse1" class="panel-collapse collapse">
-            <div class="panel-body">
-              <ol class="list-group">
-
-                <li class="list-group-item" style="display: list-item;"> Song 1</li>
-                <li class="list-group-item" style="display: list-item;"> Song 2</li>
-                <li class="list-group-item" style="display: list-item;"> Song 3</li>
-
-
-              </ol>
-              <!--<ol>
-                <li>Song 1 </li>
-                <li>Song 2</li>
-                <li>Song 3</li>
-              </ol>-->
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body playlist">
+              <div class="table-responsive ">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Track</th>
+                      <th>Title</th>
+                      <th>Artist</th>
+                      <th>Album</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Flight</td>
+                      <td>Hans Zimmer</td>
+                      <td>Man of Steel (Original Motion Picture Soundtrack)</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Requiem (for String Orchestra)</td>
+                      <td>Takemitsu</td>
+                      <td>Takemitsu: Orchestral Works</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Summa</td>
+                      <td>Arvo Pärt</td>
+                      <td>The Very Best of Arvo Pärt</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Morag</td>
+                      <td>Tyler Bates</td>
+                      <td>Guardians of the Galaxy (Original Score)</td>
+                      <td>
+                        <button type="button" class="btn btn-default playlist-button playlist-button-small">
+                          <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h1 class="section-title">Songs</h1>
+        <!-- first song panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading playlist">
+            <div class="row">
+                <div class="col-md-2">
+                  <img src="img/playlisy_disc.jpg" class="img-responsive">
+                </div>
+                <div class="col-md-5">
+                  <h4>Elite Dangerous Playlist</h4>
+                  <h5>Type: Instrumental</h5>
+                  <h5>Number of songs: 4</h5>
+                  <button type="button" class="btn btn-default playlist-button" href="#"><span class="glyphicon glyphicon-play"></span></button>
+                  <button type="button" class="btn btn-default playlist-button" href="#"  style="margin-left: 50px;"><span class="glyphicon glyphicon-heart-empty"></span></button>
+                </div>
+                <div class="col-md-5">
+                  <h5>Last played on: 01/06/2016</h5>
+                  <h5>Popularity: 2016</h5>
+                  <h5>Duration: 1hr 34min </h5>
+                  <h5>Created by: Username on 02/06/2016</h5>
+                </div>
             </div>
           </div>
         </div>
       </div>
-
-
-
-
 
     </div>
   </div>
