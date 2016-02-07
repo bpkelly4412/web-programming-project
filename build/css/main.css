@@ -234,8 +234,9 @@ body {
 
 .playlist-title {
   color: #5fcdef;
-  font-size: 18px;
-  font-weight: 200;
+  letter-spacing: 2px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 .playlist-toolbar {
