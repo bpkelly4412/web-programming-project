@@ -592,3 +592,12 @@ h1.section-title {
   color: #c6d4df;
   background: rgba( 42, 63, 90, 0.6 );
 }
+
+button.button-addition{
+  margin-left: 50px;
+}
+
+img.img-resize {
+  height: 120px;
+  width: 120px;
+}
