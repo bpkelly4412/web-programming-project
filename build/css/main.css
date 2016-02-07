@@ -243,6 +243,11 @@ body {
   background: rgba( 42, 63, 90, 0.6 );
 }
 
+.playlist .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: rgba( 42, 63, 90, 0.6 );
+  color: white;
+}
+
 .playlist-button {
   background-color: transparent;
   border: none;
