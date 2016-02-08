@@ -601,3 +601,19 @@ img.img-resize {
   height: 120px;
   width: 120px;
 }
+
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+.profile-header-img > img.img-circle {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #171a21;
+    margin-bottom: 10px;
+}
+.username-under-picture {
+  font-size: 16px;
+  color: #b8b6b4;
+  background-color: #171a21;
+}
