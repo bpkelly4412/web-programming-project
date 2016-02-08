@@ -602,6 +602,7 @@ img.img-resize {
   width: 120px;
 }
 
+/*Profile styling*/
 .profile-header-container{
     margin: 0 auto;
     text-align: center;
@@ -616,4 +617,8 @@ img.img-resize {
   font-size: 16px;
   color: #b8b6b4;
   background-color: #171a21;
+}
+.transparent-background{
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
 }

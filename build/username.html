@@ -121,9 +121,9 @@
     </div>
     <!--end of left sidebar-->
     <!--start of main content-->
-    <div class="col-md-10 col-md-offset-2 main">
+    <div class="col-md-10 col-md-offset-2">
       <div class="row">
-        <div class = "col-md-3">
+        <div class = "col-md-3 col-md-offset-1 transparent-background">
             <div class="profile-header-container">
         		    <div class="profile-header-img">
                     <img class="img-circle" src="img/profile_pic_default.png"/>
@@ -136,6 +136,46 @@
             <!-- end profile header container-->
         </div>
         <!--end of left column-->
+        <div class="col-md-8 playlist table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <div class="row">
+                <div class="col-md-8">
+                  <h3 class="playlist-title"><strong>Current Game: </strong>Elite Dangerous</h3>
+                </div>
+                <div class="col-md-4">
+                  <img src="img/elite-dangerous.jpg" class="img-responsive" alt="Elite Dangerous" />
+                </div>
+              </div>
+
+              <div class="btn-toolbar playlist-toolbar" role="toolbar">
+                <div class="input-group" role="group" aria-label="Playback Buttons">
+                  <button type="button" class="btn btn-default playlist-button">
+                    <span class="glyphicon glyphicon-stop"></span>
+                  </button>
+                  <button type="button" class="btn btn-default playlist-button">
+                    <span class="glyphicon glyphicon-backward"></span>
+                  </button>
+                  <button type="button" class="btn btn-default playlist-button">
+                    <span class="glyphicon glyphicon-play"></span>
+                  </button>
+                  <button type="button" class="btn btn-default playlist-button">
+                    <span class="glyphicon glyphicon-forward"></span>
+                  </button>
+                </div>
+                <div class="input-group pull-right" role="group" aria-label="Playlist Options">
+                  <button type="button" class="btn btn-default playlist-button" title="Add Track">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                  </button>
+                  <button type="button" class="btn btn-default playlist-button" title="Share Playlist">
+                    <span class="glyphicon glyphicon-share"></span>
+                  </button>
+                  <button type="button" class="btn btn-default playlist-button" title="Options">
+                    <span class="glyphicon glyphicon-cog"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
 	    </div>
       <!--end row-->
     </div>
