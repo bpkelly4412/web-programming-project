@@ -226,8 +226,22 @@ body {
 .about {
   color: #c6d4df;
   background: rgba( 42, 63, 90, 0.6 );
+}
 
+.threads {
+  text-align: center;
+}
 
+.posts {
+  text-align: center;
+}
+
+.lastdisc {
+  text-align: right;
+}
+
+.prvw-p {
+  margin-bottom: 0px;
 }
 
 /*
