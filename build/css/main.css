@@ -622,3 +622,20 @@ img.img-resize {
   color: #c6d4df;
   background: rgba( 42, 63, 90, 0.6 );
 }
+.profile-row{
+  padding-top: 5px;
+  padding-bottom:5px;
+  border-bottom: 2.5px solid #171a21
+}
+.profile-button{
+  background-color:#171a21;
+  color:#b8b6b4;
+  font-weight: bolder;
+}
+.profile-button:hover{
+  color:#171a21;
+  background-color:#b8b6b4;
+}
+.profile-playlist{
+  margin-top: 5px;
+}
