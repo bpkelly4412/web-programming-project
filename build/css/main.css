@@ -610,6 +610,17 @@ body {
   width:  20px;
 }
 
+/* Recommendation styling */
+
+.recommendation-container {
+    border: 1px solid #FFF;
+    border-radius: 30px;
+}
+
+.recommendation-box {
+    border-radius: 30px;
+    border: 1px solid #FFF;    
+}
 /*
   Search Result styling
 */
