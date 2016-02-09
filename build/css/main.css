@@ -334,6 +334,11 @@ body {
   border: none;
 }
 
+.cr-title {
+  background-color: #222f43;
+  color: #FFFFFF;
+}
+
 .pagination {
   margin: 0px;
 }
