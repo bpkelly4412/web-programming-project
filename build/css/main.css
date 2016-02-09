@@ -657,3 +657,41 @@ img.img-resize {
   height: 120px;
   width: 120px;
 }
+
+/*Profile styling*/
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+.profile-header-img > img.img-circle {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #171a21;
+    margin-bottom: 10px;
+}
+.username-under-picture {
+  font-size: 16px;
+  color: #b8b6b4;
+  background-color: #171a21;
+}
+.transparent-background{
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+}
+.profile-row{
+  padding-top: 5px;
+  padding-bottom:5px;
+  border-bottom: 2.5px solid #171a21
+}
+.profile-button{
+  background-color:#171a21;
+  color:#b8b6b4;
+  font-weight: bolder;
+}
+.profile-button:hover{
+  color:#171a21;
+  background-color:#b8b6b4;
+}
+.profile-playlist{
+  margin-top: 5px;
+}
