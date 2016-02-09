@@ -223,6 +223,13 @@ body {
   color: #e6e6e6;
 }
 
+.about {
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+
+
+}
+
 /*
     PLAYLIST STYLING
 */
