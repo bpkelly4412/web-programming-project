@@ -339,6 +339,14 @@ body {
   color: #FFFFFF;
 }
 
+.panel-comment {
+  background-color: #222f43;
+}
+
+.tab {
+  margin-left: 15px;
+}
+
 .pagination {
   margin: 0px;
 }
