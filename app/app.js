@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PlayListFeed from './components/playlistfeed';
 import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 
 /**
@@ -19,7 +20,7 @@ class ProfilePage extends React.Component {
 class SavedPlayListPage extends React.Component {
   render() {
       return (
-        <p>This is the playlist page.</p>
+        <PlayListFeed />
       );
   }
 }
@@ -41,11 +42,13 @@ class App extends React.Component {
 }
 
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      {/* Show the Feed at / */}
-      <IndexRoute component={SavedPlayListPage} />
-      <Route path="profile/:id" component={ProfilePage} />
-    </Route>
-  </Router>
+
+    <PlayListFeed />
+  // <Router history={browserHistory}>
+  //   <Route path="/" component={App}>
+  //     {/* Show the Feed at / */}
+  //     <IndexRoute component={SavedPlayListPage} />
+  //     <Route path="profile/:id" component={ProfilePage} />
+  //   </Route>
+  // </Router>
 ),document.getElementById('content-column'));
