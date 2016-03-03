@@ -28,18 +28,18 @@ export default class Sidebar extends React.Component {
             <Link to={"/rising-playlists/" + "TEST"}>Rising</Link>
           </li>
           <li role="presentation">
-            <a href="#">Browse All Playlists...</a>
+            <Link to={"/saved-playlist/" + "TEST"}>Browse All Playlists...</Link>
           </li>
           <li role="presentation"><span className="glyphicon glyphicon-comment"></span> SOCIAL</li>
           <li role="presentation">
-            <a href="forums.html">Forums</a>
+            <Link to={"/forum/" + "TEST"}>Forum</Link>
           </li>
           <li role="presentation">
-            <a href="private-chat.html">Private Chat <span className="badge badge-style pull-right">2</span></a>
+            <Link to ={"/private-chat/" + "TEST"}>Private Chat <span className="badge badge-style pull-right">2</span></Link>
           </li>
           <li role="presentation"><span className="glyphicon glyphicon-th-large"></span> MISCELLANEOUS</li>
           <li role="presentation">
-            <a href="about.html">About</a>
+            <Link to={"/about-us/" + "TEST"}>About Us</Link>
           </li>
           <li role="presentation">
             <a href="#">Contact Us</a>

@@ -10,6 +10,9 @@ import NewReleases from './components/new-releases';
 import MostPopular from './components/most-popular';
 import HighestRated from './components/highest-rated';
 import RisingPlaylists from './components/rising';
+import Forum from './components/forum';
+import PrivateChat from './components/private-chat';
+import AboutUs from './components/about-us';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 
 /**
@@ -82,12 +85,45 @@ class HighestRatedPage extends React.Component {
 }
 
 /**
+ * The Forums Page PLACEHOLDER page.
+ */
+class ForumPage extends React.Component {
+  render() {
+      return (
+        <Forum />
+      );
+  }
+}
+
+/**
  * The Highest Rated Page PLACEHOLDER page.
  */
 class RisingPlaylistsPage extends React.Component {
   render() {
       return (
         <RisingPlaylists />
+      );
+  }
+}
+
+/**
+ * The Private Chat Page PLACEHOLDER page.
+ */
+class PrivateChatPage extends React.Component {
+  render() {
+      return (
+        <PrivateChat />
+      );
+  }
+}
+
+/**
+ * The Private Chat Page PLACEHOLDER page.
+ */
+class AboutUsPage extends React.Component {
+  render() {
+      return (
+        <AboutUs />
       );
   }
 }
@@ -130,6 +166,9 @@ ReactDOM.render((
       <Route path="highest-rated/:id" component={HighestRatedPage} />
       <Route path="rising-playlists/:id" component={RisingPlaylistsPage} />
       <Route path="profile/:id" component={ProfilePage} />
+      <Route path="forum/:id" component={ForumPage} />
+      <Route path="private-chat/:id" component={PrivateChatPage} />
+      <Route path="about-us/:id" component={AboutUsPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));
