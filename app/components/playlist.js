@@ -6,13 +6,17 @@ export default class Playlist extends React.Component {
   constructor(props) {
     super(props);
     this.state = props.data;
+    this.onChildChanged = this.onChildChanged.bind(this);
+  }
+
+  onChildChanged(newState) {
+    this.setState(newState);
   }
 
   render() {
-
     return (
       <div className="row">
-        <div className="col-md-8 col-md-offset-2 playlist table-responsive">
+        <div className="col-md-10 col-md-offset-1 playlist table-responsive">
           <div className="row">
             <div className="col-md-8">
               <h3 className="playlist-title"><strong>{this.state.title}</strong></h3>
@@ -54,17 +58,16 @@ export default class Playlist extends React.Component {
           <table className="table">
             <tbody>
               <tr>
-                <td className="col-md-1">Track</td>
                 <td className="col-md-4">Song Title</td>
                 <td className="col-md-3">Artist</td>
-                <td className="col-md-3">Album</td>
+                <td className="col-md-4">Album</td>
                 <td className="col-md-1"></td>
               </tr>
             </tbody>
           </table>
           {this.state.contents.map((songItem, i) => {
             return (
-              <Song key={i} trackNumber={i + 1} title={songItem.title} artist={songItem.artist} album={songItem.album} />
+              <Song key={i} trackNumber={i + 1} title={songItem.title} artist={songItem.artist} album={songItem.album} playlistID={this.state._id} songID={songItem._id} callbackPlaylist = {this.onChildChanged} />
             );
           })}
         </div>

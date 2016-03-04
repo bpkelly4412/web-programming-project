@@ -23,12 +23,18 @@ export default class PlayListFeed extends React.Component {
   render() {
     return (
       <div>
-        {this.state.contents.map((playlist) => {
-          return (
-            <Playlist key={playlist._id} data={playlist} />
-          );
-        })}
-        <RecommendedSongs />
+        <div className="row playlist">
+          
+        </div>
+        <div className="row">
+          {this.state.contents.map((playlist) => {
+            return (
+              <Playlist key={playlist._id} data={playlist} />
+            );
+          })}
+          <RecommendedSongs />
+
+        </div>
       </div>
     )
   }

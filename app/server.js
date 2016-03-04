@@ -17,6 +17,22 @@ function getSong(songID) {
   var song = readDocument('songs', songID);
   return song;
 }
+
+/**
+* Removes a song from a playlist
+*/
+export function removeSong(playlistID, songID, cb) {
+  var playlist = readDocument('playlists', playlistID);
+  playlist.contents = [];
+  var songIndex = playlist.songs.indexOf(songID);
+  if (songIndex !== -1) {
+    playlist.songs.splice(songIndex, 1);
+    playlist.contents.splice(songIndex, 1);
+    writeDocument('playlists', playlist)
+  }
+  emulateServerReturn(getPlaylist(playlistID), cb);
+}
+
 /**
 * Given a playlist ID returns a Playlist object.
 */
