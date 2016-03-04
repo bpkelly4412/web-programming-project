@@ -46,7 +46,7 @@ class ProfilePage extends React.Component {
 class SavedPlayListPage extends React.Component {
   render() {
       return (
-        <PlayListFeed />
+        <PlayListFeed userID={1} />
       );
   }
 }
@@ -135,13 +135,14 @@ class AboutUsPage extends React.Component {
  * around the application.
  */
 class App extends React.Component {
+
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar userID={1} />
         <div className = "row">
           <div className="col-md-2">
-            <Sidebar />
+            <Sidebar userID={1} />
           </div>
           <div className="col-md-10">
             {this.props.children}

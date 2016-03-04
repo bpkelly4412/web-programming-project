@@ -6,11 +6,11 @@ export default class Song extends React.Component {
       <table className="table table-hover">
         <tbody>
           <tr>
-            <td>{this.props.trackNumber}</td>
-            <td>{this.props.songTitle}</td>
-            <td>{this.props.artistName}</td>
-            <td>{this.props.albumName}</td>
-            <td>
+            <td className="col-md-1">{this.props.trackNumber}</td>
+            <td className="col-md-4">{this.props.title}</td>
+            <td className="col-md-3">{this.props.artist}</td>
+            <td className="col-md-3">{this.props.album}</td>
+            <td className="col-md-1">
             <button type="button" className="btn btn-default playlist-button playlist-button-small">
               <span className="glyphicon glyphicon-remove-sign"></span>
             </button>

@@ -1,13 +1,33 @@
 import React from 'react';
 import Playlist from './playlist';
 import RecommendedSongs from './recommended-songs';
+import {getPlaylistFeed} from '../server';
 
 export default class PlayListFeed extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { contents: [] };
+  }
+
+  refresh() {
+    getPlaylistFeed(this.props.userID, (feedData) => {
+      this.setState(feedData);
+    });
+  }
+
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <div>
-        <Playlist currentGame="Elite Dangerous" imageURL="img/elite-dangerous.jpg"/>
-        <Playlist currentGame="Fallout 4" imageURL="img/fallout4.jpg" />
+        {this.state.contents.map((playlist) => {
+          return (
+            <Playlist key={playlist._id} data={playlist} />
+          );
+        })}
         <RecommendedSongs />
       </div>
     )

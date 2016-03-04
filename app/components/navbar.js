@@ -1,7 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router';
+import { getUserData } from '../server';
 
 export default class Navbar extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  refresh() {
+    getUserData(this.props.userID, (userData) => {
+      this.setState(userData);
+    });
+  }
+
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <nav className="navbar navbar-fixed-top navbar-default">
@@ -29,10 +47,10 @@ export default class Navbar extends React.Component {
                   <span className="glyphicon glyphicon-envelope"></span>
                 </button>
                 <button type="button" className="btn btn-default dropdown-toggle navbar-btn" data-toggle="dropdown">
-                  Hello, Username! <span className="caret"></span>
+                  Hello, {this.state.userName}! <span className="caret"></span>
               </button>
               <ul className="dropdown-menu">
-                <li><Link to={"/profile/" + "TEST_NAME"}>Profile</Link></li>
+                <li><Link to={"/profile/" + this.state._id}>Profile</Link></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="#">Log out</a></li>
               </ul>
