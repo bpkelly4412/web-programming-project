@@ -19,6 +19,16 @@ function getSong(songID) {
 }
 
 /**
+* Adds a song to a playlist
+*/
+export function addSong(playlistID, songID, cb) {
+  var playlist = readDocument('playlists', playlistID);
+  playlist.songs.push(songID);
+  writeDocument('playlists', playlist);
+  emulateServerReturn(getPlaylist(playlistID), cb);
+}
+
+/**
 * Removes a song from a playlist
 */
 export function removeSong(playlistID, songID, cb) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import Song from './song';
+import { addSong } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -11,6 +12,17 @@ export default class Playlist extends React.Component {
 
   onChildChanged(newState) {
     this.setState(newState);
+  }
+
+  handleAddSongClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      var callbackFunction = (newState) => {
+        this.setState(newState);
+        console.log(this.state);
+      };
+      addSong(this.props.data._id, 1007, callbackFunction);
+    }
   }
 
   render() {
@@ -44,7 +56,7 @@ export default class Playlist extends React.Component {
               </button>
             </div>
             <div className="input-group pull-right" role="group" aria-label="Playlist Options">
-              <button type="button" className="btn btn-default playlist-button" title="Add Track">
+              <button type="button" className="btn btn-default playlist-button" title="Add Track" onClick={(e) => this.handleAddSongClick(e)}>
                 <span className="glyphicon glyphicon-plus-sign"></span>
               </button>
               <button type="button" className="btn btn-default playlist-button" title="Share Playlist">
