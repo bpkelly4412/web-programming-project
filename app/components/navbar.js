@@ -6,7 +6,7 @@ export default class Navbar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {}; 
   }
 
   refresh() {
@@ -19,6 +19,7 @@ export default class Navbar extends React.Component {
   componentDidMount() {
     this.refresh();
   }
+
 
   render() {
     return (
@@ -61,9 +62,14 @@ export default class Navbar extends React.Component {
             <div className="form-group">
               <div className="input-group">
                 <input type="text" className="form-control" placeholder="Search BBQ Forte" />
-                <span className="input-group-addon">
-                  <span className="glyphicon glyphicon-search"></span>
-                </span>
+                  <span className="input-group-btn" id="search_button">
+                    <button className="btn btn-secondary" type="button">
+                      <Link to={"/search/" + this.state._id}>
+                        <span className="glyphicon glyphicon-search"></span>
+                      </Link>
+                    </button>
+                  </span>
+
               </div>
             </div>
           </form>

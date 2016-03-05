@@ -49,10 +49,12 @@ body {
   background-color: #eef;
 }
 
-.navbar-form .input-group .input-group-addon {
+.navbar-form .input-group #search_button {
   width: 10%;
   background-color: #eef;
   border-left: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .navbar-inner {
