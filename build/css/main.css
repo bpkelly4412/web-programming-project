@@ -137,16 +137,27 @@ body {
   padding-left: 10px;
 }
 
-.sidebar-text a:hover {
+.sidebar-text a:hover,
+.sidebar-text a:active,
+.sidebar-text a:focus,
+.sidebar-text a:active:focus {
   background: transparent !important;
   color: #5fcdef !important;
-  font-weight: 500;
 }
 
 .sidebar-text a,
 .sidebar-text a:visited {
   font-weight: 300;
   color: #c6d4df;
+}
+
+
+
+.playlist-button:hover, .playlist-button:active, .playlist-button:focus, .playlist-button:active:focus {
+  background-color: transparent;
+  outline: none !important;
+  box-shadow: none;
+  color: #5fcdef;
 }
 
 .badge-style {
@@ -306,8 +317,10 @@ body {
   padding-right: 10px;
 }
 
-.playlist-button:hover {
+.playlist-button:hover, .playlist-button:active, .playlist-button:focus, .playlist-button:active:focus {
   background-color: transparent;
+  outline: none !important;
+  box-shadow: none;
   color: #5fcdef;
 }
 

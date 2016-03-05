@@ -11,12 +11,30 @@ var initialData = {
       "_id": 1,
       "userName": "Jon Snow",
       "playlistfeed": 1
+    },
+    "2": {
+      "_id": 2,
+      "userName": "Ned Stark",
+      "playlistfeed": 2
+    },
+    "3": {
+      "_id": 3,
+      "userName": "Tyrion Lannister",
+      "playlistfeed": 3
     }
   },
   "playlist-feeds": {
     "1": {
       "_id": 1,
       "contents": [101, 102]
+    },
+    "2": {
+      "_id": 2,
+      "contents": [102]
+    },
+    "3": {
+      "_id": 3,
+      "contents": [101]
     }
   },
   "playlists": {
@@ -26,7 +44,7 @@ var initialData = {
       "imageURL": "img/elite-dangerous.jpg",
       "title": "Music for Space Travel",
       "author": 1,
-      "votes": 500,
+      "votes": [1, 3],
       "genre": "Classical",
       "description": "Epic orchestra music.",
       "url": "TBD",
@@ -67,7 +85,7 @@ var initialData = {
       "imageURL": "img/fallout4.jpg",
       "title": "Rockin Space shooty rock",
       "author": 1,
-      "votes": 7234,
+      "votes": [2],
       "genre": "Rock",
       "description": "Hard Rock tracks to shoot spaceships to",
       "url": "TBD",

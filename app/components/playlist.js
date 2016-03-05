@@ -1,6 +1,6 @@
 import React from 'react';
 import Song from './song';
-import {Link} from 'react-router';
+import { unvotePlaylist, votePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -21,7 +21,40 @@ export default class Playlist extends React.Component {
     }
   }
 
+  handleVoteClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      var callbackFunction = (updatedVoteCounter) => {
+        this.setState({votes: updatedVoteCounter});
+      };
+
+      if (this.didUserVote()) {
+        unvotePlaylist(this.state._id, this.props.userID, callbackFunction);
+      } else {
+        votePlaylist(this.state._id, this.props.userID, callbackFunction);
+      }
+    }
+  }
+
+  didUserVote() {
+    var votes = this.state.votes;
+    var voted = false;
+    for (var i=0; i < votes.length; i++) {
+      if (votes[i] === this.props.userID) {
+        voted = true;
+        break;
+      }
+    }
+    return voted;
+  }
+
   render() {
+    var voteButtonIcon = "fa fa-level-up";
+    var voteButtonDesc = "Vote for playlist.";
+    if (this.didUserVote()) {
+      voteButtonIcon = "fa fa-check";
+      voteButtonDesc = "Unvote.";
+    }
     return (
       <div className="row">
         <div className="col-md-10 col-md-offset-1">
@@ -31,7 +64,13 @@ export default class Playlist extends React.Component {
                 <div className="col-md-8">
                   <h3 className="playlist-title"><strong>{this.state.title}</strong></h3>
                   <h3 className="playlist-title"><strong>Game: </strong>{this.state.game}</h3>
-                  <h4><strong>Votes:</strong> {this.state.votes}</h4>
+                  <h4>
+                  <button type="button"
+                    className="btn btn-default playlist-button"
+                    title={voteButtonDesc}
+                    onClick={(e) => this.handleVoteClick(e)}>
+                    <span className={voteButtonIcon}></span>
+                  </button><strong>Votes:</strong> {this.state.votes.length}  </h4>
                 </div>
                 <div className="col-md-4">
                   <img src={this.state.imageURL} className="img-responsive" alt="Elite Dangerous" />
@@ -41,23 +80,22 @@ export default class Playlist extends React.Component {
               <div className="btn-toolbar playlist-toolbar" role="toolbar">
                 <div className="input-group" role="group" aria-label="Playback Buttons">
                   <button type="button" className="btn btn-default playlist-button">
-                    <span className="glyphicon glyphicon-stop"></span>
+                    <span className="fa fa-stop"></span>
                   </button>
                   <button type="button" className="btn btn-default playlist-button">
-                    <span className="glyphicon glyphicon-backward"></span>
+                    <span className="fa fa-backward"></span>
                   </button>
                   <button type="button" className="btn btn-default playlist-button">
-                    <span className="glyphicon glyphicon-play"></span>
+                    <span className="fa fa-play"></span>
                   </button>
                   <button type="button" className="btn btn-default playlist-button">
-                    <span className="glyphicon glyphicon-forward"></span>
+                    <span className="fa fa-forward"></span>
                   </button>
                 </div>
                 <div className="input-group pull-right" role="group" aria-label="Playlist Options">
                   <button type="button" className="btn btn-default playlist-button" title="Add Track" onClick={(e) => this.handleAddSongClick(e)}>
                     <span className="fa fa-plus-circle"></span>
                   </button>
-                  <Link to={"/song-list/" + this.state._id}><span className="fa fa-plus-circle"></span></Link>
                   <button type="button" className="btn btn-default playlist-button" title="Send to Spotify">
                     <span className="fa fa-spotify"></span>
                   </button>
@@ -70,7 +108,7 @@ export default class Playlist extends React.Component {
             <div className="panel-body">
               <table className="table">
                 <tbody>
-                  <tr>
+                  <tr className="playlist-toolbar">
                     <td className="col-md-4">Song Title</td>
                     <td className="col-md-3">Artist</td>
                     <td className="col-md-4">Album</td>

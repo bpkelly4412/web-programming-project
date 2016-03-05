@@ -11,11 +11,26 @@ function emulateServerReturn(data, cb) {
 }
 
 /**
-* Given a song ID returns a Song object.
+* Updates a playlist's votes by adding the userID.
 */
-function getSong(songID) {
-  var song = readDocument('songs', songID);
-  return song;
+export function votePlaylist(playlistID, userId, cb) {
+  var playlist = readDocument('playlists', playlistID);
+  playlist.votes.push(userId);
+  writeDocument('playlists', playlist);
+  emulateServerReturn(playlist.votes, cb);
+}
+
+/**
+* Updates a playlist's votes by removing the userID.
+*/
+export function unvotePlaylist(playlistID, userId, cb) {
+  var playlist = readDocument('playlists', playlistID);
+  var userIndex = playlist.votes.indexOf(userId);
+  if (userIndex !== -1) {
+    playlist.votes.splice(userIndex, 1);
+    writeDocument('playlists', playlist);
+  }
+  emulateServerReturn(playlist.votes, cb);
 }
 
 /**
