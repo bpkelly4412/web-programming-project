@@ -6,7 +6,7 @@ export default class NewsEntry extends React.Component {
       <div className="col-md-4">
         <div className="panel panel-default">
           <div className="panel-body panel-body-style img-rounded">
-            <a href="#"><h3>{this.props.title}}</h3></a>
+            <a href="#"><h3>{this.props.title}</h3></a>
             <div className="news-text">
               <p>{this.props.contents}</p>
             </div>

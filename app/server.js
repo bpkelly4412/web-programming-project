@@ -68,6 +68,9 @@ export function getPlaylistFeed(userID, cb) {
   emulateServerReturn(playlistfeed, cb);
 }
 
+/**
+* Returns a NewsUpdates object.
+*/
 export function getNewsUpdates(cb) {
   var newsData = readDocument('newsUpdates', 1);
   emulateServerReturn(newsData, cb);

@@ -97,46 +97,42 @@ var initialData = {
     }
   },
   "newsUpdates": {
-    "_id": 1,
-    "newsEntries": [
-      {
-        "_id": 1,
-        "title": "New Releases",
-        "contents": "Playlists have been added for the new releases Blade and Soul, Rise of the Tomb Raider, and more!",
-        "publishDate": "2.6.2016"
-      },
-      {
-        "_id": 2,
-        "title": "Horror Playlist Update",
-        "contents": "You asked. We delivered. We have updated our horror section to include playlists with creepy children!",
-        "publishDate": "1.26.2016"
-      },
-      {
-        "_id": 3,
-        "title": "New Releases",
-        "contents": "Playlists have been added for the new releases Wick, Life is Strange, and more!",
-        "publishDate": "1.20.2016"
-      },
-      {
-        "_id": 4,
-        "title": "Genre Update: Rock",
-        "contents": "We have updated our rock music section with several new playlists.",
-        "publishDate": "1.3.2016"
-      },
-      {
-        "_id": 5,
-        "title": "Site Maintenance",
-        "contents": "The website will be down for maintenance on 12.23.2016 at 3:00 A.M. EST and should take approximately 2 hours.",
-        "publishDate": "12.22.2015"
-      },
-      {
-        "_id": 6,
-        "title": "New Releases",
-        "contents": "Playlists have been added for the new releases Just Cause 3, Fallout 4, and more!",
-        "publishDate": "12.13.2015"
-      }
-    ]
-  }
+    "1": {
+      "_id": 1,
+      "newsEntries": [
+        {
+          "title": "New Releases",
+          "contents": "Playlists have been added for the new releases Blade and Soul, Rise of the Tomb Raider, and more!",
+          "publishDate": "2.6.2016"
+        },
+        {
+          "title": "Horror Playlist Update",
+          "contents": "You asked. We delivered. We have updated our horror section to include playlists with creepy children!",
+          "publishDate": "1.26.2016"
+        },
+        {
+          "title": "New Releases",
+          "contents": "Playlists have been added for the new releases Wick, Life is Strange, and more!",
+          "publishDate": "1.20.2016"
+        },
+        {
+          "title": "Genre Update: Rock",
+          "contents": "We have updated our rock music section with several new playlists.",
+          "publishDate": "1.3.2016"
+        },
+        {
+          "title": "Site Maintenance",
+          "contents": "The website will be down for maintenance on 12.23.2016 at 3:00 A.M. EST and should take approximately 2 hours.",
+          "publishDate": "12.22.2015"
+        },
+        {
+          "title": "New Releases",
+          "contents": "Playlists have been added for the new releases Just Cause 3, Fallout 4, and more!",
+          "publishDate": "12.13.2015"
+        }
+      ]
+    }
+  } 
 };
 
 var data = JSON.parse(localStorage.getItem(startupName));
