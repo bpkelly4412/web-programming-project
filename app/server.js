@@ -68,6 +68,11 @@ export function getPlaylistFeed(userID, cb) {
   emulateServerReturn(playlistfeed, cb);
 }
 
+export function getNewsUpdates(cb) {
+  var newsData = readDocument('newsUpdates', 1);
+  emulateServerReturn(newsData, cb);
+}
+
 /**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */
