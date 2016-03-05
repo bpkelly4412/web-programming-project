@@ -46,7 +46,7 @@ export default class SongList extends React.Component {
                         onChange={(e) => this.handleChange(e)}
                         onKeyUp={(e) => this.handleKeyUp(e)} />
                       <span className="input-group-addon">
-                        <span className="glyphicon glyphicon-search"></span>
+                        <span className="fa fa-search"></span>
                       </span>
                     </div>
                   </div>

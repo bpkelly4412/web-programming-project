@@ -94,8 +94,8 @@ export function getSongList(searchData, cb) {
       songList.push(song);
     }
     // console.log(songList);
+    emulateServerReturn(songList, cb);
   })
-  emulateServerReturn(songList, cb);
 }
 
 function httpGetAsync(theUrl, callback)
