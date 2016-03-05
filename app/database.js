@@ -30,7 +30,36 @@ var initialData = {
       "genre": "Classical",
       "description": "Epic orchestra music.",
       "url": "TBD",
-      "songs": [1001, 1002, 1003, 1004]
+      "songs": [
+        {
+          "title": "Flight",
+          "artist": "Hans Zimmer",
+          "album": "Man of Steel (Original Motion Picture Soundtrack)",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Requiem (for String Orchestra)",
+          "artist": "Takemitsu",
+          "album": "Takemitsu: Orchestral Works",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Summa",
+          "artist": "Arvo Pärt",
+          "album": "The Very Best of Arvo Pärt",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Morag",
+          "artist": "Tyler Bates",
+          "album": "Guardians of the Galaxy (Original Score)",
+          "duration": 5000,
+          "url": "TBD"
+        }
+      ]
     },
     "102": {
       "_id": 102,
@@ -42,65 +71,29 @@ var initialData = {
       "genre": "Rock",
       "description": "Hard Rock tracks to shoot spaceships to",
       "url": "TBD",
-      "songs": [1005, 1006, 1007]
-    }
-  },
-  "songs": {
-    "1001": {
-      "_id": 1001,
-      "title": "Flight",
-      "artist": "Hans Zimmer",
-      "album": "Man of Steel (Original Motion Picture Soundtrack)",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1002": {
-      "_id": 1002,
-      "title": "Requiem (for String Orchestra)",
-      "artist": "Takemitsu",
-      "album": "Takemitsu: Orchestral Works",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1003": {
-      "_id": 1003,
-      "title": "Summa",
-      "artist": "Arvo Pärt",
-      "album": "The Very Best of Arvo Pärt",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1004": {
-      "_id": 1004,
-      "title": "Morag",
-      "artist": "Tyler Bates",
-      "album": "Guardians of the Galaxy (Original Score)",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1005": {
-      "_id": 1005,
-      "title": "Rock Song Woohoo",
-      "artist": "Band",
-      "album": "Band's Cool Album",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1006": {
-      "_id": 1006,
-      "title": "Another Rock Song",
-      "artist": "Another Band",
-      "album": "Another Band Live",
-      "duration": 5000,
-      "url": "TBD"
-    },
-    "1007": {
-      "_id": 1007,
-      "title": "The Twist",
-      "artist": "Chubby Checkers",
-      "album": "50's Classics",
-      "duration": 5000,
-      "url": "TBD"
+      "songs": [
+        {
+          "title": "Rock Song Woohoo",
+          "artist": "Band",
+          "album": "Band's Cool Album",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Another Rock Song",
+          "artist": "Another Band",
+          "album": "Another Band Live",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "The Twist",
+          "artist": "Chubby Checkers",
+          "album": "50's Classics",
+          "duration": 5000,
+          "url": "TBD"
+        }
+      ]
     }
   }
 };
@@ -169,15 +162,15 @@ class ResetDatabase extends React.Component {
   render() {
     return (
       <button className="btn btn-default" type="button" onClick={() => {
-        resetDatabase();
-        window.alert("Database reset! Refreshing the page now...");
-        document.location.reload(false);
-      }}>Reset Mock DB</button>
-    );
+          resetDatabase();
+          window.alert("Database reset! Refreshing the page now...");
+          document.location.reload(false);
+        }}>Reset Mock DB</button>
+      );
+    }
   }
-}
 
-ReactDOM.render(
-  <ResetDatabase />,
-  document.getElementById('db-reset')
-);
+  ReactDOM.render(
+    <ResetDatabase />,
+    document.getElementById('db-reset')
+  );

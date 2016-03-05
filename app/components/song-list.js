@@ -1,15 +1,16 @@
 import React from 'react';
 import Song from './song';
-import {getSongList} from '../server';
+import {getSongList, addSong} from '../server';
 
 export default class SongList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { songs: [], value: "" };
+    this.state = { songs: [], value: "", currentSearch: "" };
   }
 
   handleSongSearch(searchText) {
+    this.setState({currentSearch: searchText});
     getSongList(searchText, (songList) => {
       this.setState({songs: songList, value: ""});
     })
@@ -28,6 +29,17 @@ export default class SongList extends React.Component {
     }
   }
 
+  handleAddSongClick(clickEvent, songItem) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+
+      var callbackFunction = () => {
+        this.context.router.push({pathname: "/saved-playlist/" + this.props.userID});
+      };
+      addSong(this.props.pid, songItem, callbackFunction);
+    }
+  }
+
   render() {
     return (
       <div className="row">
@@ -38,33 +50,62 @@ export default class SongList extends React.Component {
                 <h3 className="playlist-title">Search for Songs</h3>
               </div>
               <div className="row playlist-toolbar">
-                <form className="navbar-form" role="search">
-                  <div className="form-group">
-                    <div className="input-group">
-                      <input type="text" className="form-control" placeholder="Search for songs..."
-                        value={this.state.value}
-                        onChange={(e) => this.handleChange(e)}
-                        onKeyUp={(e) => this.handleKeyUp(e)} />
-                      <span className="input-group-addon">
-                        <span className="fa fa-search"></span>
-                      </span>
+                <div className="col-md-7">
+                  <form className="navbar-form" role="search">
+                    <div className="form-group">
+                      <div className="input-group">
+                        <input type="text"
+                          className="form-control"
+                          placeholder="Search for songs..."
+                          value={this.state.value}
+                          onChange={(e) => this.handleChange(e)}
+                          onKeyUp={(e) => this.handleKeyUp(e)} />
+                        <span className="input-group-addon">
+                          <span className="fa fa-search"></span>
+                        </span>
+                      </div>
                     </div>
+                  </form>
+                </div>
+                <div className="col-md-5">
+                  {(() => {
+                    switch (this.state.currentSearch) {
+                      case "":
+                      return null;
+                      default:
+                      return <p className="search-result">Results for "{this.state.currentSearch}"</p>;
+                      }
+                    })()}
+
                   </div>
-                </form>
+                </div>
               </div>
-            </div>
-            <div className="panel-body">
-              <div className="row">
-                {this.state.songs.map((songItem, i) => {
-                  return (
-                    <Song key={i} trackNumber={i + 1} title={songItem.title} artist={songItem.artist} album={songItem.album} playlistID={this.state._id} songID={songItem._id} callbackPlaylist = {this.onChildChanged} />
-                  );
-                })}
+              <div className="panel-body">
+                <div className="row">
+                  {this.state.songs.map((songItem, i) => {
+                    return (
+                      <div key={i} onClick={(e) => this.handleAddSongClick(e, songItem)}>
+                        <Song key={i}
+                          trackNumber={i + 1}
+                          title={songItem.title}
+                          artist={songItem.artist}
+                          album={songItem.album}
+                          playlistID={this.state._id}
+                          songID={songItem._id}
+                          callbackPlaylist = {this.onChildChanged}
+                          hideRemoveSong="true" />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
-}
+
+  SongList.contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };

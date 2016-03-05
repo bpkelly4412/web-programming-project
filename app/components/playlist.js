@@ -1,6 +1,5 @@
 import React from 'react';
 import Song from './song';
-import { addSong } from '../server';
 import {Link} from 'react-router';
 
 export default class Playlist extends React.Component {
@@ -18,10 +17,7 @@ export default class Playlist extends React.Component {
   handleAddSongClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      var callbackFunction = (newState) => {
-        this.setState(newState);
-      };
-      addSong(this.props.data._id, 1007, callbackFunction);
+      this.context.router.push({pathname: "/song-list/" + this.state._id + "/" + this.props.userID});
     }
   }
 
@@ -61,7 +57,7 @@ export default class Playlist extends React.Component {
                   <button type="button" className="btn btn-default playlist-button" title="Add Track" onClick={(e) => this.handleAddSongClick(e)}>
                     <span className="fa fa-plus-circle"></span>
                   </button>
-                  <Link to={"/song-list/" + this.state._id}>SONG LIST TEST</Link>
+                  <Link to={"/song-list/" + this.state._id}><span className="fa fa-plus-circle"></span></Link>
                   <button type="button" className="btn btn-default playlist-button" title="Send to Spotify">
                     <span className="fa fa-spotify"></span>
                   </button>
@@ -82,9 +78,18 @@ export default class Playlist extends React.Component {
                   </tr>
                 </tbody>
               </table>
-              {this.state.contents.map((songItem, i) => {
+              {this.state.songs.map((songItem, i) => {
                 return (
-                  <Song key={i} trackNumber={i + 1} title={songItem.title} artist={songItem.artist} album={songItem.album} playlistID={this.state._id} songID={songItem._id} callbackPlaylist = {this.onChildChanged} />
+                  <Song key={i}
+                    trackNumber={i + 1}
+                    songIndex={i}
+                    title={songItem.title}
+                    artist={songItem.artist}
+                    album={songItem.album}
+                    playlistID={this.state._id}
+                    songID={songItem._id}
+                    callbackPlaylist = {this.onChildChanged}
+                    hideRemoveSong="false" />
                 );
               })}
             </div>
@@ -96,3 +101,7 @@ export default class Playlist extends React.Component {
     )
   }
 }
+
+Playlist.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

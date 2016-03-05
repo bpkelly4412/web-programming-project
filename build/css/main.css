@@ -317,6 +317,13 @@ body {
   padding-right: 0px;
 }
 
+.search-result {
+  color: #b8b6b4 !important;
+  font-size: 1em !important;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
 .main {
   background-color: #2A3F5A;
 }

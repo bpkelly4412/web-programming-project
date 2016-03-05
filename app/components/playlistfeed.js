@@ -24,12 +24,12 @@ export default class PlayListFeed extends React.Component {
     return (
       <div>
         <div className="row playlist">
-          
+
         </div>
         <div className="row">
           {this.state.contents.map((playlist) => {
             return (
-              <Playlist key={playlist._id} data={playlist} />
+              <Playlist key={playlist._id} userID={this.props.userID} data={playlist} />
             );
           })}
           <RecommendedSongs />

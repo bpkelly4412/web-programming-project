@@ -21,9 +21,9 @@ function getSong(songID) {
 /**
 * Adds a song to a playlist
 */
-export function addSong(playlistID, songID, cb) {
+export function addSong(playlistID, song, cb) {
   var playlist = readDocument('playlists', playlistID);
-  playlist.songs.push(songID);
+  playlist.songs.push(song);
   writeDocument('playlists', playlist);
   emulateServerReturn(getPlaylist(playlistID), cb);
 }
@@ -31,13 +31,11 @@ export function addSong(playlistID, songID, cb) {
 /**
 * Removes a song from a playlist
 */
-export function removeSong(playlistID, songID, cb) {
+export function removeSong(playlistID, songIndex, cb) {
   var playlist = readDocument('playlists', playlistID);
-  playlist.contents = [];
-  var songIndex = playlist.songs.indexOf(songID);
   if (songIndex !== -1) {
     playlist.songs.splice(songIndex, 1);
-    playlist.contents.splice(songIndex, 1);
+    // playlist.contents.splice(songIndex, 1);
     writeDocument('playlists', playlist)
   }
   emulateServerReturn(getPlaylist(playlistID), cb);
@@ -48,7 +46,7 @@ export function removeSong(playlistID, songID, cb) {
 */
 function getPlaylist(playlistID) {
   var playlist = readDocument('playlists', playlistID);
-  playlist.contents = playlist.songs.map(getSong);
+  // playlist.contents = playlist.songs.map(getSong);
   return playlist;
 }
 

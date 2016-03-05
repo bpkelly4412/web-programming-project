@@ -135,7 +135,7 @@ class AboutUsPage extends React.Component {
 class SongListPage extends React.Component {
   render() {
       return (
-        <SongList />
+        <SongList pid={this.props.params.pid} userID={this.props.params.id} />
       );
   }
 }
@@ -182,7 +182,7 @@ ReactDOM.render((
       <Route path="forum/:id" component={ForumPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
-      <Route path="song-list/:id" component={SongListPage} />
+      <Route path="song-list/:pid/:id" component={SongListPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));
