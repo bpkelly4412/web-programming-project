@@ -13,6 +13,7 @@ import RisingPlaylists from './components/rising';
 import Forum from './components/forum';
 import PrivateChat from './components/private-chat';
 import AboutUs from './components/about-us';
+import SongList from './components/song-list';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 
 /**
@@ -128,6 +129,17 @@ class AboutUsPage extends React.Component {
   }
 }
 
+/**
+ * The Private Chat Page PLACEHOLDER page.
+ */
+class SongListPage extends React.Component {
+  render() {
+      return (
+        <SongList />
+      );
+  }
+}
+
 
 /**
  * The primary component in our application.
@@ -170,6 +182,7 @@ ReactDOM.render((
       <Route path="forum/:id" component={ForumPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
+      <Route path="song-list/:id" component={SongListPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));

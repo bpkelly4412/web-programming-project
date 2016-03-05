@@ -247,10 +247,37 @@ body {
 /*
     PLAYLIST STYLING
 */
+
 .playlist {
-  margin-top: 50px;
+  margin-top: 20px;
   color: #c6d4df;
   background: rgba( 42, 63, 90, 0.6 );
+  border-radius: 10px;
+}
+
+.songlist {
+  margin-top: 20px;
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+  border-radius: 10px;
+  /*height: 600px;*/
+}
+.songlist .panel-heading {
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.songlist .panel-body {
+  /*overflow: scroll;*/
+}
+
+.playlist .panel-heading {
+  color: #c6d4df;
+  background: rgba( 42, 63, 90, 0.6 );
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .playlist-title {

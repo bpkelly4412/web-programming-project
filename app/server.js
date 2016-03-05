@@ -69,3 +69,42 @@ export function getPlaylistFeed(userID, cb) {
   playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
   emulateServerReturn(playlistfeed, cb);
 }
+
+/**
+* This will likely need to be moved? I am just performing a GET from Spotify's song database.
+*/
+export function getSongList(searchData, cb) {
+  var searchURL = "https://api.spotify.com/v1/search";
+  var songList = [];
+  searchURL = searchURL + "?q=" + searchData + "&type=track";
+  // searchURL = searchURL + "?q=" + "Hans Zimmer" + "&type=track";
+  httpGetAsync(searchURL, (newSong) => {
+    var resultsList = JSON.parse(newSong);
+    for (var i = 0; i < resultsList.tracks.items.length; i++) {
+      var nextItem = resultsList.tracks.items[i]
+      var song = {title: "", artist: "", album: "", url: ""};
+      song.title = nextItem.name;
+      if (nextItem.artists.length > 0) {
+        song.artist = nextItem.artists[0].name;
+      } else {
+        song.artist = "Unknown";
+      }
+      song.album = nextItem.album.name;
+      song.url = nextItem.external_urls.spotify;
+      songList.push(song);
+    }
+    // console.log(songList);
+  })
+  emulateServerReturn(songList, cb);
+}
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+}

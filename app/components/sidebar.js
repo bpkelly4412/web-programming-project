@@ -25,7 +25,7 @@ export default class Sidebar extends React.Component {
       <div className="col-md-2 sidebar-separator">
         <ul className="nav nav-pills nav-stacked sidebar-text">
           <li role="presentation">
-            <Link to={"/profile/" +"TEST"}>{this.state.userName}</Link>
+            <Link to={"/profile/" + this.state._id}>{this.state.userName}</Link>
           </li>
           <li role="presentation">
             <span className="glyphicon glyphicon-th-list"></span> BROWSE PLAYLISTS
