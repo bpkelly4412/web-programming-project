@@ -43,7 +43,7 @@ export default class SongList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="col-md-10 col-md-offset-1">
         <div className="row text-center playlist-toolbar">
           <form className="navbar-form" role="search">
             <div className="form-group">

@@ -7,7 +7,7 @@ export default class Playlist extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = props.data;
+    this.state = { songs: this.props.data.songs, votes: this.props.data.votes }
     this.onChildChanged = this.onChildChanged.bind(this);
   }
 
@@ -18,7 +18,7 @@ export default class Playlist extends React.Component {
   handleAddSongClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      this.context.router.push({pathname: "/song-list/" + this.state._id + "/" + this.props.userID});
+      this.context.router.push({pathname: "/song-list/" + this.props.data._id + "/" + this.props.userID});
     }
   }
 
@@ -28,7 +28,7 @@ export default class Playlist extends React.Component {
       var callbackFunction = (updatedPlaylists) => {
         this.props.callbackPlaylistFeed(updatedPlaylists);
       };
-      removePlaylist(this.props.userID, this.props.plFeedID, this.state._id, callbackFunction);
+      removePlaylist(this.props.userID, this.props.plFeedID, this.props.data._id, callbackFunction);
     }
   }
 
@@ -40,9 +40,9 @@ export default class Playlist extends React.Component {
       };
 
       if (this.didUserVote()) {
-        unvotePlaylist(this.state._id, this.props.userID, callbackFunction);
+        unvotePlaylist(this.props.data._id, this.props.userID, callbackFunction);
       } else {
-        votePlaylist(this.state._id, this.props.userID, callbackFunction);
+        votePlaylist(this.props.data._id, this.props.userID, callbackFunction);
       }
     }
   }
@@ -66,6 +66,7 @@ export default class Playlist extends React.Component {
       voteButtonIcon = "fa fa-check";
       voteButtonDesc = "Unvote.";
     }
+    var playlistDivID = "#" + this.props.data._id;
     return (
       <div className="row">
         <div className="col-md-10 col-md-offset-1">
@@ -73,48 +74,57 @@ export default class Playlist extends React.Component {
             <div className="panel-heading">
               <div className="row">
                 <div className="col-md-8">
-                  <h3 className="playlist-title"><strong>{this.state.title}</strong></h3>
-                  <h3 className="playlist-title"><strong>Game: </strong>{this.state.game}</h3>
-                  <h4>
+                  <h3 className="playlist-title"><strong>{this.props.data.title}</strong></h3>
+                  <h4 className="playlist-title"><strong>Game: </strong>{this.props.data.game}</h4>
                     <button type="button"
                       className="btn btn-default playlist-button"
                       title={voteButtonDesc}
                       onClick={(e) => this.handleVoteClick(e)}>
                       <span className={voteButtonIcon}></span>
-                    </button><strong>Votes:</strong> {this.state.votes.length}  </h4>
+                    </button><strong>Votes:</strong> {this.state.votes.length}
                   </div>
                   <div className="col-md-4">
-                    <img src={this.state.imageURL} className="img-responsive" alt="PIC" />
+                    <img src={this.props.data.imageURL} className="img-responsive" alt="PIC" />
                   </div>
                 </div>
 
                 <div className="btn-toolbar playlist-toolbar" role="toolbar">
                   <div className="input-group" role="group" aria-label="Playback Buttons">
-                    <button type="button" className="btn btn-default playlist-button">
+                    <button type="button" className="btn btn-default playlist-button disabled">
                       <span className="fa fa-stop"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button">
+                    <button type="button" className="btn btn-default playlist-button disabled">
                       <span className="fa fa-backward"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button">
+                    <button type="button" className="btn btn-default playlist-button disabled">
                       <span className="fa fa-play"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button">
+                    <button type="button" className="btn btn-default playlist-button disabled">
                       <span className="fa fa-forward"></span>
                     </button>
                   </div>
                   <div className="input-group pull-right" role="group" aria-label="Playlist Options">
-                    <button type="button" className="btn btn-default playlist-button" title="Send to Spotify">
-                      <span className="fa fa-spotify"></span>
+                    <button type="button"
+                      className="btn btn-default playlist-button"
+                      title="View Tracks"
+                      data-toggle="collapse"
+                      data-target={playlistDivID}>
+                      Songs <span className="fa fa-caret-square-o-down"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button" title="Delete Playlist" onClick={(e) => this.handleRemovePlaylistClick(e)}>
-                      <span className="fa fa-times-circle"></span>
+                    <button type="button" className="btn btn-default playlist-button disabled" title="Send to Spotify">
+                      Upload To Spotify <span className="fa fa-spotify"></span>
+                    </button>
+                    <button type="button"
+                      className="btn btn-default playlist-button"
+                      title="Delete Playlist"
+                      onClick={(e) => this.handleRemovePlaylistClick(e)}>
+                      Delete <span className="fa fa-times-circle"></span>
                     </button>
                   </div>
                 </div>
               </div>
-              <div className="panel-body">
-                <SongList pid={this.state._id}
+              <div id={this.props.data._id} className="panel-collapse collapse">
+                <SongList pid={this.props.data._id}
                   userID={this.props.userID}
                   callbackPlaylist = {this.onChildChanged} />
                 <table className="table">

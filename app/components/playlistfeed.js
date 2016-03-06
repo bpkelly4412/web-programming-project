@@ -46,7 +46,12 @@ export default class PlayListFeed extends React.Component {
   handleAddPlaylistClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0 && this.state.newPlaylistName !== "" && this.state.newPlaylistGame !== "") {
-      createNewPlaylist(this.props.userID, this.state.newPlaylistName, this.state.newPlaylistGame, this.state.newPlaylistGenre, this.state.newPlaylistGenre, (data) => {
+      createNewPlaylist(this.props.userID,
+        this.state.newPlaylistName,
+        this.state.newPlaylistGame,
+        this.state.newPlaylistGenre,
+        this.state.newPlaylistGenre, () =>
+      {
         this.refresh();
         // this.context.router.push({pathname: "/song-list/" + newPlaylistID + "/" + this.props.userID});
       });
