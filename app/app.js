@@ -119,7 +119,7 @@ class PrivateChatPage extends React.Component {
 }
 
 /**
- * The Private Chat Page PLACEHOLDER page.
+ * The About Page PLACEHOLDER page.
  */
 class AboutUsPage extends React.Component {
   render() {
@@ -130,7 +130,7 @@ class AboutUsPage extends React.Component {
 }
 
 /**
- * The Private Chat Page PLACEHOLDER page.
+ * The Song List Page PLACEHOLDER page.
  */
 class SongListPage extends React.Component {
   render() {
