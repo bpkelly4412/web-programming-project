@@ -5,7 +5,7 @@ export default class SearchResult extends React.Component {
 
   render() {
     return (
-      <div className="col-md-10 col-md-offset-2">
+      <div className="col-md-12">
 
         <h5>You are searching for "league, elite, hobbit, harry"</h5>
         <div classNameName="panel-group">
