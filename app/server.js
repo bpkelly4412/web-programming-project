@@ -42,6 +42,7 @@ export function removePlaylist(userID, playlistFeedID, playlistID, cb) {
   if (playlistFeedIndex !== -1) {
     playlistfeed.contents.splice(playlistFeedIndex, 1);
     writeDocument('playlist-feeds', playlistfeed);
+    playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
   }
   emulateServerReturn(playlistfeed, cb);
 }
