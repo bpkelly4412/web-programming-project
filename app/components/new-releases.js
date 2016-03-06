@@ -1,7 +1,24 @@
 import React from 'react';
-
+import { getNewRelease } from '../server';
+import PlaylistTable from './playlistTable';
 
 export default class NewReleases extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { contents: [] };
+  }
+
+  refresh() {
+    getNewRelease((newReleases) => {
+      this.setState(newReleases);
+    });
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <div>
@@ -32,6 +49,7 @@ export default class NewReleases extends React.Component {
               </thead>
               {/* SAMPLE PLAYLIST DATA */}
               <tbody>
+                {/*first playlist*/}
                 <tr>
                   <td>
                     <strong>0</strong>
@@ -51,6 +69,7 @@ export default class NewReleases extends React.Component {
                     </button>
                   </td>
                 </tr>
+                {/*second playlist*/}
                 <tr>
                   <td>
                     <strong>0</strong>
@@ -112,6 +131,9 @@ export default class NewReleases extends React.Component {
             </table>
           </div>
         </div>
+
+
+
         <div className="row">
           <div className="col-md-8 col-md-offset-2 playlist table-responsive">
             <div className="row">
@@ -127,6 +149,7 @@ export default class NewReleases extends React.Component {
                   alt="Elite Dangerous" />
               </div>
             </div>
+
             <table className="table table-hover">
               <thead>
                 <tr>
@@ -139,25 +162,20 @@ export default class NewReleases extends React.Component {
               </thead>
               {/* SAMPLE PLAYLIST DATA */}
               <tbody>
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    Boston Jams
-                  </td>
-                  <td>Bocephus</td>
-                  <td>
-                    Thematic music about Boston
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
+                {console.log(this.state.contents)}
+                {this.state.contents[0].newPlaylists.map((d, i)=> {
+                  return(
+                    <PlaylistTable key={i}
+                      votes={d.votes.length}
+                      title={d.titles}
+                      creator={d.author}
+                      description={d.description} />
+                  );
+                })}
+                {/*
+                <PlaylistTable key={1} votes="0" title="Boston Jams" creator="Bocephus" description="thematic music about boston" />
+
+
                 <tr>
                   <td>
                     <strong>0</strong>
@@ -215,8 +233,11 @@ export default class NewReleases extends React.Component {
                     </button>
                   </td>
                 </tr>
+*/}
               </tbody>
+
             </table>
+
           </div>
         </div>
       </div>

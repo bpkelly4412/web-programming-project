@@ -17,31 +17,37 @@
   <!-- Skeleton Code given in workshop 3: Navigation Bar-->
   <nav class="navbar navbar-fixed-top navbar-default">
     <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">
-          <span><img src="img/logo-xsmall.png" alt="BBQ Forte Logo"></span> BBQ Forte
-        </a>
-      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
 
-      <!-- On mobile, this div is hidden by default. The user hits the button
-      in the `navbar-header` to see the content of the div.
-      On desktop, this div is visible all of the time. -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-        <!-- Left-aligned items. -->
-        <div class="nav navbar-nav navbar-left">
+            <a class="navbar-brand" href="index.html">
+              <span><img src="img/logo-xsmall.png" alt="BBQ Forte Logo"></span> BBQ Forte
+            </a>
 
         </div>
-
-        <!-- Center items. -->
-
-        <!-- Right-aligned items. -->
+      </div>
+      <div class="col-md-8">
+        <form class="navbar-form" role="search">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search BBQ Forte">
+              <span class="input-group-addon">
+                <!-- <button type="submit" class="btn btn-default"> -->
+                <span class="glyphicon glyphicon-search"></span>
+                <!-- </button> -->
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-2">
         <ul class="nav navbar-nav navbar-right">
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default message-button navbar-btn">
@@ -60,22 +66,29 @@
           Hello, Username!
         </div> -->
         </ul>
+      </div>
+    </div> <!-- row -->
 
-      <form class="navbar-form" role="search">
-        <div class="form-group">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search BBQ Forte">
-            <span class="input-group-addon">
-              <!-- <button type="submit" class="btn btn-default"> -->
-              <span class="glyphicon glyphicon-search"></span>
-              <!-- </button> -->
-            </span>
-          </div>
+      <!-- On mobile, this div is hidden by default. The user hits the button
+      in the `navbar-header` to see the content of the div.
+      On desktop, this div is visible all of the time. -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <!-- Left-aligned items. -->
+        <div class="nav navbar-nav navbar-left">
+
         </div>
-      </form>
+
+        <!-- Center items. -->
+
+        <!-- Right-aligned items. -->
+
+
+
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container -->
+
 </nav>
 
 <div id="main-content" class="container-fluid">

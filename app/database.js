@@ -112,6 +112,54 @@ var initialData = {
           "url": "TBD"
         }
       ]
+    },
+    "103": {
+      "_id": 103,
+      "game": "Fallout 4",
+      "imageURL": "img/fallout4.jpg",
+      "title": "Boston Jams",
+      "author": 1,
+      "votes": [2],
+      "genre": "Pop",
+      "description": "Thematic music about Boston",
+      "url": "TBD",
+      "songs": []
+    },
+    "104": {
+      "_id": 104,
+      "game": "Fallout 4",
+      "imageURL": "img/fallout4.jpg",
+      "title": "Swinging It",
+      "author": 1,
+      "votes": [2],
+      "genre": "Pop",
+      "description": "Classic atmospheric 1950's music.",
+      "url": "TBD",
+      "songs": []
+    },
+    "105": {
+      "_id": 105,
+      "game": "Fallout 4",
+      "imageURL": "img/fallout4.jpg",
+      "title": "HEAVY METAL THUNDER",
+      "author": 1,
+      "votes": [2],
+      "genre": "Heavy Metal",
+      "description": "Heavy metal sounds for your heavy metal powersuit",
+      "url": "TBD",
+      "songs": []
+    },
+    "106": {
+      "_id": 106,
+      "game": "Fallout 4",
+      "imageURL": "img/fallout4.jpg",
+      "title": "I don't know",
+      "author": 1,
+      "votes": [2],
+      "genre": "N/A",
+      "description": "It has music, I think",
+      "url": "TBD",
+      "songs": []
     }
   },
   "newsUpdates": {
@@ -186,10 +234,26 @@ var initialData = {
           "description": "Listen to the top-rated playlists for Civ V"
         },
         {
-          "active": "item", 
+          "active": "item",
           "imgURL": "img/i_am_bread_banner.png",
           "altURL": "I am Bread Banner",
           "description": "Even bread needs some great music! Check out these playlists"
+        }
+      ]
+    }
+  },
+  "newRelease": {
+    "1": {
+      "._id": 1,
+      // first newRelease Section
+      "contents": [
+        {
+          "gameTitle": "Fallout 4",
+          "newPlaylists": [103,104,105,106]
+        },
+        {
+          "gameTitle": "Elite Dangerous",
+          "newPlaylists": [103,104,105,106]
         }
       ]
     }

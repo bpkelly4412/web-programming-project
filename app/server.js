@@ -137,6 +137,18 @@ export function getCarousel(cb) {
 }
 
 /**
+* Returns a NewRelease object
+*/
+export function getNewRelease(cb) {
+  var newReleaseData = readDocument('newRelease', 1);
+  /*newReleaseData.contents.forEach((n) =>
+    n.newPlaylists = n.newPlaylists.map(getPlaylist)
+  );*/
+  //newReleaseData.contents[0].newPlaylists = newReleaseData.contents[0].newPlaylists.map(getPlaylist)
+  emulateServerReturn(newReleaseData, cb);
+}
+
+/**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */
 export function getSongList(searchData, cb) {
