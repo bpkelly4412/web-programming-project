@@ -494,6 +494,12 @@ body {
   width: 100%;
 }
 
+.conversation-scroll {
+  height: 487px;
+  overflow-y: scroll;
+  width: 100%;
+}
+
 .input-group textarea {
   resize: none;
   box-shadow: none !important;
@@ -593,7 +599,7 @@ body {
 }
 
 .user-list-scroll {
-  height: 547px;
+  height: 487px;
   overflow-y: scroll;
   width: 100%;
 }
