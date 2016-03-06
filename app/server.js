@@ -92,6 +92,14 @@ export function getNewsUpdates(cb) {
 }
 
 /**
+* Returns a GameCarousel object.
+*/
+export function getCarousel(cb) {
+  var carouselData = readDocument('carousel', 1);
+  emulateServerReturn(carouselData, cb);
+}
+
+/**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */
 export function getSongList(searchData, cb) {
