@@ -152,6 +152,9 @@ export default class Playlist extends React.Component {
                   );
                 })}
               </div>
+            <div className="panel-footer text-center">
+              {this.state.songs.length} songs.
+            </div>
             </div>
 
 

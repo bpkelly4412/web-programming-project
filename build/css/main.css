@@ -298,8 +298,12 @@ body {
 .playlist .panel-heading {
   color: #c6d4df;
   background: rgba( 42, 63, 90, 0.6 );
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+
+.playlist .panel-footer {
+  background: rgba( 42, 63, 90, 0.6 );
 }
 
 .playlist-add {
