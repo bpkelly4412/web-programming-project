@@ -10,7 +10,7 @@ export default class PrivateChat extends React.Component {
       <div className="row">
         <RecentConversations />
         <PrivateChatConversation />
-        <PrivateChatLiveHelp />
+        <PrivateChatLiveHelp userID={this.props.userID} />
       </div>
     )
   }

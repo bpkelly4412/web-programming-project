@@ -18,78 +18,78 @@ export default class PrivateChatConversation extends React.Component {
           </div>
 
           <div className="panel-body panel-title-style chat-scroll">
-            <p>
+            <p />
               <div className="chat-bubble left-speech">
                 Hello, this is Bob 2!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble right-speech">
                 Hello, this is Username!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble right-speech">
                 Hello, this is Username! I need to take up two rows of text to show that I work that way so here we go!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble right-speech">
                 Wow that worked great!
               </div>
-            </p>
+            <p />
             <br />
             <br />
             <br />
 
             <p style={{paddingLeft: 33}}> ________________________Today________________________ </p>
 
-            <p>
+            <p />
               <div className="chat-bubble right-speech">
                 Hello, this is Username!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble left-speech">
                 Hello, this is Bob 2!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble right-speech">
                 Hello, this is Username!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble left-speech">
                 Hello, this is Bob 2!
               </div>
-            </p>
+            <p />
             <br />
             <br />
 
-            <p>
+            <p />
               <div className="chat-bubble left-speech">
                 Hello, this is Bob 2!
               </div>
-            </p>
+            <p />
             <br />
             <br />
           </div>

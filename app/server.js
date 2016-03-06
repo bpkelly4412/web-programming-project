@@ -103,7 +103,7 @@ function getPlaylist(playlistID) {
 }
 
 /**
-* Given a playlist ID (for now), returns a Playlist object.
+* Given a user ID (for now), returns a UserData object.
 */
 export function getUserData(userID, cb) {
   var userData = readDocument('users', userID);
@@ -111,7 +111,7 @@ export function getUserData(userID, cb) {
 }
 
 /**
-* Given a playlist ID (for now), returns a Playlist object.
+* Given a user ID (for now), returns a PlaylistFeed object.
 */
 export function getPlaylistFeed(userID, cb) {
   var userData = readDocument('users', userID);
@@ -134,6 +134,17 @@ export function getNewsUpdates(cb) {
 export function getCarousel(cb) {
   var carouselData = readDocument('carousel', 1);
   emulateServerReturn(carouselData, cb);
+}
+
+/**
+* Given a user ID (for now), returns a PrivateChatLiveHelp object.
+*/
+export function getLiveHelpList(userID, cb) {
+  var liveHelpData = readDocument('liveHelp', userID);
+  liveHelpData.contents.forEach((category) => {
+    category.userList = category.userList.map((id) => readDocument('users', id))
+  });
+  emulateServerReturn(liveHelpData, cb);
 }
 
 /**
