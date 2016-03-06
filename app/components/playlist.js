@@ -1,6 +1,7 @@
 import React from 'react';
 import Song from './song';
-import { unvotePlaylist, votePlaylist } from '../server';
+import SongList from './song-list';
+import { unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -18,6 +19,16 @@ export default class Playlist extends React.Component {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
       this.context.router.push({pathname: "/song-list/" + this.state._id + "/" + this.props.userID});
+    }
+  }
+
+  handleRemovePlaylistClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      var callbackFunction = (updatedPlaylists) => {
+        this.props.callbackPlaylistFeed(updatedPlaylists);
+      };
+      removePlaylist(this.props.userID, this.props.plFeedID, this.state._id, callbackFunction);
     }
   }
 
@@ -65,81 +76,81 @@ export default class Playlist extends React.Component {
                   <h3 className="playlist-title"><strong>{this.state.title}</strong></h3>
                   <h3 className="playlist-title"><strong>Game: </strong>{this.state.game}</h3>
                   <h4>
-                  <button type="button"
-                    className="btn btn-default playlist-button"
-                    title={voteButtonDesc}
-                    onClick={(e) => this.handleVoteClick(e)}>
-                    <span className={voteButtonIcon}></span>
-                  </button><strong>Votes:</strong> {this.state.votes.length}  </h4>
+                    <button type="button"
+                      className="btn btn-default playlist-button"
+                      title={voteButtonDesc}
+                      onClick={(e) => this.handleVoteClick(e)}>
+                      <span className={voteButtonIcon}></span>
+                    </button><strong>Votes:</strong> {this.state.votes.length}  </h4>
+                  </div>
+                  <div className="col-md-4">
+                    <img src={this.state.imageURL} className="img-responsive" alt="PIC" />
+                  </div>
                 </div>
-                <div className="col-md-4">
-                  <img src={this.state.imageURL} className="img-responsive" alt="Elite Dangerous" />
-                </div>
-              </div>
 
-              <div className="btn-toolbar playlist-toolbar" role="toolbar">
-                <div className="input-group" role="group" aria-label="Playback Buttons">
-                  <button type="button" className="btn btn-default playlist-button">
-                    <span className="fa fa-stop"></span>
-                  </button>
-                  <button type="button" className="btn btn-default playlist-button">
-                    <span className="fa fa-backward"></span>
-                  </button>
-                  <button type="button" className="btn btn-default playlist-button">
-                    <span className="fa fa-play"></span>
-                  </button>
-                  <button type="button" className="btn btn-default playlist-button">
-                    <span className="fa fa-forward"></span>
-                  </button>
-                </div>
-                <div className="input-group pull-right" role="group" aria-label="Playlist Options">
-                  <button type="button" className="btn btn-default playlist-button" title="Add Track" onClick={(e) => this.handleAddSongClick(e)}>
-                    <span className="fa fa-plus-circle"></span>
-                  </button>
-                  <button type="button" className="btn btn-default playlist-button" title="Send to Spotify">
-                    <span className="fa fa-spotify"></span>
-                  </button>
-                  <button type="button" className="btn btn-default playlist-button" title="Options">
-                    <span className="fa fa-cogs"></span>
-                  </button>
+                <div className="btn-toolbar playlist-toolbar" role="toolbar">
+                  <div className="input-group" role="group" aria-label="Playback Buttons">
+                    <button type="button" className="btn btn-default playlist-button">
+                      <span className="fa fa-stop"></span>
+                    </button>
+                    <button type="button" className="btn btn-default playlist-button">
+                      <span className="fa fa-backward"></span>
+                    </button>
+                    <button type="button" className="btn btn-default playlist-button">
+                      <span className="fa fa-play"></span>
+                    </button>
+                    <button type="button" className="btn btn-default playlist-button">
+                      <span className="fa fa-forward"></span>
+                    </button>
+                  </div>
+                  <div className="input-group pull-right" role="group" aria-label="Playlist Options">
+                    <button type="button" className="btn btn-default playlist-button" title="Send to Spotify">
+                      <span className="fa fa-spotify"></span>
+                    </button>
+                    <button type="button" className="btn btn-default playlist-button" title="Delete Playlist" onClick={(e) => this.handleRemovePlaylistClick(e)}>
+                      <span className="fa fa-times-circle"></span>
+                    </button>
+                  </div>
                 </div>
               </div>
+              <div className="panel-body">
+                <SongList pid={this.state._id}
+                  userID={this.props.userID}
+                  callbackPlaylist = {this.onChildChanged} />
+                <table className="table">
+                  <tbody>
+                    <tr className="playlist-toolbar">
+                      <td className="col-md-4">Song Title</td>
+                      <td className="col-md-3">Artist</td>
+                      <td className="col-md-4">Album</td>
+                      <td className="col-md-1"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                {this.state.songs.map((songItem, i) => {
+                  return (
+                    <Song key={i}
+                      trackNumber={i + 1}
+                      songIndex={i}
+                      title={songItem.title}
+                      artist={songItem.artist}
+                      album={songItem.album}
+                      playlistID={this.state._id}
+                      songID={songItem._id}
+                      callbackPlaylist = {this.onChildChanged}
+                      hideRemoveSong="false" />
+                  );
+                })}
+              </div>
             </div>
-            <div className="panel-body">
-              <table className="table">
-                <tbody>
-                  <tr className="playlist-toolbar">
-                    <td className="col-md-4">Song Title</td>
-                    <td className="col-md-3">Artist</td>
-                    <td className="col-md-4">Album</td>
-                    <td className="col-md-1"></td>
-                  </tr>
-                </tbody>
-              </table>
-              {this.state.songs.map((songItem, i) => {
-                return (
-                  <Song key={i}
-                    trackNumber={i + 1}
-                    songIndex={i}
-                    title={songItem.title}
-                    artist={songItem.artist}
-                    album={songItem.album}
-                    playlistID={this.state._id}
-                    songID={songItem._id}
-                    callbackPlaylist = {this.onChildChanged}
-                    hideRemoveSong="false" />
-                );
-              })}
-            </div>
+
+
           </div>
-
-
         </div>
-      </div>
-    )
+      )
+    }
   }
-}
 
-Playlist.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
+  Playlist.contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
