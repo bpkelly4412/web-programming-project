@@ -11,6 +11,43 @@ function emulateServerReturn(data, cb) {
 }
 
 /**
+* Adds a song to a playlist
+*/
+export function createNewPlaylist(userID, name, game, genre, description, cb) {
+  var user = readDocument('users', userID);
+  var newPlaylist = {
+    "game": game,
+    "imageURL": "",
+    "title": name,
+    "author": userID,
+    "votes": [],
+    "genre": genre,
+    "description": description,
+    "url": "TBD",
+    "songs": []
+  };
+  newPlaylist = addDocument('playlists', newPlaylist);
+  var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
+  playerPlaylists.contents.unshift(newPlaylist._id);
+  writeDocument('playlist-feeds', playerPlaylists);
+  emulateServerReturn(newPlaylist._id, cb);
+}
+
+/**
+* Removes a song from a playlist
+*/
+export function removePlaylist(userID, playlistFeedID, playlistID, cb) {
+  var playlistfeed = readDocument('playlist-feeds', playlistFeedID);
+  var playlistFeedIndex = playlistfeed.contents.indexOf(playlistID);
+  if (playlistFeedIndex !== -1) {
+    playlistfeed.contents.splice(playlistFeedIndex, 1);
+    writeDocument('playlist-feeds', playlistfeed);
+    playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
+  }
+  emulateServerReturn(playlistfeed, cb);
+}
+
+/**
 * Updates a playlist's votes by adding the userID.
 */
 export function votePlaylist(playlistID, userId, cb) {

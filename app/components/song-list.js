@@ -33,8 +33,9 @@ export default class SongList extends React.Component {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
 
-      var callbackFunction = () => {
-        this.context.router.push({pathname: "/saved-playlist/" + this.props.userID});
+      var callbackFunction = (updatedSongs) => {
+        this.setState({ songs: [], value: "", currentSearch: "" });
+        this.props.callbackPlaylist(updatedSongs);
       };
       addSong(this.props.pid, songItem, callbackFunction);
     }
@@ -42,66 +43,52 @@ export default class SongList extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-10 col-md-offset-1">
-          <div className="panel panel-default songlist">
-            <div className="panel-heading">
-              <div className="row">
-                <h3 className="playlist-title">Search for Songs</h3>
+      <div className="col-md-10 col-md-offset-1">
+        <div className="row text-center playlist-toolbar">
+          <form className="navbar-form" role="search">
+            <div className="form-group">
+              <div className="input-group">
+                <input type="text"
+                  className="form-control"
+                  placeholder="Search for songs..."
+                  value={this.state.value}
+                  onChange={(e) => this.handleChange(e)}
+                  onKeyUp={(e) => this.handleKeyUp(e)} />
+                <span className="input-group-addon">
+                  <span className="fa fa-search"></span>
+                </span>
               </div>
-              <div className="row playlist-toolbar">
-                <div className="col-md-7">
-                  <form className="navbar-form" role="search">
-                    <div className="form-group">
-                      <div className="input-group">
-                        <input type="text"
-                          className="form-control"
-                          placeholder="Search for songs..."
-                          value={this.state.value}
-                          onChange={(e) => this.handleChange(e)}
-                          onKeyUp={(e) => this.handleKeyUp(e)} />
-                        <span className="input-group-addon">
-                          <span className="fa fa-search"></span>
-                        </span>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div className="col-md-5">
-                  {(() => {
-                    switch (this.state.currentSearch) {
-                      case "":
-                      return null;
-                      default:
-                      return <p className="search-result">Results for "{this.state.currentSearch}"</p>;
-                      }
-                    })()}
+            </div>
+          </form>
+        </div>
+        <div className="row">
+          {(() => {
+            switch (this.state.currentSearch) {
+              case "":
+              return null;
+              default:
+              return <p className="search-result">Results for "{this.state.currentSearch}"</p>;
+              }
+            })()}
 
+          </div>
+          <div className="row">
+            <div className="col-md-10 col-md-offset-1 songlist-table">
+              {this.state.songs.map((songItem, i) => {
+                return (
+                  <div key={i} onClick={(e) => this.handleAddSongClick(e, songItem)}>
+                    <Song key={i}
+                      trackNumber={i + 1}
+                      title={songItem.title}
+                      artist={songItem.artist}
+                      album={songItem.album}
+                      playlistID={this.state._id}
+                      songID={songItem._id}
+                      callbackPlaylist = {this.onChildChanged}
+                      hideRemoveSong="true" />
                   </div>
-                </div>
-                <div className="row">
-                  Click to add song to the current playlist.
-                </div>
-              </div>
-              <div className="panel-body">
-                <div className="row">
-                  {this.state.songs.map((songItem, i) => {
-                    return (
-                      <div key={i} onClick={(e) => this.handleAddSongClick(e, songItem)}>
-                        <Song key={i}
-                          trackNumber={i + 1}
-                          title={songItem.title}
-                          artist={songItem.artist}
-                          album={songItem.album}
-                          playlistID={this.state._id}
-                          songID={songItem._id}
-                          callbackPlaylist = {this.onChildChanged}
-                          hideRemoveSong="true" />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>

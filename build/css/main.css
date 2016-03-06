@@ -1,7 +1,7 @@
 body {
   background-color: #171a21;
   background-image: url("../img/main_background.jpg");
-  height: 1000px;
+  height: 100%;
   padding-top: 53px;
   color: #ffffff;
 }
@@ -24,6 +24,22 @@ body {
     border-radius: 10px;
     background: #5e6b87;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 100px;
+}
+
+.footer {
+  background-color: #171a21;
+  padding-top: 15px;
+  height: 60px;
 }
 
 .navbar-brand {
@@ -153,7 +169,7 @@ body {
 
 
 
-.playlist-button:hover, .playlist-button:active, .playlist-button:focus, .playlist-button:active:focus {
+.playlist-button:hover, .playlist-button:active, .playlist-button:active:focus {
   background-color: transparent;
   outline: none !important;
   box-shadow: none;
@@ -273,14 +289,9 @@ body {
   border-radius: 10px;
   /*height: 600px;*/
 }
-.songlist .panel-heading {
-  color: #c6d4df;
-  background: rgba( 42, 63, 90, 0.6 );
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
 
-.songlist .panel-body {
+.songlist-table {
+  background: rgba(94, 161, 204, 0.14);
   /*overflow: scroll;*/
 }
 
@@ -289,6 +300,11 @@ body {
   background: rgba( 42, 63, 90, 0.6 );
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.playlist-add {
+  align-items: center;
+  justify-content: center;
 }
 
 .playlist-title {
@@ -307,7 +323,7 @@ body {
   color: white;
 }
 
-.playlist-button {
+.playlist-button, .playlist-button:focus {
   background-color: transparent;
   border: none;
   border-radius: 5px;
