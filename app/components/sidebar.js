@@ -60,7 +60,7 @@ export default class Sidebar extends React.Component {
               <Link to={"/about-us/" + this.state._id}>About Us</Link>
             </li>
             <li role="presentation">
-              <a href="#">Contact Us</a>
+              <Link to={"/contact-us/" + this.state._id}>Contact Us</Link>
             </li>
           </ul>
         </div>
