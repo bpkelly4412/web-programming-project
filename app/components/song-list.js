@@ -79,6 +79,9 @@ export default class SongList extends React.Component {
 
                   </div>
                 </div>
+                <div className="row">
+                  Click to add song to the current playlist.
+                </div>
               </div>
               <div className="panel-body">
                 <div className="row">
