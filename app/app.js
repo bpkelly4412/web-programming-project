@@ -14,6 +14,8 @@ import Forum from './components/forum';
 import PrivateChat from './components/private-chat';
 import AboutUs from './components/about-us';
 import SongList from './components/song-list';
+import SearchResult from './components/search-result';
+import ContactUs from './components/contact-us';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 
 /**
@@ -141,6 +143,22 @@ class SongListPage extends React.Component {
 }
 
 
+class SearchResultPage extends React.Component {
+  render() {
+      return (
+        <SearchResult />
+      );
+  }
+}
+
+class ContactUsPage extends React.Component {
+  render() {
+      return (
+        <ContactUs />
+      );
+  }
+}
+
 /**
  * The primary component in our application.
  * The Router will give it different child Components as the user clicks
@@ -183,6 +201,8 @@ ReactDOM.render((
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />
+      <Route path="search/:id" component={SearchResultPage} />
+      <Route path="contact-us/:id" component={ContactUsPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));

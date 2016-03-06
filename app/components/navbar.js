@@ -4,9 +4,14 @@ import { getUserData } from '../server';
 
 export default class Navbar extends React.Component {
 
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { value: "" };
+    //Taken from Router note posted on course website
+    Navbar.contextTypes = {
+      router: React.PropTypes.object.isRequired
+    };
   }
 
   refresh() {
@@ -15,9 +20,18 @@ export default class Navbar extends React.Component {
     });
   }
 
+  // Called after navbar button is pressed
+  onSearch(searchText) {
+      this.context.router.push({ pathname: "/search/" + this.state._id + "/", query: { q: searchText } });
+    }
 
   componentDidMount() {
     this.refresh();
+  }
+
+  // Called after the navbar input is changed
+  handleChange(event) {
+    this.setState( {value: event.target.value} );
   }
 
   render() {
@@ -60,10 +74,15 @@ export default class Navbar extends React.Component {
           <form className="navbar-form" role="search">
             <div className="form-group">
               <div className="input-group">
-                <input type="text" className="form-control" placeholder="Search BBQ Forte" />
-                <span className="input-group-addon">
-                  <span className="glyphicon glyphicon-search"></span>
-                </span>
+                <input type="text" className="form-control" placeholder="Search BBQ Forte" value={this.state.value} onChange={this.handleChange}/>
+                  <span className="input-group-btn" id="search_button">
+                    <button className="btn btn-secondary" type="button">
+                      <Link to={"/search/" + this.state._id}>
+                        <span className="glyphicon glyphicon-search"></span>
+                      </Link>
+                    </button>
+                  </span>
+
               </div>
             </div>
           </form>
