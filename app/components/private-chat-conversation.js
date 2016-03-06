@@ -1,4 +1,5 @@
 import React from 'react';
+import PrivateChatMessage from './private-chat-message';
 
 export default class PrivateChatConversation extends React.Component {
   render() {
@@ -18,80 +19,7 @@ export default class PrivateChatConversation extends React.Component {
           </div>
 
           <div className="panel-body panel-title-style chat-scroll">
-            <p />
-              <div className="chat-bubble left-speech">
-                Hello, this is Bob 2!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble right-speech">
-                Hello, this is Username!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble right-speech">
-                Hello, this is Username! I need to take up two rows of text to show that I work that way so here we go!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble right-speech">
-                Wow that worked great!
-              </div>
-            <p />
-            <br />
-            <br />
-            <br />
-
-            <p style={{paddingLeft: 33}}> ________________________Today________________________ </p>
-
-            <p />
-              <div className="chat-bubble right-speech">
-                Hello, this is Username!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble left-speech">
-                Hello, this is Bob 2!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble right-speech">
-                Hello, this is Username!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble left-speech">
-                Hello, this is Bob 2!
-              </div>
-            <p />
-            <br />
-            <br />
-
-            <p />
-              <div className="chat-bubble left-speech">
-                Hello, this is Bob 2!
-              </div>
-            <p />
-            <br />
-            <br />
+            <PrivateChatMessage />
           </div>
 
           <div className="panel-footer panel-title-style">

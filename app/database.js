@@ -317,6 +317,94 @@ var initialData = {
         }
       ]
     }
+  },
+  "conversations": {
+    "1": {
+      "userID": 1,
+      "chatlogs": [
+        {
+          "otherUser": 2,
+          "messages": [
+            {
+              "author": 2,
+              "content": "Hello, this is Ned Stark!"
+            },
+            {
+              "author": 1,
+              "content": "Hello, this is Jon Snow!"
+            },
+            {
+              "author": 1,
+              "content": "Please excuse me while I type enough to fill up more than one line of text to show that the chat bubble expands!"
+            },
+            {
+              "author": 1,
+              "content": "Wow, that worked out great!"
+            },
+            {
+              "author": 2,
+              "content": "I am glad that worked out great!"
+            },
+            {
+              "author": 1,
+              "content": "Make me a lasagna."
+            },
+            {
+              "author": 2,
+              "content": "W-what...?"
+            },
+            {
+              "author": 1,
+              "content": "I said. Make me a lasagna, peasant!"
+            }
+          ]
+        },
+        {
+          "otherUser": 3,
+          "messages": [
+            {
+              "author": 3,
+              "content": "Hello, you have one unread message!"
+            },
+            {
+              "author": 3,
+              "content": "Just kidding, you have two now."
+            }
+          ]
+        },
+        {
+          "otherUser": 7,
+          "messages": [
+            {
+              "author": 1,
+              "content": "Hi..."
+            }
+          ]
+        },
+        {
+          "otherUser": 5,
+          "messages": [
+            {
+              "author": 5,
+              "content": "Is anybody home?"
+            }
+          ]
+        },
+        {
+          "otherUser": 16,
+          "messages": [
+            {
+              "author": 16,
+              "content": "I like hip-hop."
+            },
+            {
+              "author": 1,
+              "content": "Same"
+            }
+          ]
+        }
+      ]
+    }
   }
 };
 
