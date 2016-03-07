@@ -405,6 +405,12 @@ var initialData = {
         }
       ]
     }
+  },
+  "recent-conversations": {
+    "1": {
+      "_id": 1,
+      "userList": [2, 3, 7, 5, 16]
+    }
   }
 };
 

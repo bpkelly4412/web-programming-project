@@ -148,6 +148,30 @@ export function getLiveHelpList(userID, cb) {
 }
 
 /**
+* Given a user ID (for now), returns a RecentConversations object.
+*/
+export function getRecentConversations(userID, cb) {
+  var recentConversations = readDocument('recent-conversations', userID);
+  recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id))
+  emulateServerReturn(recentConversations, cb);
+}
+
+/**
+* Given a user ID (for now), returns a PrivateChatConversation object.
+*/
+export function getChatConversations(userID, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs.forEach((chatlog) => {
+    chatlog.otherUser = readDocument('users', chatlog.otherUser);
+
+    chatlog.messages.forEach((message) => {
+      message.author = readDocument('users', message.author);
+    })
+  });
+  emulateServerReturn(conversationsData, cb);
+}
+
+/**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */
 export function getSongList(searchData, cb) {

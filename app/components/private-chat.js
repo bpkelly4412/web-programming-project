@@ -8,8 +8,8 @@ export default class PrivateChat extends React.Component {
   render() {
     return (
       <div className="row">
-        <RecentConversations />
-        <PrivateChatConversation />
+        <RecentConversations userID={this.props.userID}/>
+        <PrivateChatConversation userID={this.props.userID} />
         <PrivateChatLiveHelp userID={this.props.userID} />
       </div>
     )

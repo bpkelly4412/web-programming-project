@@ -53,7 +53,7 @@ export default class Sidebar extends React.Component {
               <Link to={"/forum/" + this.state._id}>Forum</Link>
             </li>
             <li role="presentation">
-              <Link to ={"/private-chat/" + this.state._id}>Private Chat <span className="badge badge-style pull-right">2</span></Link>
+              <Link to ={"/private-chat/" + this.state._id}>Private Chat</Link>
             </li>
             <li role="presentation"><span className="glyphicon glyphicon-th-large"></span> MISCELLANEOUS</li>
             <li role="presentation">

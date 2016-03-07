@@ -1,7 +1,23 @@
 import React from 'react';
 import PrivateChatMessage from './private-chat-message';
+import {getChatConversations} from '../server';
 
 export default class PrivateChatConversation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { chatlogs: [] };
+  }
+
+  refresh() {
+    getChatConversations(this.props.userID, (liveHelp) => {
+      this.setState(liveHelp);
+    });
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <div className="col-md-6">
@@ -12,13 +28,25 @@ export default class PrivateChatConversation extends React.Component {
             </a>
             <h4>
               <a href="#">
-                Bob 2
+                Ned Stark
               </a>
               <span className="online"> ●</span>
             </h4>
           </div>
 
           <div className="panel-body panel-title-style chat-scroll">
+            /**{this.state.chatlogs.map((chatlog, i) => {
+              if(chatlog.otherUser === 2) {
+                {chatlog.messages.map((message, i) => {
+                  return (
+                    <PrivateChatMessage key={i}
+                      author={message.author}
+                      content={message.content}
+                      userID={this.props.userID} />
+                  );
+                })}
+              }
+            })}*/
             <PrivateChatMessage />
           </div>
 
