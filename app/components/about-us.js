@@ -14,7 +14,7 @@ export default class AboutUs extends React.Component {
           </ol>
           <h2>About</h2>
           <div className="row">
-            <div className="col-md-11 col-md-offset-1">
+            <div className="col-md-10 col-md-offset-1">
               <img src="img/forte.png" alt="BBQ Forte Logo" />
             </div>
           </div>
