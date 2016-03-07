@@ -78,7 +78,7 @@ export default class Navbar extends React.Component {
                   <span className="input-group-btn" id="search_button">
                     <button className="btn btn-secondary" type="button">
                       <Link to={"/search/" + this.state._id}>
-                        <span className="glyphicon glyphicon-search"></span>
+                        {/*<span className="glyphicon glyphicon-search"></span>*/}Search
                       </Link>
                     </button>
                   </span>

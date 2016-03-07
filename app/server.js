@@ -141,10 +141,9 @@ export function getCarousel(cb) {
 */
 export function getNewRelease(cb) {
   var newReleaseData = readDocument('newRelease', 1);
-  /*newReleaseData.contents.forEach((n) =>
+  newReleaseData.contents.forEach((n) =>
     n.newPlaylists = n.newPlaylists.map(getPlaylist)
-  );*/
-  //newReleaseData.contents[0].newPlaylists = newReleaseData.contents[0].newPlaylists.map(getPlaylist)
+  );
   emulateServerReturn(newReleaseData, cb);
 }
 

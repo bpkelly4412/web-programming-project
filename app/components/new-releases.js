@@ -3,15 +3,48 @@ import { getNewRelease } from '../server';
 import PlaylistTable from './playlistTable';
 
 export default class NewReleases extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = { contents: [] };
+    this.state = {
+      loaded: false,
+      contents: [{
+        "gameTitle": "Empty",
+        "newPlaylists": [
+          {
+            "game": "Empty",
+            "imageURL": "",
+            "title": "Empty",
+            "author": 0,
+            "votes": [],
+            "genre": "Empty",
+            "description": "Empty",
+            "url": "Empty",
+            "songs": []
+          }
+        ]
+      },{
+        "gameTitle": "Empty",
+        "newPlaylists": [
+          {
+            "game": "Empty",
+            "imageURL": "",
+            "title": "Empty",
+            "author": 0,
+            "votes": [],
+            "genre": "Empty",
+            "description": "Empty",
+            "url": "Empty",
+            "songs": []
+          }
+        ]
+      }
+      ]
+    };
   }
 
   refresh() {
     getNewRelease((newReleases) => {
-      this.setState(newReleases);
+      this.setState({loaded: true, contents: newReleases.contents})
     });
   }
 
@@ -49,7 +82,19 @@ export default class NewReleases extends React.Component {
               </thead>
               {/* SAMPLE PLAYLIST DATA */}
               <tbody>
-                {/*first playlist*/}
+                {this.state.contents[1].newPlaylists.map((d, i)=> {
+                  return(
+                    <PlaylistTable key={i}
+                      votes={d.votes.length}
+                      title={d.title}
+                      creator={d.author}
+                      description={d.description} />
+                  );
+                })}
+
+                {/*
+
+
                 <tr>
                   <td>
                     <strong>0</strong>
@@ -69,7 +114,7 @@ export default class NewReleases extends React.Component {
                     </button>
                   </td>
                 </tr>
-                {/*second playlist*/}
+
                 <tr>
                   <td>
                     <strong>0</strong>
@@ -127,6 +172,8 @@ export default class NewReleases extends React.Component {
                     </button>
                   </td>
                 </tr>
+                */}
+
               </tbody>
             </table>
           </div>
@@ -162,82 +209,39 @@ export default class NewReleases extends React.Component {
               </thead>
               {/* SAMPLE PLAYLIST DATA */}
               <tbody>
-                {console.log(this.state.contents)}
+                {/*
+                {(() => {
+                        switch (this.state.loaded) {
+                          case true:
+                            this.state.contents[0].newPlaylists.map((d, i)=> {
+                              return(
+                                <PlaylistTable key={i}
+                                  votes={d.votes.length}
+                                  title={d.titles}
+                                  creator={d.author}
+                                  description={d.description} />
+                              );
+                            })
+                            break;
+
+                          case false:
+                            return
+                        }
+                })()}
+                */}
+
                 {this.state.contents[0].newPlaylists.map((d, i)=> {
                   return(
                     <PlaylistTable key={i}
                       votes={d.votes.length}
-                      title={d.titles}
+                      title={d.title}
                       creator={d.author}
                       description={d.description} />
                   );
                 })}
-                {/*
-                <PlaylistTable key={1} votes="0" title="Boston Jams" creator="Bocephus" description="thematic music about boston" />
 
-
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    Swingin it
-                  </td>
-                  <td>SuperDude12</td>
-                  <td>
-                    Classic atmospheric 1950's music.
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    HEAVY METAL THUNDER
-                  </td>
-                  <td>TRVE_KVLT</td>
-                  <td>
-                    Heavy metal sounds for your heavy metal powersuit.
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    I don't know
-                  </td>
-                  <td>A_guy_42</td>
-                  <td>
-                    It has music, I think.
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-*/}
               </tbody>
-
             </table>
-
           </div>
         </div>
       </div>
