@@ -179,7 +179,7 @@ export function sendMessage(user, contents, cb) {
   })
   writeDocument('conversations', conversationsData);
 
-  emulateServerReturn(getChatConversations(user, cb), cb);
+  return getChatConversations(user, cb);
 }
 
 /**

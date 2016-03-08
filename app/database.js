@@ -320,6 +320,7 @@ var initialData = {
   },
   "conversations": {
     "1": {
+      "_id": 1,
       "userID": 1,
       "chatlogs": [
         {
