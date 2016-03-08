@@ -17,7 +17,6 @@ export default class PlayListFeed extends React.Component {
   }
 
   onChildChanged(newState) {
-    console.log(newState);
     this.setState(newState);
   }
 
