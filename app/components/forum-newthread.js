@@ -1,5 +1,5 @@
 import React from 'react';
-export default class ForumThread extends React.Component {
+export default class ForumNewThread extends React.Component {
   render() {
     return (
     <div>
