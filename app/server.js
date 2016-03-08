@@ -171,6 +171,17 @@ export function getChatConversations(userID, cb) {
   emulateServerReturn(conversationsData, cb);
 }
 
+export function sendMessage(user, contents, cb) {
+  var conversationsData = readDocument('conversations', user);
+  conversationsData.chatlogs[0].messages.push({
+    "author": user,
+    "content": contents
+  })
+  writeDocument('conversations', conversationsData);
+
+  emulateServerReturn(getChatConversations(user, cb), cb);
+}
+
 /**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */

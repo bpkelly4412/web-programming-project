@@ -31,12 +31,12 @@ export default class RecentConversations extends React.Component {
             <br />
             {this.state.userList.map((user) => {
               return (
-                <div>
+                <div key={user._id}>
                   <a href="#">
                     <div className="pull-right">
                       <span className="fa fa-times-circle"></span>
                     </div>
-                  </a>  
+                  </a>
                   <a href="#">
                     <div className="media">
                       <div className="media-left">
