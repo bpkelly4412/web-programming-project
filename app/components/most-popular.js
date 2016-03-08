@@ -7,10 +7,11 @@ export default class MostPopular extends React.Component {
     super(props);
     // Populating this.state.contents with empty mock data to display before data is retrieved from database
     this.state = {
-      contents: [{
+      contents: [
+      {
         "imageURL": "img/playlist_disc.jpg",
         "gameTitle": "Empty",
-        "newPlaylists": [
+        "playlists": [
           {
             "game": "Empty",
             "imageURL": "",
@@ -26,7 +27,7 @@ export default class MostPopular extends React.Component {
       },{
         "imageURL": "img/playlist_disc.jpg",
         "gameTitle": "Empty",
-        "newPlaylists": [
+        "playlists": [
           {
             "game": "Empty",
             "imageURL": "",
@@ -68,7 +69,6 @@ export default class MostPopular extends React.Component {
                     </strong></h3>
                   </div>
                   <div className="col-md-4">
-                    {/***/}
                     <img
                       src={content.imageURL}
                       className="img-responsive"
@@ -87,7 +87,7 @@ export default class MostPopular extends React.Component {
                   </thead>
 
                   <tbody>
-                    {content.newPlaylists.map((d, i)=> {
+                    {content.playlists.map((d, i)=> {
                       return(
                         <PlaylistTable key={i}
                           votes={d.votes.length}

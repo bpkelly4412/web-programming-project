@@ -9,7 +9,7 @@ export default class NewReleases extends React.Component {
     this.state = {
       contents: [{
         "gameTitle": "Empty",
-        "newPlaylists": [
+        "playlists": [
           {
             "game": "Empty",
             "imageURL": "",
@@ -24,7 +24,7 @@ export default class NewReleases extends React.Component {
         ]
       },{
         "gameTitle": "Empty",
-        "newPlaylists": [
+        "playlists": [
           {
             "game": "Empty",
             "imageURL": "",
@@ -55,93 +55,51 @@ export default class NewReleases extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2 playlist table-responsive">
-            <div className="row">
-              <div className="col-md-8">
-                <h3 className="playlist-title"> New Playlists for <strong>
-                  Elite Dangerous
-                </strong></h3>
-              </div>
-              <div className="col-md-4">
-                <img
-                  src="img/elite-dangerous.jpg"
-                  className="img-responsive"
-                  alt="Elite Dangerous" />
-              </div>
-            </div>
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th>Votes</th>
-                  <th>Title</th>
-                  <th>Creator</th>
-                  <th>Description</th>
-                  <th />
-                </tr>
-              </thead>
-              {/* SAMPLE PLAYLIST DATA */}
-              <tbody>
-                {this.state.contents[1].newPlaylists.map((d, i)=> {
-                  return(
-                    <PlaylistTable key={i}
-                      votes={d.votes.length}
-                      title={d.title}
-                      creator={d.author}
-                      description={d.description} />
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {this.state.contents.map((content, k) => {
+          return(
+            <div key={k} className="row">
+              <div className="col-md-8 col-md-offset-2 playlist table-responsive">
+                <div className="row">
+                  <div className="col-md-8">
+                    <h3 className="playlist-title"> New Playlists for <strong>
+                      {content.gameTitle}
+                    </strong></h3>
+                  </div>
+                  <div className="col-md-4">
+                    <img
+                      src={content.imageURL}
+                      className="img-responsive"
+                      alt="Image" />
+                  </div>
+                </div>
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Votes</th>
+                      <th>Title</th>
+                      <th>Creator</th>
+                      <th>Description</th>
+                      <th />
+                    </tr>
+                  </thead>
 
-
-
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2 playlist table-responsive">
-            <div className="row">
-              <div className="col-md-8">
-                <h3 className="playlist-title"> New Playlists for <strong>
-                  Fallout 4
-                </strong></h3>
-              </div>
-              <div className="col-md-4">
-                <img
-                  src="img/fallout4.jpg"
-                  className="img-responsive"
-                  alt="Elite Dangerous" />
+                  <tbody>
+                    {content.playlists.map((d, i)=> {
+                      return(
+                        <PlaylistTable key={i}
+                          votes={d.votes.length}
+                          title={d.title}
+                          creator={d.author}
+                          description={d.description} />
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
-
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th>Votes</th>
-                  <th>Title</th>
-                  <th>Creator</th>
-                  <th>Description</th>
-                  <th />
-                </tr>
-              </thead>
-              {/* SAMPLE PLAYLIST DATA */}
-              <tbody>
-                {this.state.contents[0].newPlaylists.map((d, i)=> {
-                  return(
-                    <PlaylistTable key={i}
-                      votes={d.votes.length}
-                      title={d.title}
-                      creator={d.author}
-                      description={d.description} />
-                  );
-                })}
-
-              </tbody>
-            </table>
-          </div>
-        </div>
+          );
+        })}
       </div>
-
     )
   }
 }
