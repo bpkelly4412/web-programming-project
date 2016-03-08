@@ -160,6 +160,54 @@ var initialData = {
       "description": "It has music, I think",
       "url": "TBD",
       "songs": []
+    },
+    "107": {
+      "_id": 107,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Rockin' space shooty rock",
+      "author": 1,
+      "votes": [2],
+      "genre": "N/A",
+      "description": "Hard Rock tracks to shoot spaceships to",
+      "url": "TBD",
+      "songs": []
+    },
+    "108": {
+      "_id": 108,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Chill space mining trance",
+      "author": 1,
+      "votes": [2],
+      "genre": "N/A",
+      "description": "Just Chill",
+      "url": "TBD",
+      "songs": []
+    },
+    "109": {
+      "_id": 109,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Space Piracy",
+      "author": 1,
+      "votes": [2],
+      "genre": "N/A",
+      "description": "The best of modern Pirate Metal and Pirate Rap for all your space pirate needs.",
+      "url": "TBD",
+      "songs": []
+    },
+    "110": {
+      "_id": 110,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "We can't stop here. This is space country.",
+      "author": 1,
+      "votes": [2],
+      "genre": "N/A",
+      "description": "It's classic country goodness. IN SPACE.",
+      "url": "TBD",
+      "songs": []
     }
   },
   "newsUpdates": {
@@ -253,7 +301,7 @@ var initialData = {
         },
         {
           "gameTitle": "Elite Dangerous",
-          "newPlaylists": [103,104,105,106]
+          "newPlaylists": [107,108,109,110]
         }
       ]
     }

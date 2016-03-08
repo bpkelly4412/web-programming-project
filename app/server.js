@@ -103,6 +103,17 @@ function getPlaylist(playlistID) {
 }
 
 /**
+* Given a playlist ID returns a Playlist object.
+* Might considering merging with getPlaylist(playlistID)
+*/
+function getPlaylistWithAuthor(playlistID) {
+  var playlist = readDocument('playlists', playlistID);
+  var userID = playlist.author;
+  playlist.author = readDocument('users', userID).userName
+  return playlist;
+}
+
+/**
 * Given a playlist ID (for now), returns a Playlist object.
 */
 export function getUserData(userID, cb) {
@@ -141,9 +152,12 @@ export function getCarousel(cb) {
 */
 export function getNewRelease(cb) {
   var newReleaseData = readDocument('newRelease', 1);
-  newReleaseData.contents.forEach((n) =>
-    n.newPlaylists = n.newPlaylists.map(getPlaylist)
-  );
+  newReleaseData.contents.forEach((n) => {
+    n.newPlaylists = n.newPlaylists.map(getPlaylistWithAuthor)
+    /*n.newPlaylists = n.newPlaylists.map((p) =>
+      p.author = readDocument('users', p.author).username
+    )*/
+  });
   emulateServerReturn(newReleaseData, cb);
 }
 

@@ -5,8 +5,8 @@ import PlaylistTable from './playlistTable';
 export default class NewReleases extends React.Component {
   constructor(props) {
     super(props);
+    // Populating this.state.contents with empty mock data to display before data is retrieved from database
     this.state = {
-      loaded: false,
       contents: [{
         "gameTitle": "Empty",
         "newPlaylists": [
