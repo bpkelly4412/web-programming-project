@@ -44,7 +44,7 @@ export default class NewReleases extends React.Component {
 
   refresh() {
     getNewRelease((newReleases) => {
-      this.setState({loaded: true, contents: newReleases.contents})
+      this.setState({contents: newReleases.contents})
     });
   }
 
@@ -91,89 +91,6 @@ export default class NewReleases extends React.Component {
                       description={d.description} />
                   );
                 })}
-
-                {/*
-
-
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    Rockin space shooty rock
-                  </td>
-                  <td>SuperDude12</td>
-                  <td>
-                    Hard Rock tracks to shoot spaceships to
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    Chill space mining trance
-                  </td>
-                  <td>ChillDude53</td>
-                  <td>
-                    Just Chill
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    Space Piracy
-                  </td>
-                  <td>ShiverMeTimbersM8E</td>
-                  <td>
-                    The best of modern Pirate Metal and Pirate Rap for all your space pirate needs.
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>0</strong>
-                  </td>
-                  <td>
-                    We can't stop here. This is space country.
-                  </td>
-                  <td>Bocephus</td>
-                  <td>
-                    It's classic country goodness. IN SPACE.
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-default playlist-button">
-                      <span className="glyphicon glyphicon-play-circle" />
-                    </button>
-                  </td>
-                </tr>
-                */}
-
               </tbody>
             </table>
           </div>
@@ -209,27 +126,6 @@ export default class NewReleases extends React.Component {
               </thead>
               {/* SAMPLE PLAYLIST DATA */}
               <tbody>
-                {/*
-                {(() => {
-                        switch (this.state.loaded) {
-                          case true:
-                            this.state.contents[0].newPlaylists.map((d, i)=> {
-                              return(
-                                <PlaylistTable key={i}
-                                  votes={d.votes.length}
-                                  title={d.titles}
-                                  creator={d.author}
-                                  description={d.description} />
-                              );
-                            })
-                            break;
-
-                          case false:
-                            return
-                        }
-                })()}
-                */}
-
                 {this.state.contents[0].newPlaylists.map((d, i)=> {
                   return(
                     <PlaylistTable key={i}

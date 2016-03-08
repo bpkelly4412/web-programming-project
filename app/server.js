@@ -154,9 +154,39 @@ export function getNewRelease(cb) {
   var newReleaseData = readDocument('newRelease', 1);
   newReleaseData.contents.forEach((n) => {
     n.newPlaylists = n.newPlaylists.map(getPlaylistWithAuthor)
-    /*n.newPlaylists = n.newPlaylists.map((p) =>
-      p.author = readDocument('users', p.author).username
-    )*/
+  });
+  emulateServerReturn(newReleaseData, cb);
+}
+
+/**
+* Returns a MostPopular object
+*/
+export function getMostPopular(cb) {
+  var newReleaseData = readDocument('mostPopular', 1);
+  newReleaseData.contents.forEach((n) => {
+    n.newPlaylists = n.newPlaylists.map(getPlaylistWithAuthor)
+  });
+  emulateServerReturn(newReleaseData, cb);
+}
+
+/**
+* Returns a HighestRated object
+*/
+export function getHighestRated(cb) {
+  var newReleaseData = readDocument('highestRated', 1);
+  newReleaseData.contents.forEach((n) => {
+    n.newPlaylists = n.newPlaylists.map(getPlaylistWithAuthor)
+  });
+  emulateServerReturn(newReleaseData, cb);
+}
+
+/**
+* Returns a Rising object
+*/
+export function getRising(cb) {
+  var newReleaseData = readDocument('rising', 1);
+  newReleaseData.contents.forEach((n) => {
+    n.newPlaylists = n.newPlaylists.map(getPlaylistWithAuthor)
   });
   emulateServerReturn(newReleaseData, cb);
 }
