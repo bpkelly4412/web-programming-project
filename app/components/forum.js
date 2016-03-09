@@ -22,7 +22,7 @@ export default class Forum extends React.Component {
 
   render() {
     return (
-      <div className="main">
+      <div className="col-md-12 main">
         {/* Forums Header*/}
         <div className="row">
           <div className="col-md-12">

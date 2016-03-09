@@ -23,7 +23,7 @@ export default class ForumThread extends React.Component {
 
   render() {
     return (
-    <div className="main">
+    <div className="col-md-12 main">
         <div className="row forum-header">
           <div className="col-md-12">
             <ol className="breadcrumb">

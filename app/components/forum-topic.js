@@ -23,9 +23,10 @@ export default class ForumTopic extends React.Component {
 
   render() {
     return (
-        <div className="main">
+        <div className="col-md-12 main">
           {/* Forums Header*/}
           <div className="row">
+            <div className="col-md-12">
             <div className="row forum-header">
               <div className="col-md-12">
                 <ol className="breadcrumb">
@@ -157,6 +158,7 @@ export default class ForumTopic extends React.Component {
               </div>
             </div>
           </div>
+        </div>
         </div>
         )
     }
