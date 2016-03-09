@@ -61,34 +61,34 @@ export default class SearchResult extends React.Component {
             "url": "Empty",
             "songs": [{
               "imgURL": "img/playlist_disc.jpg",
-              "title": "The Beginning",
-              "artist": "One Ok Rock",
-              "album": "The Beginning",
-              "type": "Rock",
+              "title": "Flight",
+              "artist": "Hans Zimmer",
+              "album": "Man of Steel (Original Motion Picture Soundtrack)",
+              "type": "Instrumental",
               "duration": 216,
               "url": "TBD"
             },{
               "imgURL": "img/playlist_disc.jpg",
-              "title": "Monster",
-              "artist": "Nightcore",
-              "album": "Nightcore",
-              "type": "Nightcore",
+              "title": "Requiem",
+              "artist": "Takemitsu",
+              "album": "Takemitsu: Orchestral Works",
+              "type": "Instrumental",
               "duration": 201,
               "url": "TBD"
             },{
               "imgURL": "img/playlist_disc.jpg",
-              "title": "Anima Libera",
-              "artist": "Nightcore",
-              "album": "Nightcore",
-              "type": "Nightcore",
+              "title": "Summa",
+              "artist": "	Arvo Pärt",
+              "album": "The Very Best of Arvo Pärt",
+              "type": "Instrumental",
               "duration": 265,
               "url": "TBD"
             },{
               "imgURL": "img/playlist_disc.jpg",
-              "title": "Moonlight Shadow",
-              "artist": "Nightcore",
-              "album": "Nightcore",
-              "type": "Nightcore",
+              "title": "Morag",
+              "artist": "Tyler Bates",
+              "album": "Guardians of the Galaxy (Original Score)",
+              "type": "Instrumental",
               "duration": 224,
               "url": "TBD"
             }]
@@ -176,7 +176,8 @@ export default class SearchResult extends React.Component {
                               <td>{song.title}</td>
                               <td>{song.artist}</td>
                               <td>{song.album}</td>
-                              <td>{song.duration}</td>
+                              {/*converts seconds of song.duration to format MM min SS seconds for display*/}
+                              <td>{(song.duration-(song.duration%60))/60 +" min "+song.duration%60+" sec"}</td>
                               <td>
                                 <button type="button" className="btn btn-default playlist-button playlist-button-small">
                                   <span className="glyphicon glyphicon-plus-sign"></span>
@@ -193,7 +194,9 @@ export default class SearchResult extends React.Component {
               </div>
             );
           })}
+
           <hr />
+
           <h1 className="section-title">Songs</h1>
           {this.state.songs.map((song, i) => {
             return(
@@ -213,60 +216,14 @@ export default class SearchResult extends React.Component {
                       <div className="col-md-5">
                         <h5>Artist: {song.artist}</h5>
                         <h5>Album: {song.album}</h5>
-                        <h5>Duration: {song.duration} </h5>
+                        {/*converts seconds of song.duration to format MM min SS seconds for display*/}
+                        <h5>Duration: {(song.duration-(song.duration%60))/60 +" min "+song.duration%60+" sec"} </h5>
                       </div>
                   </div>
                 </div>
               </div>
             );
           })}
-          {/*
-          <div className="panel panel-default">
-            <div className="panel-heading playlist">
-              <div className="row">
-                  <div className="col-md-2">
-                    <img src="img/hobbit.jpg" className="img-responsive" />
-                  </div>
-                  <div className="col-md-5">
-                    <h4>Name: My Dear Frodo</h4>
-                    <h5>Type: Instrumental</h5>
-                    <h5>Artist: Howard Shore</h5>
-                    <button type="button" className="btn btn-default playlist-button" href="#"><span className="glyphicon glyphicon-play"></span></button>
-                    <button type="button" className="btn btn-default playlist-button button-addition" href="#"><span className="glyphicon glyphicon-plus"></span></button>
-                  </div>
-                  <div className="col-md-5">
-                    <h5>Album: The Hobbit Soundtrack</h5>
-                    <h5>Popularity: 1587</h5>
-                    <h5>Duration: 7min 34sec </h5>
-                    <h5>Last played on: 01/06/2016</h5>
-                  </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="panel panel-default">
-            <div className="panel-heading playlist">
-              <div className="row">
-                  <div className="col-md-2">
-                    <img src="img/harry_potter.jpg" className="img-responsive img-resize" />
-                  </div>
-                  <div className="col-md-5">
-                    <h4>Name:The Story Continues</h4>
-                    <h5>Type: Instrumental</h5>
-                    <h5>Artist: Patrick Doyle</h5>
-                    <button type="button" className="btn btn-default playlist-button" href="#"><span className="glyphicon glyphicon-play"></span></button>
-                    <button type="button" className="btn btn-default playlist-button button-addition" href="#"><span className="glyphicon glyphicon-plus"></span></button>
-                  </div>
-                  <div className="col-md-5">
-                    <h5>Album: Harry Potter Soundtrack</h5>
-                    <h5>Popularity: 5842</h5>
-                    <h5>Duration: 5min 2sec </h5>
-                    <h5>Last played on: 01/06/2016</h5>
-                  </div>
-              </div>
-            </div>
-          </div>
-          */}
         </div>
       </div>
     )
