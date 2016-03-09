@@ -132,6 +132,14 @@ export function getPlaylistFeed(userID, cb) {
 }
 
 /**
+* Returns a Topics object.
+*/
+export function getTopics(cb) {
+  var topicData = readDocument('topics', 101);
+  emulateServerReturn(topicData, cb);
+}
+
+/**
 * Returns a NewsUpdates object.
 */
 export function getNewsUpdates(cb) {

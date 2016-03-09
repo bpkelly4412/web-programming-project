@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
+
 
 export default class Forum extends React.Component {
 
@@ -8,13 +8,6 @@ export default class Forum extends React.Component {
     super(props);
     this.state = {};
   }
-
-  refresh() {
-    getUserData(this.props.userID, (userData) => {
-      this.setState(userData);
-    });
-  }
-
 
   componentDidMount() {
     this.refresh();

@@ -210,6 +210,15 @@ var initialData = {
       "songs": []
     }
   },
+  "topics": {
+    "101": {
+      "_id": 101,
+      "title": "General Forte Discussion",
+      "threadCount": [2],
+      "postCount": [2]
+
+    }
+  },
   "newsUpdates": {
     "1": {
       "_id": 1,
