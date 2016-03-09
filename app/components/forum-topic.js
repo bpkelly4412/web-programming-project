@@ -37,8 +37,10 @@ export default class ForumTopic extends React.Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="btn-group" role="group" aria-label="...">
-                      <a role="button" href="forums-newthread.html" className="btn btn-default cr-btn">
-                        <span className="glyphicon glyphicon-comment" /> New Thread</a>
+                      <button type="button" className="btn btn-default cr-btn">
+                        <Link to={"/forum-newthread/" + this.state._id}><span className="glyphicon glyphicon-comment" /> New Thread
+                        </Link>
+                      </button>
                     </div>
                   </div>
                   <div className="col-md-4 col-md-offset-5">
@@ -126,8 +128,10 @@ export default class ForumTopic extends React.Component {
             <div className="row nav-btm">
               <div className="col-md-3">
                 <div className="btn-group" role="group" aria-label="...">
-                  <a role="button" href="forums-newthread.html" className="btn btn-default cr-btn">
-                    <span className="glyphicon glyphicon-comment" /> New Thread</a>
+                  <button type="button" className="btn btn-default cr-btn">
+                    <Link to={"/forum-newthread/" + this.state._id}><span className="glyphicon glyphicon-comment" /> New Thread
+                    </Link>
+                  </button>
                 </div>
               </div>
               <div className="col-md-4 col-md-offset-5">

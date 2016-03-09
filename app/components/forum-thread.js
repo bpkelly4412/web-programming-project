@@ -43,12 +43,10 @@ export default class ForumThread extends React.Component {
             <h2> Forums: First Thread</h2>
             <div className="row">
               <div className="col-md-3">
-                <a
-                  role="button"
-                  href="forums-reply.html"
-                  className="btn btn-default cr-btn">
-                  <span className="glyphicon glyphicon-pencil" /> Reply
-                </a>
+                <button type="button" className="btn btn-default cr-btn">
+                  <Link to={"/forum-newpost/" + this.state._id}><span className="glyphicon glyphicon-pencil" /> Reply
+                  </Link>
+                </button>
               </div>
               <div className="col-md-4 col-md-offset-5">
                 <nav>
@@ -138,9 +136,10 @@ export default class ForumThread extends React.Component {
         </div>
         <div className="row nav-btm">
           <div className="col-md-3">
-            <a role="button"href="forums-reply.html"className="btn btn-default cr-btn">
-              <span className="glyphicon glyphicon-pencil" /> Reply
-              </a>
+            <button type="button" className="btn btn-default cr-btn">
+              <Link to={"/forum-newpost/" + this.state._id}><span className="glyphicon glyphicon-pencil" /> Reply
+              </Link>
+            </button>
           </div>
           <div className="col-md-4 col-md-offset-5">
             <nav>

@@ -1,8 +1,46 @@
 import React from 'react';
+import { Link } from 'react-router';
+import { getUserData } from '../server';
+
+
 export default class ForumNewThread extends React.Component {
-  render() {
-    return (
-    <div>
+
+    constructor(props) {
+      super(props);
+      this.state = {};
+    }
+
+    refresh() {
+      getUserData(this.props.userID, (userData) => {
+        this.setState(userData);
+      });
+    }
+
+
+    componentDidMount() {
+      this.refresh();
+    }
+
+  render(){
+      return (
+      <div className="col-md-12 main">
+        <div className="row ">
+          <div className="col-md-12">
+            <ol className="breadcrumb">
+              <li>
+                <a href="index.html">Home</a>
+              </li>
+              <li>
+                <Link to={"/forum/" + this.state._id}>Forums</Link>
+              </li>
+              <li>
+              <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
+              </li>
+              <li className="active">New Thread</li>
+            </ol>
+            <h2> Forums: New Thread</h2>
+        </div>
+      </div>
         <div className="row">
           <div className="col-md-8 ">
             <div className="input-group">
