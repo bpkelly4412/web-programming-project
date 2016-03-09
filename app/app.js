@@ -12,6 +12,9 @@ import HighestRated from './components/highest-rated';
 import RisingPlaylists from './components/rising';
 import Forum from './components/forum';
 import ForumTopic from './components/forum-topic';
+import ForumThread from './components/forum-thread';
+import ForumNewThread from './components/forum-newthread';
+import ForumNewPost from './components/forum-newpost';
 import PrivateChat from './components/private-chat';
 import AboutUs from './components/about-us';
 import SongList from './components/song-list';
@@ -107,6 +110,29 @@ class ForumTopicPage extends React.Component {
   }
 }
 
+class ForumThreadPage extends React.Component {
+  render() {
+      return (
+        <ForumThread />
+      );
+  }
+}
+
+class ForumNewThreadPage extends React.Component {
+  render() {
+      return (
+        <ForumNewThread />
+      );
+  }
+}
+
+class ForumNewPostPage extends React.Component {
+  render() {
+      return (
+        <ForumNewPost />
+      );
+  }
+}
 
 /**
  * The Highest Rated Page PLACEHOLDER page.
@@ -208,12 +234,15 @@ ReactDOM.render((
       <Route path="rising-playlists/:id" component={RisingPlaylistsPage} />
       <Route path="profile/:id" component={ProfilePage} />
       <Route path="forum/:id" component={ForumPage} />
+      <Route path="forum-topic/:id" component={ForumTopicPage} />
+      <Route path="forum-thread/:id" component={ForumThreadPage} />
+      <Route path="forum-newthread/:id" component={ForumNewThreadPage} />
+      <Route path="forum-newpost/:id" component={ForumNewPostPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />
       <Route path="search/:id" component={SearchResultPage} />
       <Route path="contact-us/:id" component={ContactUsPage} />
-      <Route path="forum-topic/:id" component={ForumTopicPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));

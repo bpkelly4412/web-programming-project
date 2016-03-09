@@ -1,5 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router';
+import { getUserData } from '../server';
+
+
 export default class ForumTopic extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  refresh() {
+    getUserData(this.props.userID, (userData) => {
+      this.setState(userData);
+    });
+  }
+
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
         <div className="main">
@@ -9,7 +30,7 @@ export default class ForumTopic extends React.Component {
               <div className="col-md-12">
                 <ol className="breadcrumb">
                   <li><a href="index.html">Home</a></li>
-                  <li><a href="forums.html">Forums</a></li>
+                  <li><Link to={"/forum/" + this.state._id}>Forums</Link></li>
                   <li className="active">General Forte Discussion</li>
                 </ol>
                 <h2> Forums: General Forte Discussion</h2>
@@ -75,7 +96,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <a href="forums-post.html">First Thread</a>
+                        <Link to={"/forum-thread/" + this.state._id}>First Thread</Link>
                       </td>
                       <td className="threads">
                         1
@@ -90,7 +111,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <a href="#">Let's Discuss</a>
+                        <Link to={"/forum-thread/" + this.state._id}>Let's Discuss</Link>
                       </td>
                       <td className="threads">
                       </td>
