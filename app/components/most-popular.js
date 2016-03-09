@@ -44,7 +44,7 @@ export default class MostPopular extends React.Component {
       ]
     };
   }
-  //modify this to get most popular playlistssss
+  
   refresh() {
     getMostPopular((mostPopular) => {
       this.setState({contents: mostPopular.contents})
