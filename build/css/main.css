@@ -407,6 +407,16 @@ body {
   color: #FFFFFF;
 }
 
+.cr-btn a{
+  color: #ffffff;
+}
+
+.cr-btn a:hover{
+  background-color: #222f43;
+  color: #5fcdef;
+  text-decoration: none !important;
+}
+
 .cr-btn:hover{
   background-color: #222f43;
   color: #5fcdef;

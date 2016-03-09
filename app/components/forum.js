@@ -1,17 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 
 export default class Forum extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
-      <div className="main">
+      <div className="col-md-12 main">
         {/* Forums Header*/}
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li>
-                <a href="index.html">Home</a>
-              </li>
+              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
               <li className="active">Forums</li>
             </ol>
             <h2> Forums</h2>
@@ -49,9 +58,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="forums-gen.html">
-                      General Forte Discussion
-                    </a>
+                    <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
                   </td>
                   <td className="threads">
                     2
@@ -75,9 +82,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">
-                      Help and Suggestions
-                    </a>
+                    <Link to={"/forum-topic/" + this.state._id}>Help and Suggestions</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -88,7 +93,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Off-Topic</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Off-Topic</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -110,9 +115,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">
-                      Music General
-                    </a>
+                    <Link to={"/forum-topic/" + this.state._id}>Music General</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -123,7 +126,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Polls/Quizzes/Games</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Polls/Quizzes/Games</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -134,7 +137,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Ambient</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Ambient</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -145,7 +148,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Classical</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Classical</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -156,7 +159,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Electronic</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Electronic</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -167,7 +170,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Folk</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Folk</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -178,7 +181,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Hip-Hop</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Hip-Hop</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -189,7 +192,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Indie</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Indie</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -200,7 +203,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Jazz/Blues</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Jazz/Blues</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -211,7 +214,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Metal</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Metal</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -222,7 +225,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Pop</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Pop</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -233,7 +236,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Rock</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Rock</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -255,9 +258,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">
-                      Games General
-                    </a>
+                    <Link to={"/forum-topic/" + this.state._id}>Games General</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -268,7 +269,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Pols/Quizzes/Games</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Polls/Quizzes/Games</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -279,7 +280,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Action-Adventure</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Action-Adventure</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -290,7 +291,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Fighter</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Fighters</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -301,7 +302,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">FPS/Shooters</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Shooters</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -312,7 +313,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Fighters</a>
+                    <Link to={"/forum-topic/" + this.state._id}>JRPGs</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -323,7 +324,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">JRPGs</a>
+                    <Link to={"/forum-topic/" + this.state._id}>MOBAs/MMOs</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -334,7 +335,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">MOBAs/MMOs</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Platformers</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -345,7 +346,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Platformers</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Sandbox RPGs</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -356,9 +357,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">
-                      Sandbox RPGs
-                    </a>
+                    <Link to={"/forum-topic/" + this.state._id}>Sports</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -369,7 +368,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Sports</a>
+                    <Link to={"/forum-topic/" + this.state._id}>Strategy</Link>
                   </td>
                   <td className="threads">
                   </td>
@@ -380,18 +379,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <a href="#">Strategy</a>
-                  </td>
-                  <td className="threads">
-                  </td>
-                  <td className="posts">
-                  </td>
-                  <td className="lastdisc">
-                  </td>
-                </tr>
-                <tr>
-                  <td className="discussion">
-                    <a href="#">Visual Novel/Adventure </a>
+                    <Link to={"/forum-topic/" + this.state._id}>Visual Novel/Adventure</Link>
                   </td>
                   <td className="threads">
                   </td>
