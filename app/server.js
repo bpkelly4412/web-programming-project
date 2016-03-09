@@ -171,15 +171,36 @@ export function getChatConversations(userID, cb) {
   emulateServerReturn(conversationsData, cb);
 }
 
-export function sendMessage(user, contents, cb) {
-  var conversationsData = readDocument('conversations', user);
-  conversationsData.chatlogs[0].messages.push({
-    "author": user,
+export function sendMessage(userID, otherUserIndex, contents, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs[otherUserIndex].messages.push({
+    "author": userID,
     "content": contents
   })
   writeDocument('conversations', conversationsData);
 
-  return getChatConversations(user, cb);
+  return getChatConversations(userID, cb);
+}
+
+export function createNewChatlog(userID, otherUserID, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs.push({
+    "_id": conversationsData.chatlogs.length-1,
+    "otherUser": otherUserID,
+    "messages": []
+  })
+  writeDocument('conversations', conversationsData);
+
+  return getChatConversations(userID, cb);
+}
+
+export function removeRecentChat(userID, otherUserID, cb) {
+  var recentChatData = readDocument('recent-conversations', userID);
+  var userIndex = recentChatData.userList.indexOf(otherUserID);
+  recentChatData.userList.splice(userIndex, 1);
+  writeDocument('recent-conversations', userID);
+
+  emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
 }
 
 /**

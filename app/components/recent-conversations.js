@@ -1,5 +1,5 @@
 import React from 'react';
-import {getRecentConversations} from '../server';
+import {getRecentConversations, removeRecentChat} from '../server';
 
 export default class RecentConversations extends React.Component {
   constructor(props) {
@@ -17,6 +17,24 @@ export default class RecentConversations extends React.Component {
     this.refresh();
   }
 
+  handleSwitchChat(e, userID) {
+    e.stopPropagation();
+
+    this.props.handleSwitchChat(userID);
+  }
+
+  handleRemoveRecentChat(e, userID) {
+    e.stopPropagation();
+
+    if (e.button === 0) {
+      var callbackFunction = (updatedUserList => {
+        this.setState({userList: updatedUserList});
+      })
+
+      removeRecentChat(this.props.userID, userID, callbackFunction);
+    }
+  }
+
   render() {
     return (
       <div id="recent-convos" className="col-md-3">
@@ -32,12 +50,12 @@ export default class RecentConversations extends React.Component {
             {this.state.userList.map((user) => {
               return (
                 <div key={user._id}>
-                  <a href="#">
+                  <a href="#" onClick={(e) => this.handleRemoveRecentChat(e, user._id)}>
                     <div className="pull-right">
                       <span className="fa fa-times-circle"></span>
                     </div>
                   </a>
-                  <a href="#">
+                  <a href="#" onClick={(e) => this.handleSwitchChat(e, user._id)}>
                     <div className="media">
                       <div className="media-left">
                         PIC

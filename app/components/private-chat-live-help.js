@@ -18,6 +18,10 @@ export default class PrivateChatLiveHelp extends React.Component {
     this.refresh();
   }
 
+  handleSwitchChat(otherUserID) {
+    this.props.handleSwitchChat(otherUserID);
+  }
+
   render() {
     return (
       <div className="col-md-3">
@@ -33,7 +37,8 @@ export default class PrivateChatLiveHelp extends React.Component {
               return (
                 <PrivateChatLiveHelpUserList key={i}
                   genre={genreGroup.genre}
-                  userList={genreGroup.userList} />
+                  userList={genreGroup.userList}
+                  handleSwitchChat={(otherUserID) => this.handleSwitchChat(otherUserID)} />
               );
             })}
           </div>

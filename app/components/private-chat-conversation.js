@@ -1,14 +1,14 @@
 import React from 'react';
 import PrivateChatMessage from './private-chat-message';
 import PrivateChatMessageEntry from './private-chat-conversation-entry';
-import {getChatConversations, sendMessage} from '../server';
+import {getChatConversations, sendMessage, createNewChatlog} from '../server';
 
 export default class PrivateChatConversation extends React.Component {
   constructor(props) {
     super(props);
     this.state = { "chatlogs": [
       {
-        "otherUser": {},
+        "otherUser": 2,
         "messages": [
           {
             "author": {},
@@ -30,12 +30,33 @@ export default class PrivateChatConversation extends React.Component {
   }
 
   onPost(messageContents) {
-    sendMessage(this.props.userID, messageContents, () => {
+    var otherUserIndex = this.getOtherUser();
+    sendMessage(this.props.userID, otherUserIndex, messageContents, () => {
       this.refresh();
     });
   }
 
-  /**{this.state.chatlogs.map((chatlog, i) => {
+  getOtherUser() {
+    for (var i = 0; i < this.state.chatlogs.length; i++) {
+      //console.log(this.state.chatlogs[0].otherUser_id);
+      //console.log(this.props.otherUserID);
+      if (2 === this.props.otherUserID)
+        return i;
+    }
+
+    createNewChatlog(this.props.userID, this.props.otherUserID, () => {
+      this.refresh();
+    });
+  }
+  /**
+  {this.state.chatlogs.forEach((chatlog) => {
+    if (chatlog.otherUser._id === this.props.otherUserID) {
+      return index;
+    }
+
+  })}
+
+  {this.state.chatlogs.map((chatlog, i) => {
     if(chatlog.otherUser === 2) {
       {chatlog.messages.map((message, i) => {
         return (
@@ -49,6 +70,8 @@ export default class PrivateChatConversation extends React.Component {
   })}*/
 
   render() {
+    var otherUserIndex = this.getOtherUser();
+
     return (
       <div className="col-md-6">
         <div className="panel panel-default">
@@ -58,14 +81,14 @@ export default class PrivateChatConversation extends React.Component {
             </a>
             <h4>
               <a href="#">
-                {this.state.chatlogs[0].otherUser.userName}
+                {this.state.chatlogs[otherUserIndex].otherUser.userName}
               </a>
-              <span className={this.state.chatlogs[0].otherUser.status}> ●</span>
+              <span className={this.state.chatlogs[otherUserIndex].otherUser.status}> ●</span>
             </h4>
           </div>
 
           <div className="panel-body panel-title-style chat-scroll">
-            {this.state.chatlogs[0].messages.map((message, i) => {
+            {this.state.chatlogs[otherUserIndex].messages.map((message, i) => {
               return (
                 <PrivateChatMessage key={i}
                   author={message.author}
