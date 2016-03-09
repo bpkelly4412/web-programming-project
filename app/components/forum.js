@@ -27,9 +27,7 @@ export default class Forum extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li>
-                <a href="index.html">Home</a>
-              </li>
+              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
               <li className="active">Forums</li>
             </ol>
             <h2> Forums</h2>

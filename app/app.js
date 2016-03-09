@@ -227,6 +227,7 @@ ReactDOM.render((
     <Route path="/" component={App}>
       {/* Show the Feed at / */}
       <IndexRoute component={StartPage} />
+      <Route path="home/:id" component={StartPage} />
       <Route path="saved-playlist/:id" component={SavedPlayListPage} />
       <Route path="new-releases/:id" component={NewReleasesPage} />
       <Route path="most-popular/:id" component={MostPopularPage} />

@@ -27,9 +27,7 @@ export default class ForumNewThread extends React.Component {
         <div className="row ">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li>
-                <a href="index.html">Home</a>
-              </li>
+              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
               <li>
                 <Link to={"/forum/" + this.state._id}>Forums</Link>
               </li>
