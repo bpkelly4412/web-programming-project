@@ -11,6 +11,7 @@ import MostPopular from './components/most-popular';
 import HighestRated from './components/highest-rated';
 import RisingPlaylists from './components/rising';
 import Forum from './components/forum';
+import ForumTopic from './components/forum-topic';
 import PrivateChat from './components/private-chat';
 import AboutUs from './components/about-us';
 import SongList from './components/song-list';
@@ -97,6 +98,15 @@ class ForumPage extends React.Component {
       );
   }
 }
+
+class ForumTopicPage extends React.Component {
+  render() {
+      return (
+        <ForumTopic />
+      );
+  }
+}
+
 
 /**
  * The Highest Rated Page PLACEHOLDER page.
@@ -203,6 +213,7 @@ ReactDOM.render((
       <Route path="song-list/:pid/:id" component={SongListPage} />
       <Route path="search/:id" component={SearchResultPage} />
       <Route path="contact-us/:id" component={ContactUsPage} />
+      <Route path="forum-topic/:id" component={ForumTopicPage} />
     </Route>
   </Router>
 ),document.getElementById('page-content'));
