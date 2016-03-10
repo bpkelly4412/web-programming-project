@@ -18,8 +18,8 @@ export default class PrivateChatLiveHelp extends React.Component {
     this.refresh();
   }
 
-  handleSwitchChat(otherUserID) {
-    this.props.handleSwitchChat(otherUserID);
+  handleSwitchChat(userID) {
+    this.props.handleSwitchChat(userID);
   }
 
   render() {

@@ -25,8 +25,8 @@ export default class PrivateChat extends React.Component {
 
   handleSwitchChat(otherUserID) {
     console.log(otherUserID);
-    this.state = {"otherUserID": otherUserID}
-    console.log(this.state.otherUserID);
+    this.setState({"otherUserID": otherUserID})
+    console.log(this.state.otherUserID)
   }
 
   render() {

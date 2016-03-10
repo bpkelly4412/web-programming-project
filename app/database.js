@@ -324,7 +324,6 @@ var initialData = {
       "userID": 1,
       "chatlogs": [
         {
-          "_id": 0,
           "otherUser": 2,
           "messages": [
             {
@@ -362,7 +361,6 @@ var initialData = {
           ]
         },
         {
-          "_id": 1,
           "otherUser": 3,
           "messages": [
             {
@@ -376,7 +374,6 @@ var initialData = {
           ]
         },
         {
-          "_id": 2,
           "otherUser": 7,
           "messages": [
             {
@@ -386,7 +383,6 @@ var initialData = {
           ]
         },
         {
-          "_id": 3,
           "otherUser": 5,
           "messages": [
             {
@@ -396,7 +392,6 @@ var initialData = {
           ]
         },
         {
-          "_id": 4,
           "otherUser": 16,
           "messages": [
             {

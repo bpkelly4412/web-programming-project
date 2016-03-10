@@ -18,8 +18,6 @@ export default class RecentConversations extends React.Component {
   }
 
   handleSwitchChat(e, userID) {
-    e.stopPropagation();
-
     this.props.handleSwitchChat(userID);
   }
 

@@ -16,13 +16,19 @@ export default class PrivateChatConversation extends React.Component {
           }
         ]
       }
-    ]}
+    ],
+    "otherUserIndex": 0
+    }
   }
 
   refresh() {
     getChatConversations(this.props.userID, (chatData) => {
-      this.setState(chatData);
+      this.setState({"chatlogs":chatData.chatlogs});
     });
+      console.log(this.state.chatlogs[1]);
+  /*  this.getOtherUser((otherUserData) => {
+      this.setState({otherUserIndex: otherUserData})
+    });*/
   }
 
   componentDidMount() {
@@ -31,16 +37,18 @@ export default class PrivateChatConversation extends React.Component {
 
   onPost(messageContents) {
     var otherUserIndex = this.getOtherUser();
+    console.log(otherUserIndex);
     sendMessage(this.props.userID, otherUserIndex, messageContents, () => {
       this.refresh();
     });
   }
 
-  getOtherUser() {
+  getOtherUser(cb) {
+    //console.log(this.state.chatlogs[1]);
     for (var i = 0; i < this.state.chatlogs.length; i++) {
-      //console.log(this.state.chatlogs[0].otherUser_id);
+      //console.log(this.state.chatlogs[i].otherUser_id);
       //console.log(this.props.otherUserID);
-      if (2 === this.props.otherUserID)
+      if (this.state.chatlogs[i].otherUser._id === this.props.otherUserID)
         return i;
     }
 
@@ -70,8 +78,6 @@ export default class PrivateChatConversation extends React.Component {
   })}*/
 
   render() {
-    var otherUserIndex = this.getOtherUser();
-
     return (
       <div className="col-md-6">
         <div className="panel panel-default">
@@ -81,14 +87,14 @@ export default class PrivateChatConversation extends React.Component {
             </a>
             <h4>
               <a href="#">
-                {this.state.chatlogs[otherUserIndex].otherUser.userName}
+                {this.state.chatlogs[this.state.otherUserIndex].otherUser.userName}
               </a>
-              <span className={this.state.chatlogs[otherUserIndex].otherUser.status}> ●</span>
+              <span className={this.state.chatlogs[this.state.otherUserIndex].otherUser.status}> ●</span>
             </h4>
           </div>
 
           <div className="panel-body panel-title-style chat-scroll">
-            {this.state.chatlogs[otherUserIndex].messages.map((message, i) => {
+            {this.state.chatlogs[this.state.otherUserIndex].messages.map((message, i) => {
               return (
                 <PrivateChatMessage key={i}
                   author={message.author}
