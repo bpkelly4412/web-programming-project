@@ -23,12 +23,11 @@ export default class PrivateChatConversation extends React.Component {
 
   refresh() {
     getChatConversations(this.props.userID, (chatData) => {
-      this.setState({"chatlogs":chatData.chatlogs});
+      this.setState({"chatlogs": chatData.chatlogs});
     });
-      console.log(this.state.chatlogs[1]);
-  /*  this.getOtherUser((otherUserData) => {
+    this.getOtherUser((otherUserData) => {
       this.setState({otherUserIndex: otherUserData})
-    });*/
+    });
   }
 
   componentDidMount() {
@@ -36,8 +35,7 @@ export default class PrivateChatConversation extends React.Component {
   }
 
   onPost(messageContents) {
-    var otherUserIndex = this.getOtherUser();
-    console.log(otherUserIndex);
+    var otherUserIndex = this.state.otherUserIndex;
     sendMessage(this.props.userID, otherUserIndex, messageContents, () => {
       this.refresh();
     });
@@ -46,10 +44,11 @@ export default class PrivateChatConversation extends React.Component {
   getOtherUser(cb) {
     //console.log(this.state.chatlogs[1]);
     for (var i = 0; i < this.state.chatlogs.length; i++) {
-      //console.log(this.state.chatlogs[i].otherUser_id);
       //console.log(this.props.otherUserID);
-      if (this.state.chatlogs[i].otherUser._id === this.props.otherUserID)
-        return i;
+      if (this.state.chatlogs[i].otherUser._id === this.props.otherUserID) {
+        cb(i);
+        return;
+      }
     }
 
     createNewChatlog(this.props.userID, this.props.otherUserID, () => {
