@@ -9,10 +9,10 @@ export default class Navbar extends React.Component {
     super(props);
     this.state = { value: "" };
     //Taken from Router note posted on course website
-    Navbar.contextTypes = {
-      router: React.PropTypes.object.isRequired
-    };
+
   }
+
+
 
   refresh() {
     getUserData(this.props.userID, (userData) => {
@@ -22,8 +22,11 @@ export default class Navbar extends React.Component {
 
   // Called after navbar button is pressed
   onSearch(searchText) {
-      this.context.router.push({ pathname: "/search/" + this.state._id + "/", query: { q: searchText } });
-    }
+    if(!searchText){
+      alert("Please enter search terms!");
+    } else
+      this.context.router.push({ pathname: "/search" , userID: { u: this.props.userID } , query: { q: searchText } });
+  }
 
   componentDidMount() {
     this.refresh();
@@ -74,12 +77,15 @@ export default class Navbar extends React.Component {
           <form className="navbar-form" role="search">
             <div className="form-group">
               <div className="input-group">
-                <input type="text" className="form-control" placeholder="Search BBQ Forte" value={this.state.value} onChange={this.handleChange}/>
+                <input type="text" className="form-control"
+                  placeholder="Search BBQ Forte"
+                  value={this.state.value}
+                  onChange={(c) => this.handleChange(c)} />
                   <span className="input-group-btn" id="search_button">
-                    <button className="btn btn-secondary" type="button">
-                      <Link to={"/search/" + this.state._id}>
-                        {/*<span className="glyphicon glyphicon-search"></span>*/}Search
-                      </Link>
+                    <button className="btn btn-secondary" type="button" onClick={() => this.onSearch(this.state.value)}>
+                      {/*<Link to={{ pathname: "/search/", query: { q: this.state.value }}}>
+                        Search
+                      </Link>*/}Search
                     </button>
                   </span>
 
@@ -91,3 +97,7 @@ export default class Navbar extends React.Component {
     )
   }
 }
+
+Navbar.contextTypes = {
+router: React.PropTypes.object.isRequired
+};

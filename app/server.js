@@ -200,6 +200,17 @@ export function getRising(cb) {
 }
 
 /**
+* Returns a search result object
+
+export function getSearchResult(cb) {
+  var searchResult = readDocument('mock-search-result', 1);
+  risingData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  emulateServerReturn(searchResult, cb);
+}*/
+
+/**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */
 export function getSongList(searchData, cb) {

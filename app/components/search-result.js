@@ -1,14 +1,18 @@
 import React from 'react';
 
-
 export default class SearchResult extends React.Component {
 
   constructor(props) {
     super(props);
     // Populating this.state.contents with mock search data to display
     this.state = {
+      /*contextTypes: {
+        router: React.PropTypes.func
+      },*/
+      userID: 1,
       playlists: [
       {
+        "._id":  1,
         "game": "League of Legends",
         "imageURL": "img/league.jpg",
         "title": "League of Legends Playlist",
@@ -51,6 +55,7 @@ export default class SearchResult extends React.Component {
           "url": "TBD"
         }]
       },{
+            "._id": 2,
             "game": "Elite Dangerous",
             "imageURL": "img/elite-dangerous.jpg",
             "title": "Elite Dangerous Playlist",
@@ -123,16 +128,54 @@ export default class SearchResult extends React.Component {
     this.refresh();
   }*/
 
+  handleVoteClick(playlistID, e) {
+    e.preventDefault();
+    if (this.didUserVote(playlistID)) {
+      this.unvotePlaylist(playlistID);
+    } else {
+      this.votePlaylist(playlistID);
+    }
+
+  }
+
+  unvotePlaylist(playlistID){
+    var userIndex = this.state.playlists[playlistID-1].votes.indexOf(this.state.userID);
+    if (userIndex !== -1) {
+      this.state.playlists[playlistID-1].votes.splice(userIndex, 1);
+    }
+    this.setState(this.state);
+  }
+
+  votePlaylist(playlistID){
+    this.state.playlists[playlistID-1].votes.push(this.state.userID);
+    this.setState(this.state);
+  }
+
+  didUserVote(playlistID) {
+    var votes = this.state.playlists[playlistID-1].votes;
+    var voted = false;
+    for (var i=0; i < votes.length; i++) {
+      if (votes[i] === this.state.userID) {
+        voted = true;
+        break;
+      }
+    }
+    return voted;
+  }
 
   render() {
+    //var query = this.context.router.getCurrentQuery();
+    let {query} = this.props.location
     return (
       <div className="col-md-12">
 
-        <h5>You are searching for "league, elite, hobbit, harry"</h5>
+        <h5>You are searching for {query}</h5>
         <div className="panel-group">
           <h1 className="section-title">Playlists</h1>
 
           {this.state.playlists.map((playlist, i) => {
+            var voteIcon = this.didUserVote(i+1)? <span className="glyphicon glyphicon-heart"></span> : <span className="glyphicon glyphicon-heart-empty"></span>
+
             return(
               <div key={i} className="panel panel-default">
                 <div className="panel-heading playlist">
@@ -145,7 +188,7 @@ export default class SearchResult extends React.Component {
                         <h5>Genre: {playlist.genre}</h5>
                         <h5>Number of songs: {playlist.songs.length}</h5>
                         <button type="button" className="btn btn-default playlist-button" href="#"><span className="glyphicon glyphicon-play"></span></button>
-                        <button type="button" className="btn btn-default playlist-button button-addition" href="#"><span className="glyphicon glyphicon-heart-empty"></span></button>
+                        <button type="button" className="btn btn-default playlist-button button-addition" href="#" onClick={(e) => this.handleVoteClick(i+1, e)}>{voteIcon}</button>
                         <div className="pull-right">
                           <button type="button" className="btn btn-default playlist-button" data-toggle="collapse" href={"#collapse"+i}><span className="glyphicon glyphicon-option-vertical"></span></button>
                         </div>
@@ -229,3 +272,7 @@ export default class SearchResult extends React.Component {
     )
   }
 }
+
+SearchResult.contextTypes = {
+router: React.PropTypes.object.isRequired
+};

@@ -242,7 +242,7 @@ ReactDOM.render((
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />
-      <Route path="search/:id" component={SearchResultPage} />
+      <Route path="search" component={SearchResultPage} />
       <Route path="contact-us/:id" component={ContactUsPage} />
     </Route>
   </Router>
