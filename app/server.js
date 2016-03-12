@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
+import {readDocument, writeDocument, addDocument, readPlaylist } from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -201,14 +201,29 @@ export function getRising(cb) {
 
 /**
 * Returns a search result object
+*/
+export function searchPlaylist(terms, cb) {
+  var playlists = readPlaylist('playlists');
+  var arr = [];
+  var result = [];
+  for (var attr in playlists){
+    arr.push(playlists[attr])
+  }
 
-export function getSearchResult(cb) {
-  var searchResult = readDocument('mock-search-result', 1);
-  risingData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
-  });
-  emulateServerReturn(searchResult, cb);
-}*/
+  outer:
+  for (var i = 0; i < arr.length; i++){
+    for (var x in arr[i]){
+      if(x === "game" || x === "title" || x === "genre" || x === "description"){
+        //console.log(typeof arr[i][x]);
+        if(arr[i][x].includes(terms)){
+          result.push(arr[i]);
+          continue outer;
+        }
+      }
+    }
+  }
+  emulateServerReturn(result, cb);
+}
 
 /**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.

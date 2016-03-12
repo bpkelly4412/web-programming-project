@@ -208,6 +208,94 @@ var initialData = {
       "description": "It's classic country goodness. IN SPACE.",
       "url": "TBD",
       "songs": []
+    },
+    "111":{
+      "_id": 111,
+      "game": "League of Legends",
+      "imageURL": "img/league.jpg",
+      "title": "League of Legends Playlist",
+      "author": 0,
+      "votes": [],
+      "genre": "Rock, Nightcore",
+      "description": "",
+      "url": "Empty",
+      "songs": [{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "The Beginning",
+        "artist": "One Ok Rock",
+        "album": "The Beginning",
+        "type": "Rock",
+        "duration": 216,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Monster",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 201,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Anima Libera",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 265,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Moonlight Shadow",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 224,
+        "url": "TBD"
+      }]
+    },
+    "112": {
+      "_id": 112,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Elite Dangerous Playlist",
+      "author": 0,
+      "votes": [],
+      "genre": "Instrumental",
+      "description": "",
+      "url": "Empty",
+      "songs": [{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Flight",
+        "artist": "Hans Zimmer",
+        "album": "Man of Steel (Original Motion Picture Soundtrack)",
+        "type": "Instrumental",
+        "duration": 216,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Requiem",
+        "artist": "Takemitsu",
+        "album": "Takemitsu: Orchestral Works",
+        "type": "Instrumental",
+        "duration": 201,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Summa",
+        "artist": "	Arvo Pärt",
+        "album": "The Very Best of Arvo Pärt",
+        "type": "Instrumental",
+        "duration": 265,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Morag",
+        "artist": "Tyler Bates",
+        "album": "Guardians of the Galaxy (Original Score)",
+        "type": "Instrumental",
+        "duration": 224,
+        "url": "TBD"
+      }]
     }
   },
   "topics": {
@@ -393,6 +481,17 @@ export function readDocument(collection, id) {
   // Clone the data. We do this to model a database, where you receive a
   // *copy* of an object and not the object itself.
   return JSONClone(data[collection][id]);
+}
+
+/**
+* Emulates reading a "document", in this case playlist, from a NoSQL database.
+* Doesn't do any tricky document joins, as we will cover that in the latter
+* half of the course. :)
+*/
+export function readPlaylist() {
+  // Clone the data. We do this to model a database, where you receive a
+  // *copy* of an object and not the object itself.
+  return JSONClone(data["playlists"]);
 }
 
 /**
