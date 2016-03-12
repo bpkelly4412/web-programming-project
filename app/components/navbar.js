@@ -68,7 +68,7 @@ export default class Navbar extends React.Component {
               </button>
               <ul className="dropdown-menu">
                 <li><Link to={"/profile/" + this.state._id}>Profile</Link></li>
-                <li><a href="#">Settings</a></li>
+                <li><Link to={"/settings/" + this.state_id}>Settings</Link></li>
                 <li><a href="#">Log out</a></li>
               </ul>
             </div>

@@ -20,6 +20,7 @@ import AboutUs from './components/about-us';
 import SongList from './components/song-list';
 import SearchResult from './components/search-result';
 import ContactUs from './components/contact-us';
+import Settings from './components/settings';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 
 /**
@@ -46,6 +47,17 @@ class ProfilePage extends React.Component {
     );
   }
 }
+
+class SettingsPage extends React.Component {
+    render() {
+	return (
+	    <Settings userID={1} />
+	);
+    }
+}
+
+
+
 
 /**
  * The Saved Playlist Page PLACEHOLDER page.
@@ -234,6 +246,7 @@ ReactDOM.render((
       <Route path="highest-rated/:id" component={HighestRatedPage} />
       <Route path="rising-playlists/:id" component={RisingPlaylistsPage} />
       <Route path="profile/:id" component={ProfilePage} />
+      <Route path="settings/:id" component={SettingsPage} />
       <Route path="forum/:id" component={ForumPage} />
       <Route path="forum-topic/:id" component={ForumTopicPage} />
       <Route path="forum-thread/:id" component={ForumThreadPage} />

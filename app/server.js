@@ -253,6 +253,18 @@ export function getSongList(searchData, cb) {
   })
 }
 
+export function getSettings(userID, cb) {
+    var user = readDocument('users', userID);
+    var settings = user.settings
+    emulateServerReturn(settings, cb);
+}
+export function setSettings(userID, settings,  cb) {
+    var user = readDocument('users', userID);
+    user["settings"] = settings;
+    writeDocument('users',user);
+    emulateServerReturn(settings,cb);
+}
+
 function httpGetAsync(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();

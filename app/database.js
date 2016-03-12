@@ -10,17 +10,20 @@ var initialData = {
     "1": {
       "_id": 1,
       "userName": "Jon Snow",
-      "playlistfeed": 1
+      "playlistfeed": 1,
+      "settings": [1,0]
     },
     "2": {
       "_id": 2,
       "userName": "Ned Stark",
-      "playlistfeed": 2
+      "playlistfeed": 2,
+      "settings": [0,0]
     },
     "3": {
       "_id": 3,
       "userName": "Tyrion Lannister",
-      "playlistfeed": 3
+      "playlistfeed": 3,
+      "settings": [1,1]
     }
   },
   "playlist-feeds": {
