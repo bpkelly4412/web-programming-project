@@ -23,7 +23,7 @@ export default class Settings extends React.Component {
     }
 
     handlePublicClick(e){
-	this.setState({profile_public: !this.state.profile_public}, () => this.refresh());
+	this.setState({profile_public: !this.state.profile_public}, alert(this.state.profile_public));
 	console.log(JSON.stringify(this.state));
 	setUserData(this.state, () => this.refresh());
     }
