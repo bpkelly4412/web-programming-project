@@ -10,8 +10,9 @@ export default class Settings extends React.Component {
 
     refresh() {
 	getUserData(this.props.userID, (userData) => {
-	    this.setState(userData);
+	    this.setState({userInfo: userData});
 	});
+	console.log(JSON.stringify(this.state));
     }
 
     componentDidMount() {
@@ -23,9 +24,8 @@ export default class Settings extends React.Component {
     }
 
     handlePublicClick(e){
-	this.setState({profile_public: !this.state.profile_public}, alert(this.state.profile_public));
-	console.log(JSON.stringify(this.state));
-	setUserData(this.state, () => this.refresh());
+	this.state.userInfo.profile_public = !this.state.userInfo.profile_public;
+	setUserData(this.state.userInfo, () => this.refresh());
     }
 
     render() {
@@ -33,7 +33,7 @@ export default class Settings extends React.Component {
       <div className="col-md-10 col-md-offset-1 transparent-background">
         <div className="row settings-head">
           <div className="settings-header-text">
-	   {this.state.userName}'s Settings
+	   {this.state.userInfo ? this.state.userInfo.userName : ""}'s Settings
           </div>
 	</div>
 	<div className="row settings-row">
