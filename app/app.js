@@ -113,7 +113,7 @@ class ForumTopicPage extends React.Component {
 class ForumThreadPage extends React.Component {
   render() {
       return (
-        <ForumThread tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumThread thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -129,7 +129,7 @@ class ForumNewThreadPage extends React.Component {
 class ForumNewPostPage extends React.Component {
   render() {
       return (
-        <ForumNewPost tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumNewPost thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -236,9 +236,9 @@ ReactDOM.render((
       <Route path="profile/:id" component={ProfilePage} />
       <Route path="forum/:id" component={ForumPage} />
       <Route path="forum-topic/:tid/:id" component={ForumTopicPage} />
-      <Route path="forum-thread/:tid/:id" component={ForumThreadPage} />
+      <Route path="forum-thread/:thid/:tid/:id" component={ForumThreadPage} />
       <Route path="forum-newthread/:tid/:id" component={ForumNewThreadPage} />
-      <Route path="forum-newpost/:tid/:id" component={ForumNewPostPage} />
+      <Route path="forum-newpost/:thid/:tid/:id" component={ForumNewPostPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />

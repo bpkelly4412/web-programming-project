@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import { postThread } from '../server';
 
 export default class ForumNewThread extends React.Component {
 
@@ -11,14 +11,22 @@ export default class ForumNewThread extends React.Component {
 
     handleChange(e) {
       e.preventDefault();
-     this.setState({ value: e.target.value });
+     this.setState({ value: e.target.value});
+    }
+
+    handelChange(f){
+      f.preventDefault()
+      this.setState({title: f.target.value })
     }
 
     handlePost(e) {
          e.preventDefault();
-         var statusUpdateText = this.state.value.trim();
-         if (statusUpdateText !== "") {
-           this.props.onPost(statusUpdateText);
+         var newThreadText = this.state.value.trim();
+         if (newThreadText !== "") {
+           postThread(this.props.userID, this.props.tid, this.state.title, newThreadText, () => {
+             // Database is now updated. Refresh the feed.
+             this.refresh();
+    });
            this.setState({value: ""});
          }
        }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { postComment } from '../server';
+
 
 export default class ForumNewPost extends React.Component {
 
@@ -17,9 +19,12 @@ handleChange(e) {
 
 handlePost(e) {
      e.preventDefault();
-     var statusUpdateText = this.state.value.trim();
-     if (statusUpdateText !== "") {
-       this.props.onPost(statusUpdateText);
+     var newPostText = this.state.value.trim();
+     if (newPostText !== "") {
+       postComment(this.props.userID, this.props.tid, this.props.thid, newPostText, () => {
+         // Database is now updated. Refresh the feed.
+         this.refresh();
+});
        this.setState({value: ""});
      }
    }
@@ -30,15 +35,15 @@ handlePost(e) {
         <div className="row ">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
               <li>
-                <Link to={"/forum/" + this.state._id}>Forums</Link>
+                <Link to={"/forum/" + this.props.userID}>Forums</Link>
               </li>
               <li>
-              <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.userID}>General Forte Discussion</Link>
               </li>
               <li>
-                <Link to={"/forum-thread/" + this.state._id}>First Thread</Link>
+                <Link to={"/forum-thread/" + this.props.thid + "/" + this.props.tid + "/" + this.props.userID}>First Thread</Link>
               </li>
               <li className="active">New Post</li>
             </ol>

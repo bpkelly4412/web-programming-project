@@ -106,7 +106,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <Link to={"/forum-thread/" +this.props.tid + "/" + this.props.userID}>First Thread</Link>
+                        <Link to={"/forum-thread/" + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>First Thread</Link>
                       </td>
                       <td className="threads">
                         1
@@ -121,7 +121,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <Link to={"/forum-thread/" +this.props.tid + "/" + this.props.userID}>Let's Discuss</Link>
+                        <Link to={"/forum-thread/"  + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>Let's Discuss</Link>
                       </td>
                       <td className="threads">
                       </td>
