@@ -16,15 +16,13 @@ export default class ForumRow extends React.Component {
         </td>
         <td className="lastdisc">
           <p className="prvw-p">
-            <a href="forums-post.html">
-              First Thread
-            </a>
+            <Link to={"/forum-thread/" + this.props.userID}>First Thread</Link>
           </p>
           <p className="prvw-p">
             XX-XX-XXXX XX:XX
           </p>
           <p className="prvw-p">
-            <a href="#">USER_TWO</a>
+            <Link to={"/profile/" + 2}>Ned Stark</Link>
           </p>
         </td>
       </tr>

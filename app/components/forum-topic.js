@@ -107,7 +107,7 @@ export default class ForumTopic extends React.Component {
                       </td>
                       <td className="lastdisc">
                         <p className="prvw-p">XX-XX-XXXX XX:XX</p>
-                        <p className="prvw-p"><a href="#">USER_TWO</a></p>
+                        <p className="prvw-p"><Link to={"/profile/" + 2}>Ned Stark</Link></p>
                       </td>
                     </tr>
                     <tr>

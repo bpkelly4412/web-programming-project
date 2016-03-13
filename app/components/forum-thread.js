@@ -94,7 +94,7 @@ export default class ForumThread extends React.Component {
                 </tr>
                 <tr>
                   <td>
-                    <a href="#">USER_NAME</a>
+                    <Link to={"/profile/" + 1}>Jon Snow</Link>
                     <br />
                     <h6>
                       Join Date: Xxx XXXX
@@ -114,7 +114,7 @@ export default class ForumThread extends React.Component {
                 </tr>
                 <tr>
                   <td>
-                    <a href="#">USER_TWO</a>
+                    <Link to={"/profile/" + 2}>Ned Stark</Link>
                     <br />
                     <h6>
                       Join Date: Xxx XXXX
