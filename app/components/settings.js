@@ -43,7 +43,7 @@ export default class Settings extends React.Component {
 	</div>
 	<div className="row settings-row">
 	  <div className="col-md-4">
-	    Private profile:
+	    Public profile:
 	  </div>
 	  <div className="col-md-2">
             <input type="checkbox"
