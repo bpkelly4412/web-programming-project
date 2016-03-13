@@ -542,6 +542,10 @@ body {
   padding-left: 20px;
 }
 
+.chat-box {
+  padding-right: 350px;
+}
+
 /*
     Chat bubble formatting credited to http://jsfiddle.net/thinkingstiff/mek5z/
 */

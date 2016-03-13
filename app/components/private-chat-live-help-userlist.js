@@ -2,9 +2,7 @@ import React from 'react';
 
 export default class PrivateChatLiveHelpUserList extends React.Component {
   handleSwitchChat(e, userID) {
-    e.stopPropagation();
-
-    this.props.handleSwitchChat(userID);
+    this.props.handleSwitchChat(e, userID);
   }
 
   render() {
