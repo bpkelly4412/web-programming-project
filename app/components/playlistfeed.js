@@ -1,7 +1,7 @@
 import React from 'react';
 import Playlist from './playlist';
 import RecommendedSongs from './recommended-songs';
-import { getPlaylistFeed, createNewPlaylist } from '../server';
+import { getPlaylistFeed, createNewPlaylist, getUserData } from '../server';
 
 export default class PlayListFeed extends React.Component {
   constructor(props) {
@@ -23,6 +23,9 @@ export default class PlayListFeed extends React.Component {
   refresh() {
     getPlaylistFeed(this.props.userID, (feedData) => {
       this.setState(feedData);
+    });
+      getUserData(this.props.userID, (userData) => {
+      this.setState(userData);
     });
   }
 
@@ -138,7 +141,7 @@ export default class PlayListFeed extends React.Component {
                 callbackPlaylistFeed = {this.onChildChanged} />
             );
           })}
-          <RecommendedSongs />
+          {this.state.recommend === true ? <RecommendedSongs userId= {this.props.userId} /> : ""}
 
         </div>
       </div>
