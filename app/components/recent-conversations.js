@@ -62,7 +62,7 @@ export default class RecentConversations extends React.Component {
                         <h5 className="media-heading">
                           {user.userName}
                         </h5>
-                        <p> Most recent message here but I don't know how</p>
+                        <p> [The user's most recent message]</p>
                       </div>
                     </div>
                   </a>
