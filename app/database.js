@@ -10,17 +10,111 @@ var initialData = {
     "1": {
       "_id": 1,
       "userName": "Jon Snow",
-      "playlistfeed": 1
+      "playlistfeed": 1,
+      "status": "online",
+      "chattingWith": 2
     },
     "2": {
       "_id": 2,
       "userName": "Ned Stark",
-      "playlistfeed": 2
+      "playlistfeed": 2,
+      "status": "online"
     },
     "3": {
       "_id": 3,
       "userName": "Tyrion Lannister",
-      "playlistfeed": 3
+      "playlistfeed": 3,
+      "status": "online"
+    },
+    "4": {
+      "_id": 4,
+      "userName": "Rock Expert 1",
+      "playlistfeed": 4,
+      "status": "online"
+    },
+    "5": {
+      "_id": 5,
+      "userName": "Rock Expert 2",
+      "playlistfeed": 5,
+      "status": "online"
+    },
+    "6": {
+      "_id": 6,
+      "userName": "Rock Expert 3",
+      "playlistfeed": 6,
+      "status": "away"
+    },
+    "7": {
+      "_id": 7,
+      "userName": "Rock Expert 4",
+      "playlistfeed": 7,
+      "status": "away"
+    },
+    "8": {
+      "_id": 8,
+      "userName": "Electronic Expert 1",
+      "playlistfeed": 8,
+      "status": "online"
+    },
+    "9": {
+      "_id": 9,
+      "userName": "Electronic Expert 2",
+      "playlistfeed": 9,
+      "status": "online"
+    },
+    "10": {
+      "_id": 10,
+      "userName": "Electronic Expert 3",
+      "playlistfeed": 10,
+      "status": "away"
+    },
+    "11": {
+      "_id": 11,
+      "userName": "Ambient Expert 1",
+      "playlistfeed": 11,
+      "status": "online"
+    },
+    "12": {
+      "_id": 12,
+      "userName": "Ambient Expert 2",
+      "playlistfeed": 12,
+      "status": "online"
+    },
+    "13": {
+      "_id": 13,
+      "userName": "Metal Expert 1",
+      "playlistfeed": 13,
+      "status": "away"
+    },
+    "14": {
+      "_id": 14,
+      "userName": "Metal Expert 2",
+      "playlistfeed": 14,
+      "status": "away"
+    },
+    "15": {
+      "_id": 15,
+      "userName": "Hip-Hop Expert 1",
+      "playlistfeed": 15,
+      "status": "online"
+    },
+    "16": {
+      "_id": 16,
+      "userName": "Hip-Hop Expert 2",
+      "playlistfeed": 16,
+      "status": "online"
+    },
+    "17": {
+      "_id": 17,
+      "userName": "Hip-Hop Expert 3",
+      "playlistfeed": 17,
+      "status": "away"
+    },
+    "18": {
+      "_id": 18,
+      "userName": "Indie Expert 1",
+      "playlistfeed": 18,
+      "status": "away"
     }
   },
   "playlist-feeds": {
@@ -439,6 +533,37 @@ var initialData = {
       ]
     }
   },
+  "liveHelp": {
+    "1": {
+      "_id": 1,
+      "contents": [
+        {
+          "genre": "Rock",
+          "userList": [4, 5, 6, 7]
+        },
+        {
+          "genre": "Electronic",
+          "userList": [8, 9, 10]
+        },
+        {
+          "genre": "Ambient",
+          "userList": [11, 12]
+        },
+        {
+          "genre": "Metal",
+          "userList": [13, 14]
+        },
+        {
+          "genre": "Hip-Hip",
+          "userList": [15, 16, 17]
+        },
+        {
+          "genre": "Indie",
+          "userList": [18]
+        }
+      ]
+    }
+  },
   "rising": {
     "1": {
       "._id": 1,
@@ -455,6 +580,101 @@ var initialData = {
           "playlists": [107,108,109,110]
         }
       ]
+    }
+  },
+  "conversations": {
+    "1": {
+      "_id": 1,
+      "userID": 1,
+      "chatlogs": [
+        {
+          "otherUser": 2,
+          "messages": [
+            {
+              "author": 2,
+              "content": "Hello, this is Ned Stark!"
+            },
+            {
+              "author": 1,
+              "content": "Hello, this is Jon Snow!"
+            },
+            {
+              "author": 1,
+              "content": "Please excuse me while I type enough to fill up more than one line of text to show that the chat bubble expands!"
+            },
+            {
+              "author": 1,
+              "content": "Wow, that worked out great!"
+            },
+            {
+              "author": 2,
+              "content": "I am glad that worked out great!"
+            },
+            {
+              "author": 1,
+              "content": "Make me a lasagna."
+            },
+            {
+              "author": 2,
+              "content": "W-what...?"
+            },
+            {
+              "author": 1,
+              "content": "I said. Make me a lasagna, peasant!"
+            }
+          ]
+        },
+        {
+          "otherUser": 3,
+          "messages": [
+            {
+              "author": 3,
+              "content": "Hello, you have one unread message!"
+            },
+            {
+              "author": 3,
+              "content": "Just kidding, you have two now."
+            }
+          ]
+        },
+        {
+          "otherUser": 7,
+          "messages": [
+            {
+              "author": 1,
+              "content": "Hi..."
+            }
+          ]
+        },
+        {
+          "otherUser": 5,
+          "messages": [
+            {
+              "author": 5,
+              "content": "Is anybody home?"
+            }
+          ]
+        },
+        {
+          "otherUser": 16,
+          "messages": [
+            {
+              "author": 16,
+              "content": "I like hip-hop."
+            },
+            {
+              "author": 1,
+              "content": "Same"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "recent-conversations": {
+    "1": {
+      "_id": 1,
+      "userList": [2, 3, 7, 5, 16]
     }
   }
 };

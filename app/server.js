@@ -114,7 +114,7 @@ function getPlaylistWithAuthor(playlistID) {
 }
 
 /**
-* Given a playlist ID (for now), returns a Playlist object.
+* Given a user ID (for now), returns a UserData object.
 */
 export function getUserData(userID, cb) {
   var userData = readDocument('users', userID);
@@ -122,7 +122,7 @@ export function getUserData(userID, cb) {
 }
 
 /**
-* Given a playlist ID (for now), returns a Playlist object.
+* Given a user ID (for now), returns a PlaylistFeed object.
 */
 export function getPlaylistFeed(userID, cb) {
   var userData = readDocument('users', userID);
@@ -223,6 +223,109 @@ export function searchPlaylist(terms, cb) {
     }
   }
   emulateServerReturn(result, cb);
+}
+
+/**
+* Given a user ID (for now), returns a PrivateChatLiveHelp object.
+*/
+export function getLiveHelpList(userID, cb) {
+  var liveHelpData = readDocument('liveHelp', userID);
+  liveHelpData.contents.forEach((category) => {
+    category.userList = category.userList.map((id) => readDocument('users', id))
+  });
+  emulateServerReturn(liveHelpData, cb);
+}
+
+/**
+* Given a user ID (for now), returns a RecentConversations object. Also adds otherUserID to the user list if not found.
+*/
+export function getRecentConversations(userID, otherUserID, cb) {
+  var recentConversations = readDocument('recent-conversations', userID);
+  var contains = false;
+
+  for(var i = 0; i < recentConversations.userList.length; i++) {
+    if (recentConversations.userList[i] === otherUserID) {
+      contains = true;
+      break;
+    }
+  }
+
+  if(contains === false) {
+    recentConversations.userList.push(otherUserID);
+    writeDocument('recent-conversations', userID);
+  }
+
+  var newRecentConversations = readDocument('recent-conversations', userID);
+  //console.log(newRecentConversations);
+  newRecentConversations.userList = newRecentConversations.userList.map((id) => readDocument('users', id))
+  emulateServerReturn(newRecentConversations, cb);
+}
+
+/**
+* Given a user ID (for now), returns a PrivateChatConversation object.
+*/
+export function getChatConversations(userID, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs.forEach((chatlog) => {
+    chatlog.otherUser = readDocument('users', chatlog.otherUser);
+
+    chatlog.messages.forEach((message) => {
+      message.author = readDocument('users', message.author);
+    })
+  });
+  emulateServerReturn(conversationsData, cb);
+}
+
+/**
+* Adds a new message to the messages array of a user's chatlogs in 'conversations'
+*/
+export function sendMessage(userID, otherUserIndex, contents, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs[otherUserIndex].messages.push({
+    "author": userID,
+    "content": contents
+  })
+  writeDocument('conversations', conversationsData);
+
+  return getChatConversations(userID, cb);
+}
+
+/**
+* Adds a new conversation (chatlog entry in chatlogs index) for a user in 'conversations'
+*/
+export function createNewChatlog(userID, otherUserID, cb) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs.push({
+    "_id": conversationsData.chatlogs.length-1,
+    "otherUser": otherUserID,
+    "messages": []
+  })
+  writeDocument('conversations', conversationsData);
+
+  return getChatConversations(userID, cb);
+}
+
+/**
+* Removes an entry in a user's Recent Conversations menu
+*/
+export function removeRecentChat(userID, otherUserID, cb) {
+  var recentChatData = readDocument('recent-conversations', userID);
+  var userIndex = recentChatData.userList.indexOf(otherUserID);
+  recentChatData.userList.splice(userIndex, 1);
+  writeDocument('recent-conversations', recentChatData);
+
+  emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
+}
+
+/**
+* Switches the chat box to display a conversation with a different user
+*/
+export function updateChattingWith(userID, otherUserID, cb) {
+  var userData = readDocument('users', userID);
+  userData.chattingWith = otherUserID;
+  writeDocument('users', userData);
+
+  emulateServerReturn(userData, cb);
 }
 
 /**
