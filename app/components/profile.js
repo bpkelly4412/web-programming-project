@@ -354,7 +354,10 @@ export default class Profile extends React.Component {
           Name:
         </div>
         <div className="col-md-4">
-          {this.state.userName}
+          <input type="text"
+             ref={(e) => e ? e.selectionStart = this.state.userName.length : null}
+             autoFocus={true}
+             defaultValue={this.state.userName}/>
         </div>
       </div>
       {/*end of 3rd row*/}
@@ -363,7 +366,10 @@ export default class Profile extends React.Component {
           About:
         </div>
         <div className="col-md-4">
-          {this.state.about}
+          <input type="text"
+             ref={(e) => e ? e.selectionStart = this.state.about.length : null}
+             autoFocus={true}
+             defaultValue={this.state.about}/>
         </div>
       </div>
       {/*end of 4th row*/}
