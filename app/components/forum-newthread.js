@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
 
 
 export default class ForumNewThread extends React.Component {
@@ -10,16 +9,19 @@ export default class ForumNewThread extends React.Component {
       this.state = {};
     }
 
-    refresh() {
-      getUserData(this.props.userID, (userData) => {
-        this.setState(userData);
-      });
+    handleChange(e) {
+      e.preventDefault();
+     this.setState({ value: e.target.value });
     }
 
-
-    componentDidMount() {
-      this.refresh();
-    }
+    handlePost(e) {
+         e.preventDefault();
+         var statusUpdateText = this.state.value.trim();
+         if (statusUpdateText !== "") {
+           this.props.onPost(statusUpdateText);
+           this.setState({value: ""});
+         }
+       }
 
   render(){
       return (
@@ -27,12 +29,12 @@ export default class ForumNewThread extends React.Component {
         <div className="row ">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
               <li>
-                <Link to={"/forum/" + this.state._id}>Forums</Link>
+                <Link to={"/forum/" + this.props.userID}>Forums</Link>
               </li>
               <li>
-              <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.userID}>General Forte Discussion</Link>
               </li>
               <li className="active">New Thread</li>
             </ol>

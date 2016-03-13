@@ -132,12 +132,70 @@ export function getPlaylistFeed(userID, cb) {
 }
 
 /**
+* Returns a Topic object.
+*/
+export function getTopic(topicID, cb ) {
+  var forumData = readDocument('forums', 1);
+  var topic = forumData.topics[topicID];
+  // playlist.contents = playlist.songs.map(getSong);
+  emulateServerReturn(topic, cb);
+}
+
+/**
 * Returns a Forum object.
 */
 export function getForum(cb) {
   var forumData = readDocument('forums', 1);
   emulateServerReturn(forumData, cb);
 }
+
+export function postThread(user, topicID, title, contents, cb) {
+
+
+  var time = new Date().getTime();
+
+  var newThread = {
+    "title": title,
+    "postCount": [0],
+    "posts": [
+      {
+        "_id": 1,
+        "author": user,
+        "postDate": time,
+        "contents": contents
+      }
+    ]
+  };
+
+  var forumData = readDocument('forums', 1);
+  var topic = forumData.topics[topicID];
+  newThread = addDocument(topic, newThread);
+
+  // Return the newly-posted object  emulateServerReturn(newThread, cb);
+}
+
+export function postComment( user, topicID, threadID, contents, cb) {
+
+  // Get the current UNIX time.
+  var time = new Date().getTime();
+  // The new status update. The database will assign the ID for us.
+  var newPost = {
+        "author": user,
+        "postDate": time,
+        "contents": contents
+      };
+
+  // Add the new Thread to the database.
+  // Returns the new Thread w/ an ID assigned.
+  var forumData = readDocument('forums', 1);
+  var topic = forumData.topics[topicID];
+  var thread = topic[threadID].thread
+  newPost = addDocument(thread.posts, newPost);
+
+  // Return the newly-posted object.
+  emulateServerReturn(newPost, cb);
+}
+
 
 /**
 * Returns a NewsUpdates object.

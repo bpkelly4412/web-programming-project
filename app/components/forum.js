@@ -285,7 +285,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[0].id + this.props.userID }>{this.state.topics[0].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[0]._id + "/" + this.props.userID }>{this.state.topics[0].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[0].threadCount}
@@ -307,7 +307,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[1].id + this.props.userID }>{this.state.topics[1].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[1]._id + "/" + this.props.userID }>{this.state.topics[1].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[1].threadCount}
@@ -320,7 +320,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[2].id + this.props.userID }>{this.state.topics[2].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[2]._id + "/" + this.props.userID }>{this.state.topics[2].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[2].threadCount}
@@ -344,7 +344,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[3].id + this.props.userID }>{this.state.topics[3].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[3]._id + "/" + this.props.userID }>{this.state.topics[3].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[3].threadCount}
@@ -357,7 +357,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[4].id + this.props.userID }>{this.state.topics[4].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[4]._id + "/" + this.props.userID }>{this.state.topics[4].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[4].threadCount}
@@ -370,7 +370,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[5].id + this.props.userID }>{this.state.topics[5].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[5]._id + "/" + this.props.userID }>{this.state.topics[5].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[5].threadCount}
@@ -383,7 +383,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[6].id + this.props.userID }>{this.state.topics[6].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[6]._id + "/" + this.props.userID }>{this.state.topics[6].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[6].threadCount}
@@ -396,7 +396,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[7].id + this.props.userID }>{this.state.topics[7].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[7]._id + "/" + this.props.userID }>{this.state.topics[7].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[7].threadCount}
@@ -409,7 +409,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[8].id + this.props.userID }>{this.state.topics[8].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[8]._id + "/" + this.props.userID }>{this.state.topics[8].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[8].threadCount}
@@ -422,7 +422,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[9].id + this.props.userID }>{this.state.topics[9].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[9]._id + "/" + this.props.userID }>{this.state.topics[9].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[9].threadCount}
@@ -435,7 +435,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[10].id + this.props.userID }>{this.state.topics[10].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[10]._id + "/" + this.props.userID }>{this.state.topics[10].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[10].threadCount}
@@ -448,7 +448,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[11].id + this.props.userID }>{this.state.topics[11].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[11]._id + "/" + this.props.userID }>{this.state.topics[11].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[11].threadCount}
@@ -461,7 +461,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[12].id + this.props.userID }>{this.state.topics[12].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[12]._id + "/" + this.props.userID }>{this.state.topics[12].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[12].threadCount}
@@ -474,7 +474,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[13].id + this.props.userID }>{this.state.topics[13].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[13]._id + "/" + this.props.userID }>{this.state.topics[13].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[13].threadCount}
@@ -487,7 +487,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[14].id + this.props.userID }>{this.state.topics[14].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[14]._id + "/" + this.props.userID }>{this.state.topics[14].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[14].threadCount}
@@ -511,7 +511,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[15].id + this.props.userID }>{this.state.topics[15].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[15]._id + "/" + this.props.userID }>{this.state.topics[15].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[15].threadCount}
@@ -524,7 +524,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[16].id + this.props.userID }>{this.state.topics[16].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[16]._id + "/" + this.props.userID }>{this.state.topics[16].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[16].threadCount}
@@ -537,7 +537,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[17].id + this.props.userID }>{this.state.topics[17].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[17]._id + "/" + this.props.userID }>{this.state.topics[17].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[17].threadCount}
@@ -550,7 +550,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[18].id + this.props.userID }>{this.state.topics[18].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[18]._id + "/" + this.props.userID }>{this.state.topics[18].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[18].threadCount}
@@ -563,7 +563,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[19].id + this.props.userID }>{this.state.topics[19].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[19]._id + "/" + this.props.userID }>{this.state.topics[19].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[19].threadCount}
@@ -576,7 +576,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[20].id + this.props.userID }>{this.state.topics[20].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[20]._id + "/" + this.props.userID }>{this.state.topics[20].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[20].threadCount}
@@ -589,7 +589,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[21].id + this.props.userID }>{this.state.topics[21].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[21]._id + "/" + this.props.userID }>{this.state.topics[21].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[21].threadCount}
@@ -602,7 +602,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[22].id + this.props.userID }>{this.state.topics[22].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[22]._id + "/" + this.props.userID }>{this.state.topics[22].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[22].threadCount}
@@ -615,7 +615,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[23].id + this.props.userID }>{this.state.topics[23].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[23]._id + "/" + this.props.userID }>{this.state.topics[23].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[23].threadCount}
@@ -628,7 +628,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[24].id + this.props.userID }>{this.state.topics[24].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[24]._id + "/" + this.props.userID }>{this.state.topics[24].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[24].threadCount}
@@ -641,7 +641,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[25].id + this.props.userID }>{this.state.topics[25].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[25]._id + "/" + this.props.userID }>{this.state.topics[25].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[25].threadCount}
@@ -654,7 +654,7 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" +this.state.topics[26].id + this.props.userID }>{this.state.topics[26].title}</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[26]._id + "/" + this.props.userID }>{this.state.topics[26].title}</Link>
                   </td>
                   <td className="threads">
                     {this.state.topics[26].threadCount}
