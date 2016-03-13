@@ -6,11 +6,12 @@ export default class SearchResult extends React.Component {
   constructor(props) {
     super(props);
     // Populating this.state.contents with mock search data to display
+
     this.state = {
       /*contextTypes: {
         router: React.PropTypes.func
       },*/
-      userID: 1,
+      userID: this.props.userID,
       playlists: []
             /*,
       songs:[{
@@ -205,6 +206,7 @@ export default class SearchResult extends React.Component {
   }
 }
 
+
 SearchResult.contextTypes = {
-router: React.PropTypes.object.isRequired
+  router: React.PropTypes.object.isRequired
 };

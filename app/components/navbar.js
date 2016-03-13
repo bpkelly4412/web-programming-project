@@ -9,7 +9,6 @@ export default class Navbar extends React.Component {
     super(props);
     this.state = { value: "" };
     //Taken from Router note posted on course website
-
   }
 
 
@@ -25,7 +24,7 @@ export default class Navbar extends React.Component {
     if(!searchText){
       alert("Please enter search terms!");
     } else
-      this.context.router.push({ pathname: "/search" , userID: { u: this.props.userID } , query: { q: searchText } });
+      this.context.router.push({ pathname: "/search", query: { q: searchText } });
   }
 
   componentDidMount() {
@@ -68,7 +67,7 @@ export default class Navbar extends React.Component {
               </button>
               <ul className="dropdown-menu">
                 <li><Link to={"/profile/" + this.state._id}>Profile</Link></li>
-                <li><a href="#">Settings</a></li>
+                <li><Link to={"/settings/" + this.state._id}>Settings</Link></li>
                 <li><a href="#">Log out</a></li>
               </ul>
             </div>

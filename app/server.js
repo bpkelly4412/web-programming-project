@@ -121,6 +121,11 @@ export function getUserData(userID, cb) {
   emulateServerReturn(userData, cb);
 }
 
+export function setUserData(data, cb) {
+    var userData = writeDocument('users', data);
+    emulateServerReturn(userData, cb);
+}
+
 /**
 * Given a user ID (for now), returns a PlaylistFeed object.
 */
@@ -177,6 +182,17 @@ export function getMostPopular(cb) {
   emulateServerReturn(mostPopularData, cb);
 }
 
+/*export function getMostPopular(cb) {
+  var playlists = readPlaylist('playlists');
+  var arr = [];
+  for (var attr in playlists){
+    arr.push(playlists[attr])
+  }
+
+
+  emulateServerReturn(mostPopularData, cb);
+}*/
+
 /**
 * Returns a HighestRated object
 */
@@ -224,6 +240,8 @@ export function searchPlaylist(terms, cb) {
   }
   emulateServerReturn(result, cb);
 }
+
+
 
 /**
 * Given a user ID (for now), returns a PrivateChatLiveHelp object.
