@@ -1,5 +1,6 @@
 import React from 'react';
-import {getUserData} from '../server';
+import {getUserData, setUserData} from '../server';
+
 export default class Settings extends React.Component {
 
     constructor(props) {
@@ -20,6 +21,12 @@ export default class Settings extends React.Component {
     handleChange(event) {
 	this.setState( {value: event.target.value} );
     }
+
+    handleCheckboxClick(e, type){
+	this.state.settings[type] = !this.state.settings[type]
+	setUserData(this.state.settings, () => this.refresh());
+    }
+
     render() {
 	return (
       <div className="col-md-10 col-md-offset-1 transparent-background">
@@ -34,29 +41,11 @@ export default class Settings extends React.Component {
 	  </div>
 	  <div className="col-md-2">
             <input type="checkbox"
-                   checked={this.state.public}
-                   onChange={this.handleChange.bind(this, 'public')}
-		   />
+		   checked={this.state["settings"] ? this.state["settings"]["public_profile"] : false}
+		   onChange={(e) => this.handleCheckboxClick(e, "public_profile")}
+	    />
 	  </div>
 	</div>
-	<div className="row settings-row">
-	  <div className="col-md-4">
-	    Show Recommendations:
-	  </div>
-	  <div className="col-md-2">
-	    <input type="checkbox"
-                   checked={this.state.public}
-                   onChange={this.handleChange.bind(this, 'recommend')}
-		   />
-	  </div>
-	</div>
-	<div className="btn-group pull-left" role="group">
-            <button
-              type="button"
-              className="btn btn-default">
-              Submit
-            </button>
-          </div>
       </div>
       )
     }

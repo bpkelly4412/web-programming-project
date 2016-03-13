@@ -121,6 +121,11 @@ export function getUserData(userID, cb) {
   emulateServerReturn(userData, cb);
 }
 
+export function setUserData(data, cb) {
+    var userData = writeDocument('users', data);
+    emulateServerReturn(userData, cb);
+}
+
 /**
 * Given a playlist ID (for now), returns a Playlist object.
 */
@@ -251,18 +256,6 @@ export function getSongList(searchData, cb) {
     // console.log(songList);
     emulateServerReturn(songList, cb);
   })
-}
-
-export function getSettings(userID, cb) {
-    var user = readDocument('users', userID);
-    var settings = user.settings
-    emulateServerReturn(settings, cb);
-}
-export function setSettings(userID, settings,  cb) {
-    var user = readDocument('users', userID);
-    user["settings"] = settings;
-    writeDocument('users',user);
-    emulateServerReturn(settings,cb);
 }
 
 function httpGetAsync(theUrl, callback)
