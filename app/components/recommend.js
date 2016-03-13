@@ -21,16 +21,17 @@ export default class Recommend extends React.Component {
 	this.refresh();
     }
 
-    onAdd(id) {
+    addRec(id) {
 	useRecommendation(this.props.userID, id, () => this.refresh());
     }
 
     render() {
-	alert("Rendering recommendations");
-	alert(JSON.stringify(this.state));
 	if(this.state.userInfo) {
-	return (
-	    <div className="row">
+	    return (
+		<div className="row">
+		<div className="col-md-8 col-md-offset-2 playlist table-responsive">
+		<h2> Recommended songs </h2>
+	    <div className="row recommendation container">
 	    {this.state.userInfo.recommendations.map((recommendation) => {
 		return (
 		    <Recommendation key={recommendation._id}
@@ -38,8 +39,10 @@ export default class Recommend extends React.Component {
 				    song={recommendation.song}
 				    artist={recommendation.artist}
 				    reason={recommendation.reason}
-				    onAdd={this.onAdd.bind(this)} />)})}
-	    </div>
+				    onAdd={this.addRec.bind(this)} />)})}
+		</div>
+		</div>
+		</div>
 	)
 	}
 	else {

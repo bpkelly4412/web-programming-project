@@ -133,15 +133,17 @@ export default class PlayListFeed extends React.Component {
         </div>
         <div className="row">
           {this.state.contents.map((playlist) => {
-            return (
+              return (
+		  <div>
               <Playlist key={playlist._id}
                 userID={this.props.userID}
                 data={playlist}
                 plFeedID={this.state._id}
                 callbackPlaylistFeed = {this.onChildChanged} />
+	      {this.state.userData? (this.state.userData.recommend ? <Recommend userID = {this.props.userID}/> : null) : null}
+		  </div>
             );
           })}
-          {this.state.userData? (this.state.userData.recommend ? <Recommend userID = {this.props.userID}/> : null) : null}
 
         </div>
       </div>

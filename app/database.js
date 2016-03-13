@@ -16,8 +16,8 @@ var initialData = {
       "status": "online",
       "chattingWith": 2,
       "recommendations":
-      [{"song": 2, "reason": 1},
-       {"song": 1, "reason": 2}]
+      [{"_id": 201, "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
+       {"_id": 202, "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
 
     },
     "2": {
