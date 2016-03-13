@@ -63,8 +63,8 @@ export default class ForumNewThread extends React.Component {
         <div className="row">
           <div className="col-md-8">
             <button
-              className="btn btn-default pull-right nav-btm cr-btn"
-              type="submit">Submit</button>
+              className="btn btn-default pull-right nav-btm cr-btn"type="submit">
+              <Link to={"/forum-thread/" + this.state._id}>Submit</Link></button>
           </div>
         </div>
       </div>

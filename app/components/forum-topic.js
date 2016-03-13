@@ -11,9 +11,7 @@ export default class ForumTopic extends React.Component {
   }
 
   refresh() {
-    getUserData(this.props.userID, (userData) => {
-      this.setState(userData);
-    });
+
   }
 
 

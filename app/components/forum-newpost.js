@@ -1,24 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
 
 export default class ForumNewPost extends React.Component {
 
-      constructor(props) {
-        super(props);
-        this.state = {};
-      }
+  constructor(props) {
+  super(props);
+  this.state = {
+    value: ""
+  };
+}
 
-      refresh() {
-        getUserData(this.props.userID, (userData) => {
-          this.setState(userData);
-        });
-      }
+handleChange(e) {
+  e.preventDefault();
+ this.setState({ value: e.target.value });
+}
 
-
-      componentDidMount() {
-        this.refresh();
-      }
+handlePost(e) {
+     e.preventDefault();
+     var statusUpdateText = this.state.value.trim();
+     if (statusUpdateText !== "") {
+       this.props.onPost(statusUpdateText);
+       this.setState({value: ""});
+     }
+   }
 
   render() {
     return (
@@ -71,15 +75,15 @@ export default class ForumNewPost extends React.Component {
         </div>
         <div className="row">
           <div className="col-md-8">
-            <textarea className="form-control" rows={15} />
+            <textarea className="form-control" rows={15} value={this.state.value} onChange={(e) => this.handleChange(e)} />
             <br />
           </div>
         </div>
         <div className="row">
           <div className="col-md-8">
             <button
-              className="btn btn-default pull-right nav-btm cr-btn"
-              type="submit">Submit</button>
+              className="btn btn-default pull-right nav-btm cr-btn"type="submit">
+              <Link to={"/forum-thread/" + this.state._id}>Submit</Link></button>
           </div>
         </div>
       </div>

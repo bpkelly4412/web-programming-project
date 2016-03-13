@@ -132,11 +132,11 @@ export function getPlaylistFeed(userID, cb) {
 }
 
 /**
-* Returns a Topics object.
+* Returns a Forum object.
 */
-export function getTopics(cb) {
-  var topicData = readDocument('topics', 101);
-  emulateServerReturn(topicData, cb);
+export function getForum(cb) {
+  var forumData = readDocument('forums', 1);
+  emulateServerReturn(forumData, cb);
 }
 
 /**

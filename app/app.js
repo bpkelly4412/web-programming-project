@@ -97,7 +97,7 @@ class HighestRatedPage extends React.Component {
 class ForumPage extends React.Component {
   render() {
       return (
-        <Forum />
+        <Forum userID={this.props.params.id}/>
       );
   }
 }
@@ -105,7 +105,7 @@ class ForumPage extends React.Component {
 class ForumTopicPage extends React.Component {
   render() {
       return (
-        <ForumTopic />
+        <ForumTopic pid={this.props.params.pid} userID={this.props.params.id}/>
       );
   }
 }
@@ -236,6 +236,7 @@ ReactDOM.render((
       <Route path="profile/:id" component={ProfilePage} />
       <Route path="forum/:id" component={ForumPage} />
       <Route path="forum-topic/:id" component={ForumTopicPage} />
+      <Route path="forum-topic/:fid/:id" component={ForumTopicPage} />
       <Route path="forum-thread/:id" component={ForumThreadPage} />
       <Route path="forum-newthread/:id" component={ForumNewThreadPage} />
       <Route path="forum-newpost/:id" component={ForumNewPostPage} />
