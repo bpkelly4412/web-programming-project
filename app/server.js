@@ -126,6 +126,12 @@ export function setUserData(data, cb) {
     emulateServerReturn(userData, cb);
 }
 
+export function useRecommendation(userID, key, cb) {
+    var userData = readDocument('users', userID);
+    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+    writeDocument('users', userData);
+    emulateServerReturn(userData, cb);
+}
 /**
 * Given a user ID (for now), returns a PlaylistFeed object.
 */

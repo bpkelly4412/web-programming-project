@@ -6,7 +6,12 @@ export default class Recommendation extends React.Component {
 	this.state = { value: "" };
     }
 
+    handleAdd(){
+	this.props.onAdd(this.key);
+    }
+
     render() {
+
 	return (
 	    <div className="row">
 	      <div className="col-md-4 recommendation-box">
@@ -15,7 +20,8 @@ export default class Recommendation extends React.Component {
 		    {this.props.song} - {this.props.artist}
 		  </div>
 		  <div className="col-md-2">
-		    <button type="button" className="btn btn-default playlist-button playlist-button-small">
+		    <button type="button" className="btn btn-default playlist-button playlist-button-small"
+			    onClick = this.props.handleAdd.bind(this)>
 		      <span className="glyphicon glyphicon-plus"></span>
 		    </button>
 		  </div>

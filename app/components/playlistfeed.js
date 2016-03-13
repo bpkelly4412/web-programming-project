@@ -24,9 +24,6 @@ export default class PlayListFeed extends React.Component {
     getPlaylistFeed(this.props.userID, (feedData) => {
       this.setState(feedData);
     });
-      getUserData(this.props.userID, (userData) => {
-      this.setState(userData);
-    });
   }
 
   handleNewPlaylistNameChange(e) {
