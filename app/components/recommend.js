@@ -7,7 +7,6 @@ export default class Recommend extends React.Component {
     constructor(props) {
 	super(props);
 	this.state = { value: "" };
-	this.onChildChanged = this.onChildChanged.bind(this);
     }
 
 
@@ -22,19 +21,16 @@ export default class Recommend extends React.Component {
 	this.refresh();
     }
 
-    handleChange(event) {
-	this.setState( {value: event.target.value} );
+    onAdd(id) {
+	useRecommendation(this.props.userID, id, () => this.refresh());
     }
 
-    onAdd(id) {
-	const recommendations = this.state.userInfo.recommendations.filter(recommendation => recommendation.id !== id);
-	this.setState({ userInfo.recommendations : recommendations });
-
-	useRecommendation(this.props.userID, id, () > this.refresh);
-
-
     render() {
+	alert("Rendering recommendations");
+	alert(JSON.stringify(this.state));
+	if(this.state.userInfo) {
 	return (
+	    <div className="row">
 	    {this.state.userInfo.recommendations.map((recommendation) => {
 		return (
 		    <Recommendation key={recommendation._id}
@@ -42,7 +38,12 @@ export default class Recommend extends React.Component {
 				    song={recommendation.song}
 				    artist={recommendation.artist}
 				    reason={recommendation.reason}
-				    onAdd={this.onAdd.bind(this)} />
-		)
+				    onAdd={this.onAdd.bind(this)} />)})}
+	    </div>
+	)
+	}
+	else {
+	    return null
+	}
     }
 }

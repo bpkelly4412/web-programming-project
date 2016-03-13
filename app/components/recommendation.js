@@ -21,7 +21,7 @@ export default class Recommendation extends React.Component {
 		  </div>
 		  <div className="col-md-2">
 		    <button type="button" className="btn btn-default playlist-button playlist-button-small"
-			    onClick = this.props.handleAdd.bind(this)>
+			    onClick = {this.props.handleAdd.bind(this)}>
 		      <span className="glyphicon glyphicon-plus"></span>
 		    </button>
 		  </div>
