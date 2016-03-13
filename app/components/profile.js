@@ -1,6 +1,6 @@
 import React from 'react';
 import Playlist from './playlist';
-import { getUserData, getPlaylistCB} from '../server';
+import { getUserData, getPlaylistCB, getPlaylistFeed} from '../server';
 
 
 export default class Profile extends React.Component {
@@ -47,17 +47,25 @@ export default class Profile extends React.Component {
           "url": "TBD"
         }
       ]
-    }, editing: false};
+    }, editing: false, savedPlaylists: {contents: []}};
   }
 
 
   refresh() {
     getUserData(this.props.userID, (userData) => {
-      //this.setState(userData);
+      var data = userData
       getPlaylistCB(userData.currentPlaylistID, (playlist) => {
-        userData.currentPlaylist = playlist;
-        this.setState(userData)
+        data.currentPlaylist = playlist;
       });
+      getPlaylistFeed(this.props.userID, (feedData) => {
+        data.savedPlaylists = feedData;
+      });
+      //console.log(data);
+      //console.log(data.editing);
+      //console.log(data.currentPlaylist);
+      window.userData = data;
+      this.setState(data);
+      //console.log(this.state);
     });
       //this.setState({"currentPlaylist" :  getPlaylist(this.state.currentPlaylistID) });
     //getPlaylist(this.state.currentPlaylistID)};
@@ -65,6 +73,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
+    //console.log(this.state);
     // Render the component differently based on state.
     if (this.state.editing) {
       return this.renderEdit();
@@ -134,83 +143,6 @@ export default class Profile extends React.Component {
             plFeedID={""}
             callbackPlaylistFeed = {""} />
       </div>
-
-{/*
-        <div className="row profile-row">
-          <div className="playlist col-md-12 table-responsive profile-playlist">
-            <div className="row">
-              <div className="col-md-8">
-                <h3 className="playlist-title">
-                  <strong>Current Game: </strong>
-                  Elite Dangerous
-                </h3>
-              </div>
-              <div className="col-md-4">
-                <img
-                  src="img/elite-dangerous.jpg"
-                  className="img-responsive"
-                  alt="Elite Dangerous" />
-              </div>
-            </div>
-            <div
-              className="btn-toolbar playlist-toolbar"
-              role="toolbar">
-              <div
-                className="input-group"
-                role="group"
-                aria-label="Playback Buttons">
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button">
-                  <span className="glyphicon glyphicon-stop" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button">
-                  <span className="glyphicon glyphicon-backward" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button">
-                  <span className="glyphicon glyphicon-play" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button">
-                  <span className="glyphicon glyphicon-forward" />
-                </button>
-              </div>
-              <div
-                className="input-group pull-right"
-                role="group"
-                aria-label="Playlist Options">
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button"
-                  title="Add Track">
-                  <span className="glyphicon glyphicon-plus-sign" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button"
-                  title="Share Playlist">
-                  <span className="glyphicon glyphicon-share" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default playlist-button"
-                  title="Options">
-                  <span className="glyphicon glyphicon-cog" />
-                </button>
-              </div>
-            </div>
-            <table className="table table-hover">
-              <thead>
-              </thead>
-            </table>
-          </div>
-        </div>*/}
-        {/*end of 2nd row*/}
         <div className="row profile-row">
           <div className="col-md-2 col-md-offset-4">
             Name:

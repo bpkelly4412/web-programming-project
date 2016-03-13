@@ -13,7 +13,9 @@ var initialData = {
       "playlistfeed": 1,
       "nickName" : "4TheWatch",
       "about" : "Classic rock and League of Legends are my favorites",
-      "currentPlaylistID" : 101
+      "currentPlaylistID" : 102,
+      "followers" : [2,3],
+      "following" : [3]
     },
     "2": {
       "_id": 2,
@@ -21,7 +23,9 @@ var initialData = {
       "playlistfeed": 2,
       "nickName" : "StarkShark",
       "about" : "Head of House Stark. Overall pretty chill dude, love heavy metal and Call of Duty.",
-      "currentPlaylistID" : ""
+      "currentPlaylistID" : "",
+      "followers" : [3],
+      "following" : [1]
 
     },
     "3": {
@@ -30,7 +34,9 @@ var initialData = {
       "playlistfeed": 3,
       "nickName" : "SmallButFierce47",
       "about" : "Big fan of Hearthstone and smooth jazz",
-      "currentPlaylistID" : 104
+      "currentPlaylistID" : 104,
+      "followers" : [1],
+      "following" : [1,2]
     }
   },
   "playlist-feeds": {
