@@ -96,12 +96,20 @@ export function removeSong(playlistID, songIndex, cb) {
 /**
 * Given a playlist ID returns a Playlist object.
 */
-function getPlaylist(playlistID) {
+export function getPlaylist(playlistID) {
   var playlist = readDocument('playlists', playlistID);
   // playlist.contents = playlist.songs.map(getSong);
   return playlist;
 }
 
+/**
+*with callback to use for profile page
+*/
+export function getPlaylistCB(playlistID, cb) {
+  var playlist = readDocument('playlists', playlistID);
+  // playlist.contents = playlist.songs.map(getSong);
+  emulateServerReturn(playlist, cb);
+}
 /**
 * Given a playlist ID returns a Playlist object.
 * Might considering merging with getPlaylist(playlistID)

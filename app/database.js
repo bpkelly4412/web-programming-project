@@ -10,17 +10,27 @@ var initialData = {
     "1": {
       "_id": 1,
       "userName": "Jon Snow",
-      "playlistfeed": 1
+      "playlistfeed": 1,
+      "nickName" : "4TheWatch",
+      "about" : "Classic rock and League of Legends are my favorites",
+      "currentPlaylistID" : 101
     },
     "2": {
       "_id": 2,
       "userName": "Ned Stark",
-      "playlistfeed": 2
+      "playlistfeed": 2,
+      "nickName" : "StarkShark",
+      "about" : "Head of House Stark. Overall pretty chill dude, love heavy metal and Call of Duty.",
+      "currentPlaylistID" : ""
+
     },
     "3": {
       "_id": 3,
       "userName": "Tyrion Lannister",
-      "playlistfeed": 3
+      "playlistfeed": 3,
+      "nickName" : "SmallButFierce47",
+      "about" : "Big fan of Hearthstone and smooth jazz",
+      "currentPlaylistID" : 104
     }
   },
   "playlist-feeds": {

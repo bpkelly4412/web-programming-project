@@ -42,7 +42,7 @@ class StartPage extends React.Component {
 class ProfilePage extends React.Component {
   render() {
     return (
-      <Profile />
+      <Profile userID={1} />
     );
   }
 }

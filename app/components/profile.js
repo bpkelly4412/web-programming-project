@@ -1,8 +1,37 @@
 import React from 'react';
+import Playlist from './playlist';
+import { getUserData, getPlaylistCB} from '../server';
 
 
 export default class Profile extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {currentPlaylist: ""};
+  }
+
+
+  refresh() {
+    getUserData(this.props.userID, (userData) => {
+      //this.setState(userData);
+      getPlaylistCB(userData.currentPlaylistID, (playlist) => {
+        userData.currentPlaylist = playlist;
+        this.setState(userData)
+      });
+    });
+      //this.setState({"currentPlaylist" :  getPlaylist(this.state.currentPlaylistID) });
+    //getPlaylist(this.state.currentPlaylistID)};
+
+  }
+
+
+  componentDidMount() {
+    this.refresh();
+  }
+
+
   render() {
+    //console.log(this.state.currentPlaylist)
     return (
       <div className="col-md-10 col-md-offset-1 transparent-background">
         <div className="row profile-row">
@@ -13,7 +42,7 @@ export default class Profile extends React.Component {
                 src="img/profile_pic_default.png" />
               {/* badge */}
               <div className="rank-label-container">
-                <span className="label label-default rank-label username-under-picture">Username</span>
+                <span className="label label-default rank-label username-under-picture">{this.state.nickName}</span>
               </div>
             </div>
           </div>
@@ -36,6 +65,16 @@ export default class Profile extends React.Component {
           {/* end profile header container*/}
         </div>
         {/* end of profile pic row*/}
+{/*}
+        <div className="row">
+          <Playlist key={this.state.currentPlaylist._id}
+            userID={this.props.userID}
+            data={this.state.currentPlaylist}
+            plFeedID={""}
+            callbackPlaylistFeed = {""} />
+      </div>
+*/}
+
         <div className="row profile-row">
           <div className="playlist col-md-12 table-responsive profile-playlist">
             <div className="row">
@@ -116,7 +155,7 @@ export default class Profile extends React.Component {
             Name:
           </div>
           <div className="col-md-4">
-            FirstName LastName
+            {this.state.userName}
           </div>
         </div>
         {/*end of 3rd row*/}
@@ -125,7 +164,7 @@ export default class Profile extends React.Component {
             About:
           </div>
           <div className="col-md-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In egestas nisi sed libero pretium efficitur. Phasellus eu laoreet ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut lorem in felis suscipit ultricies nec quis mauris. Curabitur vitae nibh vitae nibh lobortis fringilla. Nullam massa libero, rutrum in tortor pretium, tempus iaculis ipsum. Vivamus ut velit risus. Aliquam non ligula ante. Maecenas eu tincidunt nulla. Suspendisse potenti.
+            {this.state.about}
           </div>
         </div>
         {/*end of 4th row*/}
