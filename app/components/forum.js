@@ -1,4 +1,5 @@
 import React from 'react';
+import { getForum } from '../server';
 import { Link } from 'react-router';
 
 
@@ -6,7 +7,233 @@ export default class Forum extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+          "_id": 1,
+          "topics": [
+            {
+          "_id": 1,
+          "title": "General Forte Discussion",
+          "category": "forte",
+          "threadCount": [2],
+          "postCount": [2],
+          "threads": []
+          },
+          {
+          "_id": 2,
+          "title": "Help and Suggestions",
+          "category": "forte",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 3,
+          "title": "Off-Topic",
+          "category": "forte",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 4,
+          "title": "Music General",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 5,
+          "title": "Polls/Quizzes/Games",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 6,
+          "title": "Ambient",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 7,
+          "title": "Classical",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 8,
+          "title": "Electronic",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 9,
+          "title": "Folk",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 10,
+          "title": "Hip-Hop",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 11,
+          "title": "Indie",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 12,
+          "title": "Jazz/Blues",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 13,
+          "title": "Metal",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 14,
+          "title": "Pop",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 15,
+          "title": "Rock",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 16,
+          "title": "Games General",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 17,
+          "title": "Polls/Quizzes/Games",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 18,
+          "title": "Action-Adventure",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 19,
+          "title": "Fighters",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 20,
+          "title": "Shooters",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 21,
+          "title": "JRPGs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 22,
+          "title": "MOBAs/MMOs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 23,
+          "title": "Platformers",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 24,
+          "title": "Sandbox RPGs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 25,
+          "title": "Sports",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 26,
+          "title": "Strategy",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          },
+          {
+          "_id": 27,
+          "title": "Visual Novel/Adventure",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+          }
+          ]
+    };
+  }
+
+  refresh() {
+    getForum((forumData) => {
+      this.setState({forumData})
+    });
   }
 
   componentDidMount() {
@@ -20,7 +247,7 @@ export default class Forum extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
               <li className="active">Forums</li>
             </ol>
             <h2> Forums</h2>
@@ -58,46 +285,48 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[0]._id + "/" + this.props.userID }>{this.state.topics[0].title}</Link>
                   </td>
                   <td className="threads">
-                    2
+                    {this.state.topics[0].threadCount}
                   </td>
                   <td className="posts">
-                    2
+                    {this.state.topics[0].postCount}
                   </td>
                   <td className="lastdisc">
                     <p className="prvw-p">
-                      <a href="forums-post.html">
-                        First Thread
-                      </a>
+                      <Link to={"/forum-thread/" + this.props.userID}>First Thread</Link>
                     </p>
                     <p className="prvw-p">
                       XX-XX-XXXX XX:XX
                     </p>
                     <p className="prvw-p">
-                      <a href="#">USER_TWO</a>
+                      <Link to={"/profile/" + 2}>Ned Stark</Link>
                     </p>
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Help and Suggestions</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[1]._id + "/" + this.props.userID }>{this.state.topics[1].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[1].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[1].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Off-Topic</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[2]._id + "/" + this.props.userID }>{this.state.topics[2].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[2].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[2].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
@@ -115,132 +344,156 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Music General</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[3]._id + "/" + this.props.userID }>{this.state.topics[3].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[3].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[3].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Polls/Quizzes/Games</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[4]._id + "/" + this.props.userID }>{this.state.topics[4].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[4].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[4].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Ambient</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[5]._id + "/" + this.props.userID }>{this.state.topics[5].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[5].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[5].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Classical</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[6]._id + "/" + this.props.userID }>{this.state.topics[6].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[6].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[6].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Electronic</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[7]._id + "/" + this.props.userID }>{this.state.topics[7].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[7].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[7].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Folk</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[8]._id + "/" + this.props.userID }>{this.state.topics[8].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[8].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[8].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Hip-Hop</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[9]._id + "/" + this.props.userID }>{this.state.topics[9].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[9].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[9].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Indie</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[10]._id + "/" + this.props.userID }>{this.state.topics[10].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[10].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[10].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Jazz/Blues</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[11]._id + "/" + this.props.userID }>{this.state.topics[11].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[11].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[11].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Metal</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[12]._id + "/" + this.props.userID }>{this.state.topics[12].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[12].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[12].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Pop</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[13]._id + "/" + this.props.userID }>{this.state.topics[13].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[13].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[13].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Rock</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[14]._id + "/" + this.props.userID }>{this.state.topics[14].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[14].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[14].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
@@ -258,132 +511,156 @@ export default class Forum extends React.Component {
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Games General</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[15]._id + "/" + this.props.userID }>{this.state.topics[15].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[15].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[15].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Polls/Quizzes/Games</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[16]._id + "/" + this.props.userID }>{this.state.topics[16].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[16].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[16].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Action-Adventure</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[17]._id + "/" + this.props.userID }>{this.state.topics[17].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[17].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[17].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Fighters</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[18]._id + "/" + this.props.userID }>{this.state.topics[18].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[18].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[18].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Shooters</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[19]._id + "/" + this.props.userID }>{this.state.topics[19].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[19].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[19].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>JRPGs</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[20]._id + "/" + this.props.userID }>{this.state.topics[20].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[20].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[20].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>MOBAs/MMOs</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[21]._id + "/" + this.props.userID }>{this.state.topics[21].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[21].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[21].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Platformers</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[22]._id + "/" + this.props.userID }>{this.state.topics[22].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[22].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[22].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Sandbox RPGs</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[23]._id + "/" + this.props.userID }>{this.state.topics[23].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[23].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[23].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Sports</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[24]._id + "/" + this.props.userID }>{this.state.topics[24].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[24].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[24].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Strategy</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[25]._id + "/" + this.props.userID }>{this.state.topics[25].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[25].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[25].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>
                 </tr>
                 <tr>
                   <td className="discussion">
-                    <Link to={"/forum-topic/" + this.state._id}>Visual Novel/Adventure</Link>
+                    <Link to={"/forum-topic/" +this.state.topics[26]._id + "/" + this.props.userID }>{this.state.topics[26].title}</Link>
                   </td>
                   <td className="threads">
+                    {this.state.topics[26].threadCount}
                   </td>
                   <td className="posts">
+                    {this.state.topics[26].postCount}
                   </td>
                   <td className="lastdisc">
                   </td>

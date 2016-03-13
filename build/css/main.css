@@ -542,6 +542,10 @@ body {
   padding-left: 20px;
 }
 
+.chat-box {
+  padding-right: 350px;
+}
+
 /*
     Chat bubble formatting credited to http://jsfiddle.net/thinkingstiff/mek5z/
 */
@@ -779,4 +783,18 @@ img.img-resize {
 }
 .profile-playlist{
   margin-top: 5px;
+}
+
+/*Settings */
+.settings-head{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.settings-header-text{
+    font-size: 30px;
+    padding-left: 10px;
+}
+.settings-row{
+    font-size: 16px;
+    margin-bottom: 20px;
 }

@@ -1,19 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
+import { getTopic } from '../server';
 
 
 export default class ForumThread extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    "_id": 1,
+    "title": "General Forte Discussion",
+    "category": "forte",
+    "threadCount": [2],
+    "postCount": [2],
+    "threads": []
+      }
   }
 
   refresh() {
-    getUserData(this.props.userID, (userData) => {
-      this.setState(userData);
-    });
+     getTopic(this.props.tid, (topicData) => {
+       this.setState({topicData})
+     })
   }
 
 
@@ -27,12 +34,12 @@ export default class ForumThread extends React.Component {
         <div className="row forum-header">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.state._id}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
               <li>
-                <Link to={"/forum/" + this.state._id}>Forums</Link>
+                <Link to={"/forum/" + this.props.userID}>Forums</Link>
               </li>
               <li>
-                <Link to={"/forum-topic/" + this.state._id}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.userID}>General Forte Discussion</Link>
               </li>
               <li className="active">
                 First Thread
@@ -42,7 +49,7 @@ export default class ForumThread extends React.Component {
             <div className="row">
               <div className="col-md-3">
                 <button type="button" className="btn btn-default cr-btn">
-                  <Link to={"/forum-newpost/" + this.state._id}><span className="glyphicon glyphicon-pencil" /> Reply
+                  <Link to={"/forum-newpost/" + this.props.thid + "/" +  this.props.tid + "/" + this.props.userID}><span className="glyphicon glyphicon-pencil" /> Reply
                   </Link>
                 </button>
               </div>
@@ -94,7 +101,7 @@ export default class ForumThread extends React.Component {
                 </tr>
                 <tr>
                   <td>
-                    <a href="#">USER_NAME</a>
+                    <Link to={"/profile/" + 1}>Jon Snow</Link>
                     <br />
                     <h6>
                       Join Date: Xxx XXXX
@@ -114,7 +121,7 @@ export default class ForumThread extends React.Component {
                 </tr>
                 <tr>
                   <td>
-                    <a href="#">USER_TWO</a>
+                    <Link to={"/profile/" + 2}>Ned Stark</Link>
                     <br />
                     <h6>
                       Join Date: Xxx XXXX

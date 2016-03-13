@@ -15,7 +15,14 @@ var initialData = {
       "about" : "Classic rock and League of Legends are my favorites",
       "currentPlaylistID" : 102,
       "followers" : [2,3],
-      "following" : [3]
+      "following" : [3],
+      "profile_public": true,
+      "recommend": false,
+      "status": "online",
+      "chattingWith": 2,
+      "recommendations":
+      [{"_id": 201, "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
+       {"_id": 202, "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
     },
     "2": {
       "_id": 2,
@@ -25,8 +32,10 @@ var initialData = {
       "about" : "Head of House Stark. Overall pretty chill dude, love heavy metal and Call of Duty.",
       "currentPlaylistID" : "",
       "followers" : [3],
-      "following" : [1]
-
+      "following" : [1],
+      "profile_public": false,
+      "recommend": false,
+      "status": "online"
     },
     "3": {
       "_id": 3,
@@ -36,8 +45,112 @@ var initialData = {
       "about" : "Big fan of Hearthstone and smooth jazz",
       "currentPlaylistID" : 104,
       "followers" : [1],
-      "following" : [1,2]
+      "following" : [1,2],
+      "profile_public": true,
+      "recommend": true,
+      "status": "online"
+    },
+    "4": {
+      "_id": 4,
+      "userName": "Rock Expert 1",
+      "playlistfeed": 4,
+      "status": "online"
+    },
+    "5": {
+      "_id": 5,
+      "userName": "Rock Expert 2",
+      "playlistfeed": 5,
+      "status": "online"
+    },
+    "6": {
+      "_id": 6,
+      "userName": "Rock Expert 3",
+      "playlistfeed": 6,
+      "status": "away"
+    },
+    "7": {
+      "_id": 7,
+      "userName": "Rock Expert 4",
+      "playlistfeed": 7,
+      "status": "away"
+    },
+    "8": {
+      "_id": 8,
+      "userName": "Electronic Expert 1",
+      "playlistfeed": 8,
+      "status": "online"
+    },
+    "9": {
+      "_id": 9,
+      "userName": "Electronic Expert 2",
+      "playlistfeed": 9,
+      "status": "online"
+    },
+    "10": {
+      "_id": 10,
+      "userName": "Electronic Expert 3",
+      "playlistfeed": 10,
+      "status": "away"
+    },
+    "11": {
+      "_id": 11,
+      "userName": "Ambient Expert 1",
+      "playlistfeed": 11,
+      "status": "online"
+    },
+    "12": {
+      "_id": 12,
+      "userName": "Ambient Expert 2",
+      "playlistfeed": 12,
+      "status": "online"
+    },
+    "13": {
+      "_id": 13,
+      "userName": "Metal Expert 1",
+      "playlistfeed": 13,
+      "status": "away"
+    },
+    "14": {
+      "_id": 14,
+      "userName": "Metal Expert 2",
+      "playlistfeed": 14,
+      "status": "away"
+    },
+    "15": {
+      "_id": 15,
+      "userName": "Hip-Hop Expert 1",
+      "playlistfeed": 15,
+      "status": "online"
+    },
+    "16": {
+      "_id": 16,
+      "userName": "Hip-Hop Expert 2",
+      "playlistfeed": 16,
+      "status": "online"
+    },
+    "17": {
+      "_id": 17,
+      "userName": "Hip-Hop Expert 3",
+      "playlistfeed": 17,
+      "status": "away"
+    },
+    "18": {
+      "_id": 18,
+      "userName": "Indie Expert 1",
+      "playlistfeed": 18,
+      "status": "away"
     }
+  },
+
+  "songs": {
+      "1": {
+        "artist": "Amon Amarth",
+        "name": "Live for the Kill"
+      },
+      "2": {
+        "artist": "Gaelic Storm",
+        "name": "If Good Times were Dollars"
+      }
   },
   "playlist-feeds": {
     "1": {
@@ -170,7 +283,7 @@ var initialData = {
       "game": "Fallout 4",
       "imageURL": "img/fallout4.jpg",
       "title": "I don't know",
-      "author": 1,
+      "author": 2,
       "votes": [2],
       "genre": "N/A",
       "description": "It has music, I think",
@@ -182,7 +295,7 @@ var initialData = {
       "game": "Elite Dangerous",
       "imageURL": "img/elite-dangerous.jpg",
       "title": "Rockin' space shooty rock",
-      "author": 1,
+      "author": 3,
       "votes": [2],
       "genre": "N/A",
       "description": "Hard Rock tracks to shoot spaceships to",
@@ -194,7 +307,7 @@ var initialData = {
       "game": "Elite Dangerous",
       "imageURL": "img/elite-dangerous.jpg",
       "title": "Chill space mining trance",
-      "author": 1,
+      "author": 2,
       "votes": [2],
       "genre": "N/A",
       "description": "Just Chill",
@@ -206,7 +319,7 @@ var initialData = {
       "game": "Elite Dangerous",
       "imageURL": "img/elite-dangerous.jpg",
       "title": "Space Piracy",
-      "author": 1,
+      "author": 3,
       "votes": [2],
       "genre": "N/A",
       "description": "The best of modern Pirate Metal and Pirate Rap for all your space pirate needs.",
@@ -224,15 +337,343 @@ var initialData = {
       "description": "It's classic country goodness. IN SPACE.",
       "url": "TBD",
       "songs": []
+    },
+    "111":{
+      "_id": 111,
+      "game": "League of Legends",
+      "imageURL": "img/league.jpg",
+      "title": "League of Legends Playlist",
+      "author": 2,
+      "votes": [],
+      "genre": "Rock, Nightcore",
+      "description": "",
+      "url": "Empty",
+      "songs": [{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "The Beginning",
+        "artist": "One Ok Rock",
+        "album": "The Beginning",
+        "type": "Rock",
+        "duration": 216,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Monster",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 201,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Anima Libera",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 265,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Moonlight Shadow",
+        "artist": "Nightcore",
+        "album": "Nightcore",
+        "type": "Nightcore",
+        "duration": 224,
+        "url": "TBD"
+      }]
+    },
+    "112": {
+      "_id": 112,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Elite Dangerous Playlist",
+      "author": 1,
+      "votes": [],
+      "genre": "Instrumental",
+      "description": "",
+      "url": "Empty",
+      "songs": [{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Flight",
+        "artist": "Hans Zimmer",
+        "album": "Man of Steel (Original Motion Picture Soundtrack)",
+        "type": "Instrumental",
+        "duration": 216,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Requiem",
+        "artist": "Takemitsu",
+        "album": "Takemitsu: Orchestral Works",
+        "type": "Instrumental",
+        "duration": 201,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Summa",
+        "artist": "	Arvo Pärt",
+        "album": "The Very Best of Arvo Pärt",
+        "type": "Instrumental",
+        "duration": 265,
+        "url": "TBD"
+      },{
+        "imgURL": "img/playlist_disc.jpg",
+        "title": "Morag",
+        "artist": "Tyler Bates",
+        "album": "Guardians of the Galaxy (Original Score)",
+        "type": "Instrumental",
+        "duration": 224,
+        "url": "TBD"
+      }]
     }
   },
-  "topics": {
-    "101": {
-      "_id": 101,
+  "forums": {
+    "1": {
+      "_id": 1,
+      "topics": [
+        {
+      "_id": 1,
       "title": "General Forte Discussion",
+      "category": "forte",
       "threadCount": [2],
-      "postCount": [2]
-
+      "postCount": [2],
+      "threads": [
+        {
+          "_id": 1,
+          "title": "First Thread",
+          "postCount": [1],
+          "posts": [
+            {
+            "_id": 1,
+            "author": 1,
+            "postDate": 1453668480000,
+            "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
+            },
+            {
+          "_id": 2,
+          "author": 2,
+          "postdate": 1453690800000,
+          "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
+            }
+          ]
+        },
+        {
+          "_id": 2,
+          "title": "Let's Discuss",
+          "postCount": [0],
+          "posts": []
+        }
+      ]
+      },
+      {
+      "_id": 2,
+      "title": "Help and Suggestions",
+      "category": "forte",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 3,
+      "title": "Off-Topic",
+      "category": "forte",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 4,
+      "title": "Music General",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 5,
+      "title": "Polls/Quizzes/Games",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 6,
+      "title": "Ambient",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 7,
+      "title": "Classical",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 8,
+      "title": "Electronic",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 9,
+      "title": "Folk",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 10,
+      "title": "Hip-Hop",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 11,
+      "title": "Indie",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 12,
+      "title": "Jazz/Blues",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 13,
+      "title": "Metal",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 14,
+      "title": "Pop",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 15,
+      "title": "Rock",
+      "category": "music",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 16,
+      "title": "Games General",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 17,
+      "title": "Polls/Quizzes/Games",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 18,
+      "title": "Action-Adventure",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 19,
+      "title": "Fighters",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 20,
+      "title": "Shooters",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 21,
+      "title": "JRPGs",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 22,
+      "title": "MOBAs/MMOs",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 23,
+      "title": "Platformers",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 24,
+      "title": "Sandbox RPGs",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 25,
+      "title": "Sports",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 26,
+      "title": "Strategy",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      },
+      {
+      "_id": 27,
+      "title": "Visual Novel/Adventure",
+      "category": "games",
+      "threadCount": [0],
+      "postCount": [0],
+      "threads": []
+      }
+      ]
     }
   },
   "newsUpdates": {
@@ -367,6 +808,37 @@ var initialData = {
       ]
     }
   },
+  "liveHelp": {
+    "1": {
+      "_id": 1,
+      "contents": [
+        {
+          "genre": "Rock",
+          "userList": [4, 5, 6, 7]
+        },
+        {
+          "genre": "Electronic",
+          "userList": [8, 9, 10]
+        },
+        {
+          "genre": "Ambient",
+          "userList": [11, 12]
+        },
+        {
+          "genre": "Metal",
+          "userList": [13, 14]
+        },
+        {
+          "genre": "Hip-Hip",
+          "userList": [15, 16, 17]
+        },
+        {
+          "genre": "Indie",
+          "userList": [18]
+        }
+      ]
+    }
+  },
   "rising": {
     "1": {
       "._id": 1,
@@ -383,6 +855,101 @@ var initialData = {
           "playlists": [107,108,109,110]
         }
       ]
+    }
+  },
+  "conversations": {
+    "1": {
+      "_id": 1,
+      "userID": 1,
+      "chatlogs": [
+        {
+          "otherUser": 2,
+          "messages": [
+            {
+              "author": 2,
+              "content": "Hello, this is Ned Stark!"
+            },
+            {
+              "author": 1,
+              "content": "Hello, this is Jon Snow!"
+            },
+            {
+              "author": 1,
+              "content": "Please excuse me while I type enough to fill up more than one line of text to show that the chat bubble expands!"
+            },
+            {
+              "author": 1,
+              "content": "Wow, that worked out great!"
+            },
+            {
+              "author": 2,
+              "content": "I am glad that worked out great!"
+            },
+            {
+              "author": 1,
+              "content": "Make me a lasagna."
+            },
+            {
+              "author": 2,
+              "content": "W-what...?"
+            },
+            {
+              "author": 1,
+              "content": "I said. Make me a lasagna, peasant!"
+            }
+          ]
+        },
+        {
+          "otherUser": 3,
+          "messages": [
+            {
+              "author": 3,
+              "content": "Hello, you have one unread message!"
+            },
+            {
+              "author": 3,
+              "content": "Just kidding, you have two now."
+            }
+          ]
+        },
+        {
+          "otherUser": 7,
+          "messages": [
+            {
+              "author": 1,
+              "content": "Hi..."
+            }
+          ]
+        },
+        {
+          "otherUser": 5,
+          "messages": [
+            {
+              "author": 5,
+              "content": "Is anybody home?"
+            }
+          ]
+        },
+        {
+          "otherUser": 16,
+          "messages": [
+            {
+              "author": 16,
+              "content": "I like hip-hop."
+            },
+            {
+              "author": 1,
+              "content": "Same"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "recent-conversations": {
+    "1": {
+      "_id": 1,
+      "userList": [2, 3, 7, 5, 16]
     }
   }
 };
@@ -409,6 +976,17 @@ export function readDocument(collection, id) {
   // Clone the data. We do this to model a database, where you receive a
   // *copy* of an object and not the object itself.
   return JSONClone(data[collection][id]);
+}
+
+/**
+* Emulates reading a "document", in this case playlist, from a NoSQL database.
+* Doesn't do any tricky document joins, as we will cover that in the latter
+* half of the course. :)
+*/
+export function readPlaylist() {
+  // Clone the data. We do this to model a database, where you receive a
+  // *copy* of an object and not the object itself.
+  return JSONClone(data["playlists"]);
 }
 
 /**
