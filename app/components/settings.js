@@ -12,7 +12,7 @@ export default class Settings extends React.Component {
 	getUserData(this.props.userID, (userData) => {
 	    this.setState({userInfo: userData});
 	});
-	console.log(JSON.stringify(this.state));
+
     }
 
     componentDidMount() {
@@ -28,6 +28,11 @@ export default class Settings extends React.Component {
 	setUserData(this.state.userInfo, () => this.refresh());
     }
 
+    handleRecommendClick(e){
+	this.state.userInfo.recommend = !this.state.userInfo.recommend;
+	setUserData(this.state.userInfo, () => this.refresh());
+    }
+
     render() {
 	return (
       <div className="col-md-10 col-md-offset-1 transparent-background">
@@ -38,12 +43,23 @@ export default class Settings extends React.Component {
 	</div>
 	<div className="row settings-row">
 	  <div className="col-md-4">
-	    Public profile:
+	    Private profile:
 	  </div>
 	  <div className="col-md-2">
             <input type="checkbox"
-		   checked={(this.state.public_profile !== "") ? this.state.public_profile : true}
+		   checked={(this.state.userInfo !== undefined) ? this.state.userInfo.public_profile : false}
 		   onChange={(e) => this.handlePublicClick(e)}
+	    />
+	  </div>
+	</div>
+	<div className="row settings-row">
+	  <div className="col-md-4">
+	    Show Recommendations:
+	  </div>
+	  <div className="col-md-2">
+            <input type="checkbox"
+		   checked={(this.state.userInfo !== undefined) ? this.state.userInfo.public_profile : false}
+		   onChange={(e) => this.handleRecommendClick(e)}
 	    />
 	  </div>
 	</div>
