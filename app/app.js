@@ -235,7 +235,6 @@ ReactDOM.render((
       <Route path="rising-playlists/:id" component={RisingPlaylistsPage} />
       <Route path="profile/:id" component={ProfilePage} />
       <Route path="forum/:id" component={ForumPage} />
-      <Route path="forum-topic/:id" component={ForumTopicPage} />
       <Route path="forum-topic/:fid/:id" component={ForumTopicPage} />
       <Route path="forum-thread/:id" component={ForumThreadPage} />
       <Route path="forum-newthread/:id" component={ForumNewThreadPage} />
