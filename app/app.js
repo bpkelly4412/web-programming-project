@@ -163,7 +163,7 @@ class RisingPlaylistsPage extends React.Component {
 class PrivateChatPage extends React.Component {
   render() {
       return (
-        <PrivateChat />
+        <PrivateChat userID={1}/>
       );
   }
 }
