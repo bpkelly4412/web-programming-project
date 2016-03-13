@@ -25,7 +25,7 @@ export default class Navbar extends React.Component {
     if(!searchText){
       alert("Please enter search terms!");
     } else
-      this.context.router.push({ pathname: "/search" , userID: { u: this.props.userID } , query: { q: searchText } });
+      this.context.router.push({ pathname: "/search", query: { q: searchText } });
   }
 
   componentDidMount() {

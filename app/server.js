@@ -177,6 +177,17 @@ export function getMostPopular(cb) {
   emulateServerReturn(mostPopularData, cb);
 }
 
+/*export function getMostPopular(cb) {
+  var playlists = readPlaylist('playlists');
+  var arr = [];
+  for (var attr in playlists){
+    arr.push(playlists[attr])
+  }
+
+
+  emulateServerReturn(mostPopularData, cb);
+}*/
+
 /**
 * Returns a HighestRated object
 */
@@ -224,6 +235,8 @@ export function searchPlaylist(terms, cb) {
   }
   emulateServerReturn(result, cb);
 }
+
+
 
 /**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.

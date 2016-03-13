@@ -15,11 +15,11 @@ export default class PlaylistTable extends React.Component {
           {this.props.description}
         </td>
         <td>
-          <button
+          {/*<button
             type="button"
             className="btn btn-default playlist-button">
             <span className="glyphicon glyphicon-play-circle" />
-          </button>
+          </button>*/}
         </td>
       </tr>
     )

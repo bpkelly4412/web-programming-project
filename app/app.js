@@ -182,7 +182,7 @@ class SongListPage extends React.Component {
 class SearchResultPage extends React.Component {
   render() {
       return (
-        <SearchResult />
+        <SearchResult userID={1} />
       );
   }
 }
@@ -220,8 +220,6 @@ class App extends React.Component {
 }
 
 ReactDOM.render((
-
-
     // <PlayListFeed />
   <Router history={hashHistory}>
     <Route path="/" component={App}>
