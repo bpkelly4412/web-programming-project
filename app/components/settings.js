@@ -23,13 +23,8 @@ export default class Settings extends React.Component {
     }
 
     handlePublicClick(e){
-	if(e.target.value === "on"){
-	    this.setState({profile_public: true});
-	}
-	else {
-	    this.setState({profile_public: false});
-	}
-	alert(JSON.stringify(this.state));
+	this.setState({profile_public: !this.state.profile_public}, () => this.refresh());
+	console.log(JSON.stringify(this.state));
 	setUserData(this.state, () => this.refresh());
     }
 
