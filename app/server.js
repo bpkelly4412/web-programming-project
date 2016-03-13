@@ -121,6 +121,11 @@ export function getUserData(userID, cb) {
   emulateServerReturn(userData, cb);
 }
 
+export function setUserData(data, cb) {
+    var userData = writeDocument('users', data);
+    emulateServerReturn(userData, cb);
+}
+
 /**
 * Given a user ID (for now), returns a PlaylistFeed object.
 */

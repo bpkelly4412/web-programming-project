@@ -11,6 +11,8 @@ var initialData = {
       "_id": 1,
       "userName": "Jon Snow",
       "playlistfeed": 1,
+      "profile_public": true,
+      "recommend": false,
       "status": "online",
       "chattingWith": 2
     },
@@ -18,12 +20,16 @@ var initialData = {
       "_id": 2,
       "userName": "Ned Stark",
       "playlistfeed": 2,
+      "profile_public": false,
+      "recommend": false,
       "status": "online"
     },
     "3": {
       "_id": 3,
       "userName": "Tyrion Lannister",
       "playlistfeed": 3,
+      "profile_public": true,
+      "recommend": true,
       "status": "online"
     },
     "4": {
