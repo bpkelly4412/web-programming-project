@@ -8,7 +8,7 @@ export default class RecentConversations extends React.Component {
   }
 
   refresh() {
-    getRecentConversations(this.props.userID, (recentConversations) => {
+    getRecentConversations(this.props.userID, this.props.otherUserID, (recentConversations) => {
       this.setState(recentConversations);
     });
   }

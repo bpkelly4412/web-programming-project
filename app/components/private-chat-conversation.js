@@ -81,9 +81,6 @@ export default class PrivateChatConversation extends React.Component {
       <div className="col-md-6">
         <div className="panel panel-default">
           <div className="panel-body panel-title-style chat-split">
-            <a href="private-chat-popup-open.html" className="pull-right">
-              <span className="glyphicon glyphicon-new-window" /> Portable Chat Window
-            </a>
             <h4>
               <a href="#">
                 {this.state.chatlogs[this.state.otherUserIndex].otherUser.userName}

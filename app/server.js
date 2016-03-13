@@ -148,12 +148,28 @@ export function getLiveHelpList(userID, cb) {
 }
 
 /**
-* Given a user ID (for now), returns a RecentConversations object.
+* Given a user ID (for now), returns a RecentConversations object. Also adds otherUserID to the user list if not found.
 */
-export function getRecentConversations(userID, cb) {
+export function getRecentConversations(userID, otherUserID, cb) {
   var recentConversations = readDocument('recent-conversations', userID);
-  recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id))
-  emulateServerReturn(recentConversations, cb);
+  var contains = false;
+
+  for(var i = 0; i < recentConversations.userList.length; i++) {
+    if (recentConversations.userList[i] === otherUserID) {
+      contains = true;
+      break;
+    }
+  }
+
+  if(contains === false) {
+    recentConversations.userList.push(otherUserID);
+    writeDocument('recent-conversations', userID);
+  }
+
+  var newRecentConversations = readDocument('recent-conversations', userID);
+  //console.log(newRecentConversations);
+  newRecentConversations.userList = newRecentConversations.userList.map((id) => readDocument('users', id))
+  emulateServerReturn(newRecentConversations, cb);
 }
 
 /**
@@ -198,11 +214,18 @@ export function removeRecentChat(userID, otherUserID, cb) {
   var recentChatData = readDocument('recent-conversations', userID);
   var userIndex = recentChatData.userList.indexOf(otherUserID);
   recentChatData.userList.splice(userIndex, 1);
-  writeDocument('recent-conversations', userID);
+  writeDocument('recent-conversations', recentChatData);
 
   emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
 }
 
+export function updateChattingWith(userID, otherUserID, cb) {
+  var userData = readDocument('users', userID);
+  userData.chattingWith = otherUserID;
+  writeDocument('users', userData);
+
+  emulateServerReturn(userData, cb);
+}
 /**
 * This will likely need to be moved? I am just performing a GET from Spotify's song database.
 */

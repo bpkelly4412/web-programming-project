@@ -11,7 +11,8 @@ var initialData = {
       "_id": 1,
       "userName": "Jon Snow",
       "playlistfeed": 1,
-      "status": "online"
+      "status": "online",
+      "chattingWith": 2
     },
     "2": {
       "_id": 2,
