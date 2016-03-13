@@ -25,7 +25,7 @@ export default class Recommend extends React.Component {
 
     render() {
 	return (
-	    Hi
+
       )
     }
 }

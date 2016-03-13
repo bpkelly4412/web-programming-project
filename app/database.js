@@ -14,7 +14,11 @@ var initialData = {
       "profile_public": true,
       "recommend": false,
       "status": "online",
-      "chattingWith": 2
+      "chattingWith": 2,
+      "recommendations":
+      [{"song": 2, "reason": 1},
+       {"song": 1, "reason": 2}]
+
     },
     "2": {
       "_id": 2,
@@ -122,6 +126,17 @@ var initialData = {
       "playlistfeed": 18,
       "status": "away"
     }
+  },
+
+  "songs": {
+      "1": {
+	  "artist": "Amon Amarth",
+	  "name": "Live for the Kill"
+      },
+      "2": {
+	  "artist": "Gaelic Storm",
+	  "name": "If Good Times were Dollars"
+      }
   },
   "playlist-feeds": {
     "1": {
