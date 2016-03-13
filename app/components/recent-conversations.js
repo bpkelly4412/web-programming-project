@@ -18,11 +18,11 @@ export default class RecentConversations extends React.Component {
   }
 
   handleSwitchChat(e, userID) {
-    this.props.handleSwitchChat(userID);
+    this.props.handleSwitchChat(e, userID);
   }
 
   handleRemoveRecentChat(e, userID) {
-    e.stopPropagation();
+    e.preventDefault();
 
     if (e.button === 0) {
       var callbackFunction = (updatedUserList => {
