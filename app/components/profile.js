@@ -7,7 +7,47 @@ export default class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {currentPlaylist: "", editing: false};
+    this.state = {currentPlaylist: {
+      "_id": 101,
+      "game": "Elite Dangerous",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Music for Space Travel",
+      "author": 1,
+      "votes": [1, 3],
+      "genre": "Classical",
+      "description": "Epic orchestra music.",
+      "url": "TBD",
+      "songs": [
+        {
+          "title": "Flight",
+          "artist": "Hans Zimmer",
+          "album": "Man of Steel (Original Motion Picture Soundtrack)",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Requiem (for String Orchestra)",
+          "artist": "Takemitsu",
+          "album": "Takemitsu: Orchestral Works",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Summa",
+          "artist": "Arvo Pärt",
+          "album": "The Very Best of Arvo Pärt",
+          "duration": 5000,
+          "url": "TBD"
+        },
+        {
+          "title": "Morag",
+          "artist": "Tyler Bates",
+          "album": "Guardians of the Galaxy (Original Score)",
+          "duration": 5000,
+          "url": "TBD"
+        }
+      ]
+    }, editing: false};
   }
 
 
@@ -86,7 +126,7 @@ export default class Profile extends React.Component {
           {/* end profile header container*/}
         </div>
         {/* end of profile pic row*/}
-{/*
+
         <div className="row">
           <Playlist key={this.state.currentPlaylist._id}
             userID={this.props.userID}
@@ -94,8 +134,8 @@ export default class Profile extends React.Component {
             plFeedID={""}
             callbackPlaylistFeed = {""} />
       </div>
-*/}
 
+{/*
         <div className="row profile-row">
           <div className="playlist col-md-12 table-responsive profile-playlist">
             <div className="row">
@@ -169,7 +209,7 @@ export default class Profile extends React.Component {
               </thead>
             </table>
           </div>
-        </div>
+        </div>*/}
         {/*end of 2nd row*/}
         <div className="row profile-row">
           <div className="col-md-2 col-md-offset-4">
