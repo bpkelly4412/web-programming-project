@@ -788,6 +788,7 @@ img.img-resize {
 }
 .settings-header-text{
     font-size: 30px;
+    padding-left: 10px;
 }
 .settings-row{
     font-size: 16px;

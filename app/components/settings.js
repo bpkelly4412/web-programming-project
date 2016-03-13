@@ -29,22 +29,34 @@ export default class Settings extends React.Component {
           </div>
 	</div>
 	<div className="row settings-row">
-	  <div className="col-md-6">
+	  <div className="col-md-4">
 	    Public profile:
 	  </div>
 	  <div className="col-md-2">
-	    Yes
+            <input type="checkbox"
+                   checked={this.state.public}
+                   onChange={this.handleChange.bind(this, 'public')}
+		   />
 	  </div>
 	</div>
 	<div className="row settings-row">
-	  <div className="col-md-6">
+	  <div className="col-md-4">
 	    Show Recommendations:
 	  </div>
 	  <div className="col-md-2">
-	    Yes
+	    <input type="checkbox"
+                   checked={this.state.public}
+                   onChange={this.handleChange.bind(this, 'recommend')}
+		   />
 	  </div>
 	</div>
-
+	<div className="btn-group pull-left" role="group">
+            <button
+              type="button"
+              className="btn btn-default">
+              Submit
+            </button>
+          </div>
       </div>
       )
     }
