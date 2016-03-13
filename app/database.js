@@ -11,28 +11,22 @@ var initialData = {
       "_id": 1,
       "userName": "Jon Snow",
       "playlistfeed": 1,
-      "settings": {
-	  "profile_public": true,
-	  "recommend": false
-	  }
+      "profile_public": true,
+      "recommend": false
     },
     "2": {
       "_id": 2,
       "userName": "Ned Stark",
       "playlistfeed": 2,
-	"settings": {
-	    "profile_public": false,
-	    "recommend": false
-	}
+      "profile_public": false,
+      "recommend": false
     },
     "3": {
       "_id": 3,
       "userName": "Tyrion Lannister",
       "playlistfeed": 3,
-	"settings": {
-	    "profile_public": true,
-	    "recommend": true
-	}
+      "profile_public": true,
+      "recommend": true
     }
   },
   "playlist-feeds": {

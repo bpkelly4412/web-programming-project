@@ -22,9 +22,15 @@ export default class Settings extends React.Component {
 	this.setState( {value: event.target.value} );
     }
 
-    handleCheckboxClick(e, type){
-	this.state.settings[type] = !this.state.settings[type]
-	setUserData(this.state.settings, () => this.refresh());
+    handlePublicClick(e){
+	if(e.target.value === "on"){
+	    this.setState({profile_public: true});
+	}
+	else {
+	    this.setState({profile_public: false});
+	}
+	alert(JSON.stringify(this.state));
+	setUserData(this.state, () => this.refresh());
     }
 
     render() {
@@ -41,8 +47,8 @@ export default class Settings extends React.Component {
 	  </div>
 	  <div className="col-md-2">
             <input type="checkbox"
-		   checked={this.state["settings"] ? this.state["settings"]["public_profile"] : false}
-		   onChange={(e) => this.handleCheckboxClick(e, "public_profile")}
+		   checked={(this.state.public_profile !== "") ? this.state.public_profile : true}
+		   onChange={(e) => this.handlePublicClick(e)}
 	    />
 	  </div>
 	</div>
