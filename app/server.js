@@ -172,6 +172,7 @@ export function postThread(user, topicID, title, contents, cb) {
   newThread = addDocument(topic, newThread);
 
   // Return the newly-posted object  emulateServerReturn(newThread, cb);
+  emulateServerReturn(newThread, cb);
 }
 
 export function postComment( user, topicID, threadID, contents, cb) {
