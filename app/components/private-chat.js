@@ -21,20 +21,20 @@ export default class PrivateChat extends React.Component {
     this.refresh();
   }
 
-  handleSwitchChat(otherID) {
-    //console.log(otherID);
+  handleSwitchChat(e, otherID) {
+    e.preventDefault();
+
     updateChattingWith(this.props.userID, otherID, () => {
       this.refresh();
     })
-    //console.log(this.state.chattingWith);
   }
 
   render() {
     return (
       <div className="row">
-        <RecentConversations userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(otherUserID) => this.handleSwitchChat(otherUserID)} />
+        <RecentConversations userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(e, otherUserID) => this.handleSwitchChat(e, otherUserID)} />
         <PrivateChatConversation userID={this.props.userID} otherUserID={this.state.chattingWith} />
-        <PrivateChatLiveHelp userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(otherUserID) => this.handleSwitchChat(otherUserID)} />
+        <PrivateChatLiveHelp userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(e, otherUserID) => this.handleSwitchChat(e, otherUserID)} />
       </div>
     )
   }

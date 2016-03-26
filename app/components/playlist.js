@@ -111,8 +111,8 @@ export default class Playlist extends React.Component {
                       data-target={playlistDivID}>
                       Songs <span className="fa fa-caret-square-o-down"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button disabled" title="Send to Spotify">
-                      Upload To Spotify <span className="fa fa-spotify"></span>
+                    <button type="button" className="btn btn-default playlist-button disabled" title="Sync with Spotify">
+                      Sync With Spotify <span className="fa fa-spotify"></span>
                     </button>
                     <button type="button"
                       className="btn btn-default playlist-button"

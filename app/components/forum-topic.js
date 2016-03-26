@@ -1,25 +1,32 @@
 import React from 'react';
+import { getTopic } from '../server';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
 
 
 export default class ForumTopic extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    "_id": 1,
+    "title": "General Forte Discussion",
+    "category": "forte",
+    "threadCount": [2],
+    "postCount": [2],
+    "threads": []
+      }
   }
 
   refresh() {
-    getUserData(this.props.userID, (userData) => {
-      this.setState(userData);
-    });
+     getTopic(this.props.tid, (topicData) => {
+       this.setState({topicData})
+     })
   }
-
 
   componentDidMount() {
     this.refresh();
   }
+
 
   render() {
     return (
@@ -30,16 +37,16 @@ export default class ForumTopic extends React.Component {
             <div className="row forum-header">
               <div className="col-md-12">
                 <ol className="breadcrumb">
-                  <li><Link to={"/home/" + this.state._id}>Home</Link></li>
-                  <li><Link to={"/forum/" + this.state._id}>Forums</Link></li>
-                  <li className="active">General Forte Discussion</li>
+                  <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
+                  <li><Link to={"/forum/" + this.props.userID}>Forums</Link></li>
+                  <li className="active">{this.state.title}</li>
                 </ol>
-                <h2> Forums: General Forte Discussion</h2>
+                <h2> {this.state.title}</h2>
                 <div className="row">
                   <div className="col-md-3">
                     <div className="btn-group" role="group" aria-label="...">
                       <button type="button" className="btn btn-default cr-btn">
-                        <Link to={"/forum-newthread/" + this.state._id}><span className="glyphicon glyphicon-comment" /> New Thread
+                        <Link to={"/forum-newthread/" + this.props.tid + "/" + this.props.userID}><span className="glyphicon glyphicon-comment" /> New Thread
                         </Link>
                       </button>
                     </div>
@@ -99,7 +106,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <Link to={"/forum-thread/" + this.state._id}>First Thread</Link>
+                        <Link to={"/forum-thread/" + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>First Thread</Link>
                       </td>
                       <td className="threads">
                         1
@@ -109,12 +116,12 @@ export default class ForumTopic extends React.Component {
                       </td>
                       <td className="lastdisc">
                         <p className="prvw-p">XX-XX-XXXX XX:XX</p>
-                        <p className="prvw-p"><a href="#">USER_TWO</a></p>
+                        <p className="prvw-p"><Link to={"/profile/" + 2}>Ned Stark</Link></p>
                       </td>
                     </tr>
                     <tr>
                       <td className="discussion">
-                        <Link to={"/forum-thread/" + this.state._id}>Let's Discuss</Link>
+                        <Link to={"/forum-thread/"  + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>Let's Discuss</Link>
                       </td>
                       <td className="threads">
                       </td>
@@ -130,7 +137,7 @@ export default class ForumTopic extends React.Component {
               <div className="col-md-3">
                 <div className="btn-group" role="group" aria-label="...">
                   <button type="button" className="btn btn-default cr-btn">
-                    <Link to={"/forum-newthread/" + this.state._id}><span className="glyphicon glyphicon-comment" /> New Thread
+                    <Link to={"/forum-newthread/" + this.props.tid + "/" + this.props.userID}><span className="glyphicon glyphicon-comment" /> New Thread
                     </Link>
                   </button>
                 </div>

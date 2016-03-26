@@ -20,6 +20,7 @@ import AboutUs from './components/about-us';
 import SongList from './components/song-list';
 import SearchResult from './components/search-result';
 import ContactUs from './components/contact-us';
+import Settings from './components/settings';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router'
 
 /**
@@ -42,10 +43,21 @@ class StartPage extends React.Component {
 class ProfilePage extends React.Component {
   render() {
     return (
-      <Profile />
+      <Profile userID={1} />
     );
   }
 }
+
+class SettingsPage extends React.Component {
+    render() {
+	return (
+	    <Settings userID={1} />
+	);
+    }
+}
+
+
+
 
 /**
  * The Saved Playlist Page PLACEHOLDER page.
@@ -97,7 +109,7 @@ class HighestRatedPage extends React.Component {
 class ForumPage extends React.Component {
   render() {
       return (
-        <Forum />
+        <Forum userID={this.props.params.id}/>
       );
   }
 }
@@ -105,7 +117,7 @@ class ForumPage extends React.Component {
 class ForumTopicPage extends React.Component {
   render() {
       return (
-        <ForumTopic />
+        <ForumTopic tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -113,7 +125,7 @@ class ForumTopicPage extends React.Component {
 class ForumThreadPage extends React.Component {
   render() {
       return (
-        <ForumThread />
+        <ForumThread thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -121,7 +133,7 @@ class ForumThreadPage extends React.Component {
 class ForumNewThreadPage extends React.Component {
   render() {
       return (
-        <ForumNewThread />
+        <ForumNewThread tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -129,7 +141,7 @@ class ForumNewThreadPage extends React.Component {
 class ForumNewPostPage extends React.Component {
   render() {
       return (
-        <ForumNewPost />
+        <ForumNewPost thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -247,11 +259,12 @@ ReactDOM.render((
       <Route path="highest-rated/:id" component={HighestRatedPage} />
       <Route path="rising-playlists/:id" component={RisingPlaylistsPage} />
       <Route path="profile/:id" component={ProfilePage} />
+      <Route path="settings/:id" component={SettingsPage} />
       <Route path="forum/:id" component={ForumPage} />
-      <Route path="forum-topic/:id" component={ForumTopicPage} />
-      <Route path="forum-thread/:id" component={ForumThreadPage} />
-      <Route path="forum-newthread/:id" component={ForumNewThreadPage} />
-      <Route path="forum-newpost/:id" component={ForumNewPostPage} />
+      <Route path="forum-topic/:tid/:id" component={ForumTopicPage} />
+      <Route path="forum-thread/:thid/:tid/:id" component={ForumThreadPage} />
+      <Route path="forum-newthread/:tid/:id" component={ForumNewThreadPage} />
+      <Route path="forum-newpost/:thid/:tid/:id" component={ForumNewPostPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />
