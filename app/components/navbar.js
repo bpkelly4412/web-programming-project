@@ -37,6 +37,13 @@ export default class Navbar extends React.Component {
     this.setState( {value: event.target.value} );
   }
 
+  handleKeyUp(e) {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      this.search();
+    }
+  }
+
   render() {
     return (
       <nav className="navbar navbar-fixed-top navbar-default">
@@ -80,12 +87,11 @@ export default class Navbar extends React.Component {
                 <input type="text" className="form-control"
                   placeholder="Search BBQ Forte"
                   value={this.state.value}
-                  onChange={(c) => this.handleChange(c)} />
+                  onChange={(c) => this.handleChange(c)}
+                  onKeyUp={(e) => this.handleKeyUp(e)} />
                   <span className="input-group-btn" id="search_button">
                     <button className="btn btn-secondary" type="button" onClick={() => this.onSearch(this.state.value)}>
-                      {/*<Link to={{ pathname: "/search/", query: { q: this.state.value }}}>
-                        Search
-                      </Link>*/}Search
+                      Search
                     </button>
                   </span>
 

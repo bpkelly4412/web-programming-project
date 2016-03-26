@@ -8,9 +8,6 @@ export default class SearchResult extends React.Component {
     // Populating this.state.contents with mock search data to display
 
     this.state = {
-      /*contextTypes: {
-        router: React.PropTypes.func
-      },*/
       userID: this.props.userID,
       playlists: []
             /*,
@@ -36,7 +33,7 @@ export default class SearchResult extends React.Component {
   }
 
   refresh() {
-    searchPlaylist("Elite", (playlists) => {
+    searchPlaylist(this.props.searchTerm, (playlists) => {
       this.setState({"playlists": playlists});
     });
   }
@@ -101,7 +98,7 @@ export default class SearchResult extends React.Component {
     return (
       <div className="col-md-12">
 
-        <h5>You are searching for {}</h5>
+        <h5>You are searching for ''{this.props.searchTerm}''</h5>
         <div className="panel-group">
           <h1 className="section-title">Playlists</h1>
 
@@ -205,8 +202,3 @@ export default class SearchResult extends React.Component {
     )
   }
 }
-
-
-SearchResult.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};

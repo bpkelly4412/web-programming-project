@@ -226,7 +226,7 @@ export function searchPlaylist(terms, cb) {
     for (var x in arr[i]){
       if(x === "game" || x === "title" || x === "genre" || x === "description"){
         //console.log(typeof arr[i][x]);
-        if(arr[i][x].includes(terms)){
+        if(arr[i][x].toLowerCase().includes(terms.toLowerCase())){
           result.push(arr[i]);
           continue outer;
         }
