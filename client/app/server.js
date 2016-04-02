@@ -93,15 +93,10 @@ export function createNewPlaylist(author, title, game, genre, description, cb) {
 /**
 * Removes a song from a playlist
 */
-export function removePlaylist(userID, playlistFeedID, playlistID, cb) {
-  var playlistfeed = readDocument('playlist-feeds', playlistFeedID);
-  var playlistFeedIndex = playlistfeed.contents.indexOf(playlistID);
-  if (playlistFeedIndex !== -1) {
-    playlistfeed.contents.splice(playlistFeedIndex, 1);
-    writeDocument('playlist-feeds', playlistfeed);
-    playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
-  }
-  emulateServerReturn(playlistfeed, cb);
+export function removePlaylist(playlistID, cb) {
+  sendXHR('DELETE', '/playlist/' + playlistID, undefined, () => {
+    cb();
+  });
 }
 
 /**

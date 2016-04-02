@@ -16,8 +16,8 @@ export default class PlayListFeed extends React.Component {
     this.onChildChanged = this.onChildChanged.bind(this);
   }
 
-  onChildChanged(newState) {
-    this.setState(newState);
+  onChildChanged() {
+    this.refresh();
   }
 
   refresh() {
@@ -135,7 +135,8 @@ export default class PlayListFeed extends React.Component {
           {this.state.contents.map((playlist, i) => {
             return (
               <div key={i}>
-                <Playlist userID={this.props.userID}
+                <Playlist key={i}
+                          userID={this.props.userID}
                           data={playlist}
                           plFeedID={this.state._id}
                           callbackPlaylistFeed = {this.onChildChanged} />

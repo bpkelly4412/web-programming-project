@@ -25,10 +25,10 @@ export default class Playlist extends React.Component {
   handleRemovePlaylistClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      var callbackFunction = (updatedPlaylists) => {
-        this.props.callbackPlaylistFeed(updatedPlaylists);
+      var callbackFunction = () => {
+        this.props.callbackPlaylistFeed();
       };
-      removePlaylist(this.props.userID, this.props.plFeedID, this.props.data._id, callbackFunction);
+      removePlaylist(this.props.data._id, callbackFunction);
     }
   }
 

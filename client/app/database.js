@@ -21,8 +21,8 @@ var initialData = {
       "status": "online",
       "chattingWith": 2,
       "recommendations":
-      [{"_id": 201, "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
-       {"_id": 202, "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
+        [{"_id": 201, "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
+          {"_id": 202, "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
     },
     "2": {
       "_id": 2,
@@ -143,14 +143,14 @@ var initialData = {
   },
 
   "songs": {
-      "1": {
-        "artist": "Amon Amarth",
-        "name": "Live for the Kill"
-      },
-      "2": {
-        "artist": "Gaelic Storm",
-        "name": "If Good Times were Dollars"
-      }
+    "1": {
+      "artist": "Amon Amarth",
+      "name": "Live for the Kill"
+    },
+    "2": {
+      "artist": "Gaelic Storm",
+      "name": "If Good Times were Dollars"
+    }
   },
   "playlist-feeds": {
     "1": {
@@ -432,247 +432,247 @@ var initialData = {
       "_id": 1,
       "topics": [
         {
-      "_id": 1,
-      "title": "General Forte Discussion",
-      "category": "forte",
-      "threadCount": [2],
-      "postCount": [2],
-      "threads": [
-        {
           "_id": 1,
-          "title": "First Thread",
-          "postCount": [1],
-          "posts": [
+          "title": "General Forte Discussion",
+          "category": "forte",
+          "threadCount": [2],
+          "postCount": [2],
+          "threads": [
             {
-            "_id": 1,
-            "author": 1,
-            "postDate": 1453668480000,
-            "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
+              "_id": 1,
+              "title": "First Thread",
+              "postCount": [1],
+              "posts": [
+                {
+                  "_id": 1,
+                  "author": 1,
+                  "postDate": 1453668480000,
+                  "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
+                },
+                {
+                  "_id": 2,
+                  "author": 2,
+                  "postdate": 1453690800000,
+                  "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
+                }
+              ]
             },
             {
-          "_id": 2,
-          "author": 2,
-          "postdate": 1453690800000,
-          "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
+              "_id": 2,
+              "title": "Let's Discuss",
+              "postCount": [0],
+              "posts": []
             }
           ]
         },
         {
           "_id": 2,
-          "title": "Let's Discuss",
+          "title": "Help and Suggestions",
+          "category": "forte",
+          "threadCount": [0],
           "postCount": [0],
-          "posts": []
+          "threads": []
+        },
+        {
+          "_id": 3,
+          "title": "Off-Topic",
+          "category": "forte",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 4,
+          "title": "Music General",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 5,
+          "title": "Polls/Quizzes/Games",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 6,
+          "title": "Ambient",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 7,
+          "title": "Classical",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 8,
+          "title": "Electronic",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 9,
+          "title": "Folk",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 10,
+          "title": "Hip-Hop",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 11,
+          "title": "Indie",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 12,
+          "title": "Jazz/Blues",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 13,
+          "title": "Metal",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 14,
+          "title": "Pop",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 15,
+          "title": "Rock",
+          "category": "music",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 16,
+          "title": "Games General",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 17,
+          "title": "Polls/Quizzes/Games",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 18,
+          "title": "Action-Adventure",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 19,
+          "title": "Fighters",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 20,
+          "title": "Shooters",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 21,
+          "title": "JRPGs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 22,
+          "title": "MOBAs/MMOs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 23,
+          "title": "Platformers",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 24,
+          "title": "Sandbox RPGs",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 25,
+          "title": "Sports",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 26,
+          "title": "Strategy",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
+        },
+        {
+          "_id": 27,
+          "title": "Visual Novel/Adventure",
+          "category": "games",
+          "threadCount": [0],
+          "postCount": [0],
+          "threads": []
         }
-      ]
-      },
-      {
-      "_id": 2,
-      "title": "Help and Suggestions",
-      "category": "forte",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 3,
-      "title": "Off-Topic",
-      "category": "forte",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 4,
-      "title": "Music General",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 5,
-      "title": "Polls/Quizzes/Games",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 6,
-      "title": "Ambient",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 7,
-      "title": "Classical",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 8,
-      "title": "Electronic",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 9,
-      "title": "Folk",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 10,
-      "title": "Hip-Hop",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 11,
-      "title": "Indie",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 12,
-      "title": "Jazz/Blues",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 13,
-      "title": "Metal",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 14,
-      "title": "Pop",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 15,
-      "title": "Rock",
-      "category": "music",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 16,
-      "title": "Games General",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 17,
-      "title": "Polls/Quizzes/Games",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 18,
-      "title": "Action-Adventure",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 19,
-      "title": "Fighters",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 20,
-      "title": "Shooters",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 21,
-      "title": "JRPGs",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 22,
-      "title": "MOBAs/MMOs",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 23,
-      "title": "Platformers",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 24,
-      "title": "Sandbox RPGs",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 25,
-      "title": "Sports",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 26,
-      "title": "Strategy",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      },
-      {
-      "_id": 27,
-      "title": "Visual Novel/Adventure",
-      "category": "games",
-      "threadCount": [0],
-      "postCount": [0],
-      "threads": []
-      }
       ]
     }
   },
@@ -960,18 +960,18 @@ if (data === null) {
 }
 
 /**
-* A dumb cloning routing. Serializes a JSON object as a string, then
-* deserializes it.
-*/
+ * A dumb cloning routing. Serializes a JSON object as a string, then
+ * deserializes it.
+ */
 function JSONClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
 /**
-* Emulates reading a "document" from a NoSQL database.
-* Doesn't do any tricky document joins, as we will cover that in the latter
-* half of the course. :)
-*/
+ * Emulates reading a "document" from a NoSQL database.
+ * Doesn't do any tricky document joins, as we will cover that in the latter
+ * half of the course. :)
+ */
 export function readDocument(collection, id) {
   // Clone the data. We do this to model a database, where you receive a
   // *copy* of an object and not the object itself.
@@ -979,10 +979,10 @@ export function readDocument(collection, id) {
 }
 
 /**
-* Emulates reading a "document", in this case playlist, from a NoSQL database.
-* Doesn't do any tricky document joins, as we will cover that in the latter
-* half of the course. :)
-*/
+ * Emulates reading a "document", in this case playlist, from a NoSQL database.
+ * Doesn't do any tricky document joins, as we will cover that in the latter
+ * half of the course. :)
+ */
 export function readPlaylist() {
   // Clone the data. We do this to model a database, where you receive a
   // *copy* of an object and not the object itself.
@@ -990,8 +990,8 @@ export function readPlaylist() {
 }
 
 /**
-* Emulates writing a "document" to a NoSQL database.
-*/
+ * Emulates writing a "document" to a NoSQL database.
+ */
 export function writeDocument(collection, changedDocument) {
   var id = changedDocument._id;
   // Store a copy of the object into the database. Models a database's behavior.
@@ -1001,8 +1001,8 @@ export function writeDocument(collection, changedDocument) {
 }
 
 /**
-* Adds a new document to the NoSQL database.
-*/
+ * Adds a new document to the NoSQL database.
+ */
 export function addDocument(collectionName, newDoc) {
   var collection = data[collectionName];
   var nextId = Object.keys(collection).length;
@@ -1015,29 +1015,33 @@ export function addDocument(collectionName, newDoc) {
 }
 
 /**
-* Reset our browser-local database.
-*/
+ * Reset our browser-local database.
+ */
 export function resetDatabase() {
   localStorage.setItem(startupName, JSON.stringify(initialData));
   data = JSONClone(initialData);
 }
 
 /**
-* Reset database button.
-*/
+ * Reset database button.
+ */
 class ResetDatabase extends React.Component {
   render() {
     return (
       <button className="btn btn-default" type="button" onClick={() => {
-          resetDatabase();
+          var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/resetdb');
+        xhr.addEventListener('load', function() {
           window.alert("Database reset! Refreshing the page now...");
           document.location.reload(false);
+        });
+        xhr.send();
         }}>Reset Mock DB</button>
-      );
-    }
+    );
   }
+}
 
-  ReactDOM.render(
-    <ResetDatabase />,
-    document.getElementById('db-reset')
-  );
+ReactDOM.render(
+  <ResetDatabase />,
+  document.getElementById('db-reset')
+);

@@ -18,14 +18,6 @@ app.use(express.static('../client/build'));
 app.use(bodyParser.text());
 app.use(bodyParser.json());
 
-
-/**
- * Starts the server on localhost:3000
- */
-app.listen(3000, function() {
-  console.log('Example app listening on port 3000.');
-});
-
 /**
  * Get the user ID from a token. Returns -1 (an invalid ID) if it fails.
  */
@@ -129,3 +121,65 @@ function createNewPlaylist(author, title, game, genre, description) {
   writeDocument('playlist-feeds', playerPlaylists);
   return newPlaylist;
 }
+
+/**
+ * Delete a playlist.
+ */
+app.delete('/playlist/:playlistid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert from a string into a number.
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var playlist = readDocument('playlists', playlistID);
+  // Check that the author of the post is requesting the delete.
+  if (playlist.author === fromUser) {
+    database.deleteDocument('playlists', playlistID);
+    // Remove references to this feed item from all other playlistFeeds.
+    var playlistFeeds = database.getCollection('playlist-feeds');
+    var playlistFeedIDs = Object.keys(playlistFeeds);
+    console.log(playlistFeedIDs);
+    playlistFeedIDs.forEach((playlistFeedID) => {
+      var playlistFeed = playlistFeeds[playlistFeedID];
+      var itemIdx = playlistFeed.contents.indexOf(playlistID);
+      if (itemIdx !== -1) {
+        // Splice out of array.
+        playlistFeed.contents.splice(itemIdx, 1);
+        // Update playlistFeed.
+        database.writeDocument('playlist-feeds', playlistFeed);
+      }
+    });
+    // Send a blank response to indicate success.
+    res.send();
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/**
+ * Reset the database
+ */
+app.post('/resetdb', function(req, res) {
+  console.log("Resetting the database...");
+  database.resetDatabase();
+  res.send();
+});
+
+/**
+ * Translate JSON Schema Validation failures into error 400s.
+ */
+app.use(function(err, req, res, next) {
+  if (err.name === 'JsonSchemaValidation') {
+    // Set a bad request http response status
+    res.status(400).end();
+  } else {
+    // It's some other sort of error; pass it to next error middleware handler
+    next(err);
+  }
+});
+
+/**
+ * Starts the server on localhost:3000
+ */
+app.listen(3000, function() {
+  console.log('Example app listening on port 3000.');
+});
