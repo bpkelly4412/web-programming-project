@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ErrorBanner from './components/errorbanner';
 import PlayListFeed from './components/playlistfeed';
 import Sidebar from './components/navbar';
 import Navbar from './components/sidebar';
@@ -233,12 +234,21 @@ class App extends React.Component {
     return (
       <div>
         <Navbar userID={1} />
-        <div className = "row">
-          <div className="col-md-2">
-            <Sidebar userID={1} />
-          </div>
-          <div className="col-md-10">
-            {this.props.children}
+        <div className="container">
+          <div className = "row">
+            <div className="col-md-2">
+              <Sidebar userID={1} />
+            </div>
+            <div className="col-md-10">
+              <div className="row">
+                <div className="col-md-12">
+                  <ErrorBanner />
+                </div>
+              </div>
+              <div className="row">
+                {this.props.children}
+              </div>
+            </div>
           </div>
         </div>
       </div>
