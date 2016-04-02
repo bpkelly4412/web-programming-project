@@ -10,6 +10,70 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
+var token = 'eyJpZCI6MX0=';
+/**
+ *  Properly configure and send an XMLHttpRequest with error handling,
+ *  authorization handling, and other needed properties
+ */
+function sendXHR(verb, resource, body, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open(verb, resource);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+  /* global FacebookError */
+  xhr.addEventListener('load', function() {
+    var statusCode = xhr.status;
+    var statusText = xhr.statusText;
+    if (statusCode >= 200 && statusCode < 300) {
+      cb(xhr);
+    } else {
+      var responseText = xhr.responseText;
+      BBQError('Could not ' +
+        verb + " " +
+        resource + ": Received " +
+        statusCode + " " +
+        statusText + ": " +
+        responseText);
+    }
+  });
+  xhr.timeout = 10000;
+  xhr.addEventListener('error', function() {
+    BBQError("Could not " +
+      verb + " " +
+      resource + ": Could not connect to the server.");
+  });
+  xhr.addEventListener('timeout', function() {
+    BBQError("Could not " +
+      verb + " " +
+      resource + ": Request timed out.");
+  });
+  switch (typeof (body)) {
+    case 'undefined':
+      xhr.send();
+      break;
+    case 'string':
+      xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      xhr.send(body);
+      break;
+    case 'object':
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(body));
+      break;
+    default:
+      throw new Error("Unknown body type: " + typeof(body));
+  }
+}
+
+//  ********* Playlist Functions ************
+
+/**
+ * Given a user ID (for now), returns a PlaylistFeed object.
+ */
+export function getPlaylistFeed(userID, cb) {
+  sendXHR('GET', '/user/' + userID + '/playlists', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
 /**
 * Adds a song to a playlist
 */
@@ -94,15 +158,6 @@ export function removeSong(playlistID, songIndex, cb) {
 }
 
 /**
-* Given a playlist ID returns a Playlist object.
-*/
-export function getPlaylist(playlistID) {
-  var playlist = readDocument('playlists', playlistID);
-  // playlist.contents = playlist.songs.map(getSong);
-  return playlist;
-}
-
-/**
 *with callback to use for profile page
 */
 export function getPlaylistCB(playlistID, cb) {
@@ -139,15 +194,6 @@ export function useRecommendation(userID, key, cb) {
     userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
     writeDocument('users', userData);
     emulateServerReturn(userData, cb);
-}
-/**
-* Given a user ID (for now), returns a PlaylistFeed object.
-*/
-export function getPlaylistFeed(userID, cb) {
-  var userData = readDocument('users', userID);
-  var playlistfeed = readDocument('playlist-feeds', userData.playlistfeed);
-  playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
-  emulateServerReturn(playlistfeed, cb);
 }
 
 /**
