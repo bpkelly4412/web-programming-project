@@ -1,5 +1,5 @@
 import React from 'react';
-import {getRecentConversations, removeRecentChat} from '../server';
+import {getRecentConversations, removeRecentChat, addRecentChat} from '../server';
 
 export default class RecentConversations extends React.Component {
   constructor(props) {
@@ -11,9 +11,24 @@ export default class RecentConversations extends React.Component {
     getRecentConversations(this.props.userID, this.props.otherUserID, (recentConversations) => {
       this.setState(recentConversations);
     });
+
+    /*if(this.state.userList.indexOf(this.props.otherUserID === -1)) {
+      addRecentChat(this.props.userID, this.props.otherUserID, (updatedList) => {
+        this.setState(updatedList);
+      });
+    }*/
   }
 
   componentDidMount() {
+    this.refresh();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.state.userList.indexOf(nextProps.otherUserID === -1)) {
+      addRecentChat(this.props.userID, nextProps.otherUserID, (updatedList) => {
+        this.setState(updatedList);
+      });
+    }
     this.refresh();
   }
 
@@ -55,14 +70,15 @@ export default class RecentConversations extends React.Component {
                   </a>
                   <a href="#" onClick={(e) => this.handleSwitchChat(e, user._id)}>
                     <div className="media">
+                      <br />
                       <div className="media-left">
                         PIC
                       </div>
                       <div className="media-body">
-                        <h5 className="media-heading">
+                        <div className="media-heading">
                           {user.userName}
-                        </h5>
-                        <p> [The user's most recent message]</p>
+                        </div>
+                      
                       </div>
                     </div>
                   </a>

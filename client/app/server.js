@@ -332,24 +332,20 @@ export function getLiveHelpList(userID, cb) {
 */
 export function getRecentConversations(userID, otherUserID, cb) {
   var recentConversations = readDocument('recent-conversations', userID);
-  var contains = false;
 
-  for(var i = 0; i < recentConversations.userList.length; i++) {
-    if (recentConversations.userList[i] === otherUserID) {
-      contains = true;
-      break;
-    }
+  recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id))
+  emulateServerReturn(recentConversations, cb);
+}
+
+export function addRecentChat(userID, otherUserID, cb) {
+  var recentChatData = readDocument('recent-conversations', userID);
+
+  if(recentChatData.userList.indexOf(otherUserID) === -1) {
+    recentChatData.userList.push(otherUserID);
+    writeDocument('recent-conversations', recentChatData);
   }
 
-  if(contains === false) {
-    recentConversations.userList.push(otherUserID);
-    writeDocument('recent-conversations', userID);
-  }
-
-  var newRecentConversations = readDocument('recent-conversations', userID);
-  //console.log(newRecentConversations);
-  newRecentConversations.userList = newRecentConversations.userList.map((id) => readDocument('users', id))
-  emulateServerReturn(newRecentConversations, cb);
+  emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
 }
 
 /**
