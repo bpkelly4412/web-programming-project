@@ -502,6 +502,7 @@ body {
 
 .media-heading {
   font-weight: bolder;
+  padding-bottom: 8px;
 }
 
 .chat-scroll {
