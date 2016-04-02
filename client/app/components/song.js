@@ -18,7 +18,8 @@ export default class Song extends React.Component {
       <table className="table table-hover">
         <tbody>
           <tr>
-            <td className="col-md-4">{this.props.trackNumber}... {this.props.title}</td>
+            <td className="col-md-4">{this.props.trackNumber}: {this.props.title}
+            </td>
             <td className="col-md-3">{this.props.artist}</td>
             <td className="col-md-4">{this.props.album}</td>
             <td className="col-md-1">

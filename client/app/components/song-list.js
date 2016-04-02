@@ -49,11 +49,11 @@ export default class SongList extends React.Component {
             <div className="form-group">
               <div className="input-group">
                 <input type="text"
-                  className="form-control"
-                  placeholder="Search for songs..."
-                  value={this.state.value}
-                  onChange={(e) => this.handleChange(e)}
-                  onKeyUp={(e) => this.handleKeyUp(e)} />
+                       className="form-control"
+                       placeholder="Search for songs..."
+                       value={this.state.value}
+                       onChange={(e) => this.handleChange(e)}
+                       onKeyUp={(e) => this.handleKeyUp(e)} />
                 <span className="input-group-addon">
                   <span className="fa fa-search"></span>
                 </span>
@@ -65,37 +65,40 @@ export default class SongList extends React.Component {
           {(() => {
             switch (this.state.currentSearch) {
               case "":
-              return null;
+                return null;
               default:
-              return <p className="search-result">Results for "{this.state.currentSearch}"</p>;
-              }
-            })()}
+                return <p className="search-result">Results for "{this.state.currentSearch}"</p>;
+            }
+          })()}
 
-          </div>
-          <div className="row">
-            <div className="col-md-10 col-md-offset-1 songlist-table">
-              {this.state.songs.map((songItem, i) => {
-                return (
-                  <div key={i} onClick={(e) => this.handleAddSongClick(e, songItem)}>
-                    <Song key={i}
-                      trackNumber={i + 1}
-                      title={songItem.title}
-                      artist={songItem.artist}
-                      album={songItem.album}
-                      playlistID={this.state._id}
-                      songID={songItem._id}
-                      callbackPlaylist = {this.onChildChanged}
-                      hideRemoveSong="true" />
-                  </div>
-                );
-              })}
-            </div>
+        </div>
+        <div className="row">
+          <div className="col-md-10 col-md-offset-1 songlist-table">
+            {this.state.songs.map((songItem, i) => {
+              return (
+                <div key={i} onClick={(e) => this.handleAddSongClick(e, songItem)}>
+                  <Song key={i}
+                        trackNumber={i + 1}
+                        spotifyID={songItem.spotify_id}
+                        title={songItem.title}
+                        artist={songItem.artist}
+                        album={songItem.album}
+                        url={songItem.url}
+                        uri={songItem.uri}
+                        images={songItem.images}
+                        playlistID={this.state._id}
+                        callbackPlaylist = {this.onChildChanged}
+                        hideRemoveSong="true" />
+                </div>
+              );
+            })}
           </div>
         </div>
-      )
-    }
+      </div>
+    )
   }
+}
 
-  SongList.contextTypes = {
-    router: React.PropTypes.object.isRequired
-  };
+SongList.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

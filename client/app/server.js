@@ -77,24 +77,17 @@ export function getPlaylistFeed(userID, cb) {
 /**
 * Adds a song to a playlist
 */
-export function createNewPlaylist(userID, name, game, genre, description, cb) {
-  var user = readDocument('users', userID);
-  var newPlaylist = {
-    "game": game,
-    "imageURL": "",
-    "title": name,
-    "author": userID,
-    "votes": [],
-    "genre": genre,
-    "description": description,
-    "url": "TBD",
-    "songs": []
-  };
-  newPlaylist = addDocument('playlists', newPlaylist);
-  var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
-  playerPlaylists.contents.unshift(newPlaylist._id);
-  writeDocument('playlist-feeds', playerPlaylists);
-  emulateServerReturn(newPlaylist._id, cb);
+export function createNewPlaylist(author, title, game, genre, description, cb) {
+  sendXHR('POST', '/playlist', {
+    userID: author,
+    author: author,
+    title: title,
+    game: game,
+    genre: genre,
+    description: description
+  }, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
@@ -477,7 +470,15 @@ export function getSongList(searchData, cb) {
     var resultsList = JSON.parse(newSong);
     for (var i = 0; i < resultsList.tracks.items.length; i++) {
       var nextItem = resultsList.tracks.items[i]
-      var song = {title: "", artist: "", album: "", url: ""};
+      var song = {
+        spotify_id: "",
+        title: "",
+        artist: "",
+        album: "",
+        uri: "",
+        duration: 0
+      };
+      song.spotify_id = nextItem.id;
       song.title = nextItem.name;
       if (nextItem.artists.length > 0) {
         song.artist = nextItem.artists[0].name;
@@ -485,7 +486,8 @@ export function getSongList(searchData, cb) {
         song.artist = "Unknown";
       }
       song.album = nextItem.album.name;
-      song.url = nextItem.external_urls.spotify;
+      song.uri = nextItem.uri;
+      song.duration = nextItem.duration_ms;
       songList.push(song);
     }
     // console.log(songList);

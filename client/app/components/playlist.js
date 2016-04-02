@@ -142,9 +142,12 @@ export default class Playlist extends React.Component {
                     <Song key={i}
                       trackNumber={i + 1}
                       songIndex={i}
+                      spotify_id = {songItem.spotify_id}
                       title={songItem.title}
                       artist={songItem.artist}
                       album={songItem.album}
+                      uri={songItem.uri}
+                      duration={songItem.duration}
                       playlistID={this.state._id}
                       songID={songItem._id}
                       callbackPlaylist = {this.onChildChanged}

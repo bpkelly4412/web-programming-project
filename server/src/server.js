@@ -10,6 +10,10 @@ var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
 var deleteDocument = database.deleteDocument;
 
+//  Schema properties
+var playlistSchema = require('./schemas/playlist_schema.json');
+var songSchema = require('./schemas/song_schema.json');
+
 app.use(express.static('../client/build'));
 app.use(bodyParser.text());
 app.use(bodyParser.json());
@@ -84,4 +88,44 @@ function getPlaylist(playlistID) {
   var playlist = readDocument('playlists', playlistID);
   // playlist.contents = playlist.songs.map(getSong);
   return playlist;
+}
+
+/**
+ * Post a new playlist
+ */
+app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === body.userID) {
+    var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description);
+    res.status(201);
+    res.send(newPlaylist);
+  } else {
+    res.status(401).end();
+  }
+});
+
+/**
+ * Creates a new, empty playlist
+ */
+function createNewPlaylist(author, title, game, genre, description) {
+  var user = readDocument('users', author);
+  var newPlaylist = {
+    "game": game,
+    "imageURL": "",
+    "title": title,
+    "author": author,
+    "votes": [],
+    "genre": genre,
+    "description": description,
+    "spotify_id": -1,
+    "url": "",
+    "uri": "",
+    "songs": []
+  };
+  newPlaylist = addDocument('playlists', newPlaylist);
+  var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
+  playerPlaylists.contents.unshift(newPlaylist._id);
+  writeDocument('playlist-feeds', playerPlaylists);
+  return newPlaylist;
 }
