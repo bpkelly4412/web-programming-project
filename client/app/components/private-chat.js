@@ -33,7 +33,7 @@ export default class PrivateChat extends React.Component {
     return (
       <div className="row">
         <RecentConversations userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(e, otherUserID) => this.handleSwitchChat(e, otherUserID)} />
-        <PrivateChatConversation userID={this.props.userID} otherUserID={this.state.chattingWith} />
+        <PrivateChatConversation userID={this.props.userID} user={this.state} />
         <PrivateChatLiveHelp userID={this.props.userID} otherUserID={this.state.chattingWith} handleSwitchChat={(e, otherUserID) => this.handleSwitchChat(e, otherUserID)} />
       </div>
     )
