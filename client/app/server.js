@@ -65,9 +65,33 @@ function sendXHR(verb, resource, body, cb) {
 
 //  ********* Spotify Authorization Functions ************
 
-export function spotifyLoginUser(userID, cb) {
+export function spotifySyncPlaylist(userID, playlistID, cb) {
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        window.open(authURL);
+      });
+    }
+  });
+}
+
+function spotifyLoginUser(userID, cb) {
   sendXHR('GET', '/spotify/login/' + userID, undefined, (xhr) => {
     cb(xhr.responseText);
+  });
+}
+
+function isSpotifyLoggedIn(userID, cb) {
+  sendXHR('GET', '/spotify/loggedin/' + userID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function spotifyLogoutUser(userID, cb) {
+  sendXHR('DELETE', 'spotify/login/' + userID, undefined, () => {
+    cb();
   });
 }
 

@@ -15,7 +15,7 @@ var SpotifyWebAPI = require('spotify-web-api-node');
 var spotifyApi = new SpotifyWebAPI({
   clientId: 'c9473ef6a4b047409ddcde165c836c0e',
   clientSecret : '4d566de3bd99456099bce4af5e18c7e1',
-  redirectUri : 'http://localhost:3000/spotifycallback'
+  redirectUri : 'http://localhost:3000/spotifycallback/'
 });
 
 //  Schema properties
@@ -73,15 +73,7 @@ var generateRandomString = function(length) {
   return text;
 };
 
-
 app.get('/spotify/login/:userid', function(req, res) {
-
-  //  Test login status
-
-  spotifyApi.getAccessToken()
-
-  //********************
-
 
   var userID = parseInt(req.params.userid);
   var fromUser = getUserIdFromToken(req.get('Authorization'));
@@ -95,6 +87,54 @@ app.get('/spotify/login/:userid', function(req, res) {
     res.status(401).end();
   }
 });
+
+app.get('/spotifycallback', function(req, res) {
+  var code = req.query.code || null;
+  spotifyApi.authorizationCodeGrant(code).then(function(data) {
+    // Set the access token on the API object to use it in later calls
+    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setRefreshToken(data.body['refresh_token']);
+
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+  res.send();
+});
+
+/**
+ * Checks if the user is logged into Spotify.
+ */
+app.get('/spotify/loggedin/:userid', function(req, res) {
+
+  var userID = parseInt(req.params.userid);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === userID) {
+    if (spotifyApi.getAccessToken() !== null) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
+/**
+ * Disconnects Spotify.
+ */
+app.delete('/spotify/login/:userid', function(req, res) {
+  var userID = parseInt(req.params.userid);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === userID) {
+    spotifyApi.resetAccessToken();
+    spotifyApi.resetRefreshToken();
+    res.send();
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+})
 
 /**
  * Search for songs on Spotify

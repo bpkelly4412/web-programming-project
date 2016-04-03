@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { spotifyLoginUser, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { spotifyLogoutUser, spotifySyncPlaylist, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -18,8 +18,17 @@ export default class Playlist extends React.Component {
   handleSpotifyClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      spotifyLoginUser(this.props.userID, (url) => {
-        window.open(url);
+      spotifySyncPlaylist(this.props.userID, this.props.data._id, () => {
+
+      });
+    }
+  }
+
+  handleLogOutSpotifyClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      spotifyLogoutUser(this.props.userID, () => {
+        console.log("Logged out of Spotify.");
       });
     }
   }
@@ -125,6 +134,12 @@ export default class Playlist extends React.Component {
                             title="Sync with Spotify"
                             onClick={(e) => this.handleSpotifyClick(e)}>
                       Sync With Spotify <span className="fa fa-spotify"></span>
+                    </button>
+                    <button type="button"
+                            className="btn btn-default playlist-button"
+                            title="Logout Spotify"
+                            onClick={(e) => this.handleLogOutSpotifyClick(e)}>
+                      LOGOUT (test) Spotify <span className="fa fa-spotify"></span>
                     </button>
                     <button type="button"
                       className="btn btn-default playlist-button"
