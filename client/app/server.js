@@ -65,31 +65,85 @@ function sendXHR(verb, resource, body, cb) {
 
 //  ********* Spotify Authorization Functions ************
 
-export function spotifySyncPlaylist(userID, playlistID, cb) {
+/**
+ * For the given playlist ID, this compares that playlist to the user's playlists on Spotify.
+ *    If it does not exist, it will create one and add all of the tracks.
+ *    If it does exist, it will compare the tracks and info to the playlist on Spotify and:
+ *      - Add tracks to the Spotify playlist that are on the local, but not on Spotify.
+ *      - Remove tracks from the Spotify playlist that are no longer on the local.
+ *      - Update the Spotify playlist info to match the local playlist.
+ * @param userID
+ * @param playlistID
+ * @param cb
+ */
+export function pushPlaylistToSpotify(userID, playlistID, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
 
     } else {
       spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
         window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
         cb(undefined);
       });
     }
   });
 }
 
+/**
+ * For the given playlist ID, this compares that playlist to the user's playlists on Spotify.
+ *    If it does exist, it will compare the tracks and info to the playlist on Spotify and:
+ *      - Add tracks to the local playlist that are on the Spotify, but not on local.
+ *      - Remove tracks from the local playlist that are no longer on the Spotify.
+ *      - Update the local playlist info to match the Spotify playlist.
+ * @param userID
+ * @param playlistID
+ * @param cb
+ */
+export function pullPlaylistFromSpotify(userID, playlistID, cb) {
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
+        window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
+        cb(undefined);
+      });
+    }
+  });
+}
+
+/**
+ * Returns the login URL for the current user for Spotify.
+ * @param userID
+ * @param cb
+ */
 function spotifyLoginUser(userID, cb) {
   sendXHR('GET', '/spotify/login/' + userID, undefined, (xhr) => {
     cb(xhr.responseText);
   });
 }
 
+/**
+ * Call this to check if there is an access token for Spotify
+ * @param userID
+ * @param cb
+ */
 function isSpotifyLoggedIn(userID, cb) {
   sendXHR('GET', '/spotify/loggedin/' + userID, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
 
+/**
+ * Log the current user out of Spotify.
+ * This should be called when the user logs out of our app as well.
+ * @param userID
+ * @param cb
+ */
 export function spotifyLogoutUser(userID, cb) {
   sendXHR('DELETE', 'spotify/login/' + userID, undefined, () => {
     cb();

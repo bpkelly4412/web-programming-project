@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { spotifyLogoutUser, spotifySyncPlaylist, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { spotifyLogoutUser, pushPlaylistToSpotify, pullPlaylistFromSpotify, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -15,10 +15,23 @@ export default class Playlist extends React.Component {
     this.setState(newState);
   }
 
-  handleSpotifyClick(clickEvent) {
+  handlePushSpotifyClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      spotifySyncPlaylist(this.props.userID, this.props.data._id, (response) => {
+      pushPlaylistToSpotify(this.props.userID, this.props.data._id, (response) => {
+        if (response !== undefined) {
+
+        } else {
+          console.log("UNDEFINED.")
+        }
+      });
+    }
+  }
+
+  handlePullSpotifyClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      pullPlaylistFromSpotify(this.props.userID, this.props.data._id, (response) => {
         if (response !== undefined) {
 
         } else {
@@ -135,15 +148,15 @@ export default class Playlist extends React.Component {
                     </button>
                     <button type="button"
                             className="btn btn-default playlist-button"
-                            title="Sync with Spotify"
-                            onClick={(e) => this.handleSpotifyClick(e)}>
-                      Sync With Spotify <span className="fa fa-spotify"></span>
+                            title="Push to Spotify"
+                            onClick={(e) => this.handlePushSpotifyClick(e)}>
+                      Push to Spotify <span className="fa fa-spotify"></span>
                     </button>
                     <button type="button"
                             className="btn btn-default playlist-button"
-                            title="Logout Spotify"
-                            onClick={(e) => this.handleLogOutSpotifyClick(e)}>
-                      LOGOUT (test) Spotify <span className="fa fa-spotify"></span>
+                            title="Pull from Spotify"
+                            onClick={(e) => this.handlePullSpotifyClick(e)}>
+                      Pull from Spotify <span className="fa fa-spotify"></span>
                     </button>
                     <button type="button"
                       className="btn btn-default playlist-button"
