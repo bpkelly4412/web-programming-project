@@ -175,6 +175,22 @@ app.post('/songlist', function(req, res) {
   }
 });
 
+/**
+* Given a user ID, returns a UserData object.
+*/
+app.get('/user/:userID', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  if (fromUser === userID) {
+    // Send response.
+    var userData = readDocument('users', userID);
+    res.send(userData);
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
 /*
  *  PLAYLIST FEED FUNCTIONS
  */
@@ -485,7 +501,6 @@ function getConversationsSync(userID) {
       message.author = readDocument('users', message.author);
     })
   })
-  console.log(conversationsData);
   return conversationsData;
 }
 
@@ -537,7 +552,6 @@ app.post('/private-chat/conversations/:userID/chat-with/:otherUserIndex', valida
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var userID = parseInt(req.params.userID, 10);
   var otherUserIndex = parseInt(req.params.otherUserIndex, 10);
-  console.log(req.body);
 
   if (userID === fromUser) {
     var conversationsData = readDocument('conversations', userID);
@@ -548,8 +562,27 @@ app.post('/private-chat/conversations/:userID/chat-with/:otherUserIndex', valida
     writeDocument('conversations', conversationsData);
 
     var syncedConversations = getConversationsSync(userID);
-    console.log("aijwefhnaoiwebfoawebfiwbaeiufbaweiufv      " + syncedConversations.userID + "      awefawefawef      "+syncedConversations.chatlog);
     res.send(syncedConversations);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/**
+* Switches the chat box to display a conversation with a different user
+*/
+app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserID = parseInt(req.params.otherUserID, 10);
+
+  if (userID === fromUser) {
+    var userData = readDocument('users', userID);
+    userData.chattingWith = otherUserID;
+    writeDocument('users', userData);
+
+    res.send(userData);
   } else {
     // 401: Unauthorized.
     res.status(401).end();
