@@ -253,16 +253,22 @@ export function postComment( user, topicID, threadID, contents, cb) {
 * Returns a NewsUpdates object.
 */
 export function getNewsUpdates(cb) {
-  var newsData = readDocument('newsUpdates', 1);
-  emulateServerReturn(newsData, cb);
+  // var newsData = readDocument('newsUpdates', 1);
+  // emulateServerReturn(newsData, cb);
+  sendXHR('GET', '/news-updates/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
 * Returns a GameCarousel object.
 */
 export function getCarousel(cb) {
-  var carouselData = readDocument('carousel', 1);
-  emulateServerReturn(carouselData, cb);
+  // var carouselData = readDocument('carousel', 1);
+  // emulateServerReturn(carouselData, cb);
+  sendXHR('GET', '/carousel/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**

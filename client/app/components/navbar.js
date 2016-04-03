@@ -20,11 +20,17 @@ export default class Navbar extends React.Component {
   }
 
   // Called after navbar button is pressed
-  onSearch(searchText) {
+  /*onSearch(searchText) {
     if(!searchText){
       alert("Please enter search terms!");
     } else
       this.context.router.push({ pathname: "/search", query: { q: searchText } });
+  }*/
+  onSearch() {
+    if(!this.state.value){
+      alert("Please enter search terms!");
+    } else
+      this.context.router.push({ pathname: "/search", query: { q: this.state.value } });
   }
 
   componentDidMount() {
@@ -39,7 +45,7 @@ export default class Navbar extends React.Component {
   handleKeyUp(e) {
     e.preventDefault();
     if (e.key === "Enter") {
-      this.search();
+      this.onSearch();
     }
   }
 
@@ -89,7 +95,7 @@ export default class Navbar extends React.Component {
                   onChange={(c) => this.handleChange(c)}
                   onKeyUp={(e) => this.handleKeyUp(e)} />
                   <span className="input-group-btn" id="search_button">
-                    <button className="btn btn-secondary" type="button" onClick={() => this.onSearch(this.state.value)}>
+                    <button className="btn btn-secondary" type="button" onClick={() => this.onSearch()}>
                       Search
                     </button>
                   </span>

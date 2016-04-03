@@ -243,6 +243,22 @@ app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
  *    ********* END of PLAYLIST functions
  */
 
+/*
+ * Returns the Carousel object
+*/
+app.get('/carousel/', function(req, res) {
+  var carouselData = readDocument('carousel', 1);
+  res.send(carouselData);
+});
+
+/*
+ * Returns the NewsUpdates object
+*/
+app.get('/news-updates/', function(req, res) {
+  var newsData = readDocument('newsUpdates', 1);
+  res.send(newsData);
+});
+
 /**
  * Reset the database
  */
