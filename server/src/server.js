@@ -127,22 +127,17 @@ function createNewPlaylist(author, title, game, genre, description) {
  */
 app.delete('/playlist/:playlistid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
-  // Convert from a string into a number.
   var playlistID = parseInt(req.params.playlistid, 10);
   var playlist = readDocument('playlists', playlistID);
-  // Check that the author of the post is requesting the delete.
   if (playlist.author === fromUser) {
     database.deleteDocument('playlists', playlistID);
-    // Remove references to this feed item from all other playlistFeeds.
     var playlistFeeds = database.getCollection('playlist-feeds');
     var playlistFeedIDs = Object.keys(playlistFeeds);
     playlistFeedIDs.forEach((playlistFeedID) => {
       var playlistFeed = playlistFeeds[playlistFeedID];
       var itemIdx = playlistFeed.contents.indexOf(playlistID);
       if (itemIdx !== -1) {
-        // Splice out of array.
         playlistFeed.contents.splice(itemIdx, 1);
-        // Update playlistFeed.
         database.writeDocument('playlist-feeds', playlistFeed);
       }
     });
@@ -196,7 +191,7 @@ app.delete('/playlist/:playlistid/votes/:userid', function(req, res) {
 });
 
 /**
- * Adds a song to a particular playlist
+ * Adds a song to a particular playlist.
  */
 app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
   function(req, res) {
@@ -223,6 +218,26 @@ app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
     }
   }
 );
+
+/**
+ * Removes a song from a particular playlist.
+ */
+app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var playlist = readDocument('playlists', playlistID);
+  var songIndex = parseInt(req.params.songindex);
+  if (playlist.author === fromUser) {
+    if (songIndex !== -1) {
+      playlist.songs.splice(songIndex, 1);
+      writeDocument('playlists', playlist);
+    }
+    res.send(playlist);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
 
 /*
  *    ********* END of PLAYLIST functions

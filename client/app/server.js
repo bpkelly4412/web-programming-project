@@ -137,13 +137,10 @@ export function addSong(playlistID, userID, song, cb) {
 * Removes a song from a playlist
 */
 export function removeSong(playlistID, songIndex, cb) {
-  var playlist = readDocument('playlists', playlistID);
-  if (songIndex !== -1) {
-    playlist.songs.splice(songIndex, 1);
-    // playlist.contents.splice(songIndex, 1);
-    writeDocument('playlists', playlist)
-  }
-  emulateServerReturn(getPlaylist(playlistID), cb);
+  console.log(playlistID);
+  sendXHR('DELETE', '/playlist/' + playlistID + '/songs/' + songIndex, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**

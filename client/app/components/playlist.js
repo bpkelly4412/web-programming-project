@@ -148,7 +148,7 @@ export default class Playlist extends React.Component {
                       album={songItem.album}
                       uri={songItem.uri}
                       duration={songItem.duration}
-                      playlistID={this.state._id}
+                      playlistID={this.props.data._id}
                       callbackPlaylist = {this.onChildChanged}
                       hideRemoveSong="false" />
                   );
