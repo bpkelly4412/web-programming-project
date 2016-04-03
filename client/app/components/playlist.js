@@ -18,8 +18,12 @@ export default class Playlist extends React.Component {
   handleSpotifyClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      spotifySyncPlaylist(this.props.userID, this.props.data._id, () => {
+      spotifySyncPlaylist(this.props.userID, this.props.data._id, (response) => {
+        if (response !== undefined) {
 
+        } else {
+          console.log("UNDEFINED.")
+        }
       });
     }
   }

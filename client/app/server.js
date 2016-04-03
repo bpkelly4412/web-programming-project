@@ -72,6 +72,7 @@ export function spotifySyncPlaylist(userID, playlistID, cb) {
     } else {
       spotifyLoginUser(userID, (authURL) => {
         window.open(authURL);
+        cb(undefined);
       });
     }
   });
