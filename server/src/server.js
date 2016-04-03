@@ -136,7 +136,6 @@ app.delete('/playlist/:playlistid', function(req, res) {
     // Remove references to this feed item from all other playlistFeeds.
     var playlistFeeds = database.getCollection('playlist-feeds');
     var playlistFeedIDs = Object.keys(playlistFeeds);
-    console.log(playlistFeedIDs);
     playlistFeedIDs.forEach((playlistFeedID) => {
       var playlistFeed = playlistFeeds[playlistFeedID];
       var itemIdx = playlistFeed.contents.indexOf(playlistID);
@@ -154,6 +153,80 @@ app.delete('/playlist/:playlistid', function(req, res) {
     res.status(401).end();
   }
 });
+
+/**
+ * Adds a vote for a particular user
+ */
+app.put('/playlist/:playlistid/votes/:userid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    var playlist = readDocument('playlists', playlistID);
+    if (playlist.votes.indexOf(userId) === -1) {
+      playlist.votes.push(userId);
+      writeDocument('playlists', playlist);
+    }
+    res.send(playlist.votes);
+  } else {
+    res.status(401).end();
+  }
+});
+
+/**
+ * Removes a vote from a playlist for a particular user.
+ */
+app.delete('/playlist/:playlistid/votes/:userid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert params from string to number.
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    var playlist = readDocument('playlists', playlistID);
+    var voteIndex = playlist.votes.indexOf(userId);
+    if (voteIndex !== -1) {
+      playlist.votes.splice(voteIndex, 1);
+      writeDocument('playlists', playlist);
+    }
+    res.send(playlist.votes);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/**
+ * Adds a song to a particular playlist
+ */
+app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
+  function(req, res) {
+    var body = req.body;
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userid, 10);
+    var playlistID = parseInt(req.params.playlistid, 10);
+    if (fromUser === userID) {
+      var playlist = readDocument('playlists', playlistID);
+      var song = {
+        "spotify_id":body.spotify_id,
+        "title":body.title,
+        "artist":body.artist,
+        "album":body.album,
+        "uri":body.uri,
+        "duration":body.duration
+      };
+      playlist.songs.push(song);
+      writeDocument('playlists', playlist);
+      res.send(playlist);
+    } else {
+      // 401: Unauthorized.
+      res.status(401).end();
+    }
+  }
+);
+
+/*
+ *    ********* END of PLAYLIST functions
+ */
 
 /**
  * Reset the database

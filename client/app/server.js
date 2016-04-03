@@ -103,33 +103,34 @@ export function removePlaylist(playlistID, cb) {
 * Updates a playlist's votes by adding the userID.
 */
 export function votePlaylist(playlistID, userId, cb) {
-  var playlist = readDocument('playlists', playlistID);
-  playlist.votes.push(userId);
-  writeDocument('playlists', playlist);
-  emulateServerReturn(playlist.votes, cb);
+  sendXHR('PUT', '/playlist/'+playlistID+'/votes/'+userId, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
 * Updates a playlist's votes by removing the userID.
 */
 export function unvotePlaylist(playlistID, userId, cb) {
-  var playlist = readDocument('playlists', playlistID);
-  var userIndex = playlist.votes.indexOf(userId);
-  if (userIndex !== -1) {
-    playlist.votes.splice(userIndex, 1);
-    writeDocument('playlists', playlist);
-  }
-  emulateServerReturn(playlist.votes, cb);
+  sendXHR('DELETE', '/playlist/'+playlistID+'/votes/'+userId, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
 * Adds a song to a playlist
 */
-export function addSong(playlistID, song, cb) {
-  var playlist = readDocument('playlists', playlistID);
-  playlist.songs.push(song);
-  writeDocument('playlists', playlist);
-  emulateServerReturn(getPlaylist(playlistID), cb);
+export function addSong(playlistID, userID, song, cb) {
+  sendXHR('PUT', '/playlist/' + playlistID + '/songs/' + userID, {
+    spotify_id: song.spotify_id,
+    title: song.title,
+    artist: song.artist,
+    album: song.album,
+    uri: song.uri,
+    duration: song.duration
+  }, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**

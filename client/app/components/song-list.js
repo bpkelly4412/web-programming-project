@@ -37,7 +37,7 @@ export default class SongList extends React.Component {
         this.setState({ songs: [], value: "", currentSearch: "" });
         this.props.callbackPlaylist(updatedSongs);
       };
-      addSong(this.props.pid, songItem, callbackFunction);
+      addSong(this.props.pid, this.props.userID, songItem, callbackFunction);
     }
   }
 
@@ -83,9 +83,7 @@ export default class SongList extends React.Component {
                         title={songItem.title}
                         artist={songItem.artist}
                         album={songItem.album}
-                        url={songItem.url}
                         uri={songItem.uri}
-                        images={songItem.images}
                         playlistID={this.state._id}
                         callbackPlaylist = {this.onChildChanged}
                         hideRemoveSong="true" />
