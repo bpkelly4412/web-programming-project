@@ -10,6 +10,14 @@ var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
 var deleteDocument = database.deleteDocument;
 
+//  Spotify
+var SpotifyWebAPI = require('spotify-web-api-node');
+var spotifyApi = new SpotifyWebAPI({
+  clientId: 'c9473ef6a4b047409ddcde165c836c0e',
+  clientSecret : '4d566de3bd99456099bce4af5e18c7e1',
+  redirectUri : 'http://localhost:3000/spotifycallback/'
+});
+
 //  Schema properties
 var playlistSchema = require('./schemas/playlist_schema.json');
 var songSchema = require('./schemas/song_schema.json');
@@ -21,6 +29,8 @@ app.use(bodyParser.json());
 
 /**
  * Get the user ID from a token. Returns -1 (an invalid ID) if it fails.
+ * @param {string} authorizationLine The line from the header for authorization.
+ * @return {number} The returned user id number.
  */
 function getUserIdFromToken(authorizationLine) {
   try {
@@ -43,6 +53,127 @@ function getUserIdFromToken(authorizationLine) {
     return -1;
   }
 }
+
+/*
+ *  SPOTIFY AUTHORIZATION FUNCTIONS
+ */
+
+/**
+ * Generates a random string containing numbers and letters
+ * This is for the Spotify `state` parameter to guard from the redirect URI being guessed.
+ * @param  {number} length The length of the string
+ * @return {string} The generated string
+ */
+var generateRandomString = function(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
+app.get('/spotify/login/:userid', function(req, res) {
+
+  var userID = parseInt(req.params.userid);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === userID) {
+    var scopes = ['user-read-private', 'user-read-email'];
+    var state = generateRandomString(16);
+    var authURL = spotifyApi.createAuthorizeURL(scopes, state);
+    res.send(authURL);
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
+app.get('/spotifycallback', function(req, res) {
+  var code = req.query.code || null;
+  spotifyApi.authorizationCodeGrant(code).then(function(data) {
+    // Set the access token on the API object to use it in later calls
+    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setRefreshToken(data.body['refresh_token']);
+
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+  res.send();
+});
+
+/**
+ * Checks if the user is logged into Spotify.
+ */
+app.get('/spotify/loggedin/:userid', function(req, res) {
+
+  var userID = parseInt(req.params.userid);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === userID) {
+    if (spotifyApi.getAccessToken() !== null) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
+/**
+ * Disconnects Spotify.
+ */
+app.delete('/spotify/login/:userid', function(req, res) {
+  var userID = parseInt(req.params.userid);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser === userID) {
+    spotifyApi.resetAccessToken();
+    spotifyApi.resetRefreshToken();
+    res.send();
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+})
+
+/**
+ * Search for songs on Spotify
+ */
+app.post('/songlist', function(req, res) {
+  console.log(req.body);
+  if (typeof(req.body) === 'string') {
+    var songList = [];
+    spotifyApi.searchTracks(req.body)
+      .then(function(data) {
+        data.body.tracks.items.map(function(nextItem) {
+            var song = {
+              spotify_id: "",
+              title: "",
+              artist: "",
+              album: "",
+              uri: "",
+              duration: 0
+            };
+            song.spotify_id = nextItem.id;
+            song.title = nextItem.name;
+            if (nextItem.artists.length > 0) {
+              song.artist = nextItem.artists[0].name;
+            } else {
+              song.artist = "Unknown";
+            }
+            song.album = nextItem.album.name;
+            song.uri = nextItem.uri;
+            song.duration = nextItem.duration_ms;
+            songList.push(song);
+        });
+        res.send(songList);
+      })
+  } else {
+    // 400: Bad Request.
+    res.status(400).end();
+  }
+});
 
 /*
  *  PLAYLIST FEED FUNCTIONS
@@ -76,6 +207,8 @@ function getPlaylistFeed(userID) {
 
 /**
  * Given a playlist ID returns a Playlist object.
+ * @param {number} playlistID The playlist _id.
+ * @return {Playlist} The playlist retrieved.
  */
 function getPlaylist(playlistID) {
   var playlist = readDocument('playlists', playlistID);
@@ -101,13 +234,13 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
 /**
  * Creates a new, empty playlist
  */
-function createNewPlaylist(author, title, game, genre, description) {
-  var user = readDocument('users', author);
+function createNewPlaylist(userID, title, game, genre, description) {
+  var user = readDocument('users', userID);
   var newPlaylist = {
     "game": game,
     "imageURL": "",
     "title": title,
-    "author": author,
+    "author": userID,
     "votes": [],
     "genre": genre,
     "description": description,
