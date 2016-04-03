@@ -63,6 +63,25 @@ function sendXHR(verb, resource, body, cb) {
   }
 }
 
+//  ********* Spotify Authorization Functions ************
+
+export function spotifyLoginUser(userID, cb) {
+  sendXHR('GET', '/spotify/login/' + userID, undefined, (xhr) => {
+    cb(xhr.responseText);
+  });
+}
+
+//  ********* END Spotify Authorization Functions ************
+
+/**
+ * This will likely need to be moved? I am just performing a GET from Spotify's song database.
+ */
+export function getSongList(searchData, cb) {
+  sendXHR('POST', '/songlist', searchData, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
 //  ********* Playlist Functions ************
 
 /**
@@ -445,43 +464,6 @@ export function updateChattingWith(userID, otherUserID, cb) {
   writeDocument('users', userData);
 
   emulateServerReturn(userData, cb);
-}
-
-/**
-* This will likely need to be moved? I am just performing a GET from Spotify's song database.
-*/
-export function getSongList(searchData, cb) {
-  var searchURL = "https://api.spotify.com/v1/search";
-  var songList = [];
-  searchURL = searchURL + "?q=" + searchData + "&type=track";
-  // searchURL = searchURL + "?q=" + "Hans Zimmer" + "&type=track";
-  httpGetAsync(searchURL, (newSong) => {
-    var resultsList = JSON.parse(newSong);
-    for (var i = 0; i < resultsList.tracks.items.length; i++) {
-      var nextItem = resultsList.tracks.items[i]
-      var song = {
-        spotify_id: "",
-        title: "",
-        artist: "",
-        album: "",
-        uri: "",
-        duration: 0
-      };
-      song.spotify_id = nextItem.id;
-      song.title = nextItem.name;
-      if (nextItem.artists.length > 0) {
-        song.artist = nextItem.artists[0].name;
-      } else {
-        song.artist = "Unknown";
-      }
-      song.album = nextItem.album.name;
-      song.uri = nextItem.uri;
-      song.duration = nextItem.duration_ms;
-      songList.push(song);
-    }
-    // console.log(songList);
-    emulateServerReturn(songList, cb);
-  })
 }
 
 function httpGetAsync(theUrl, callback)

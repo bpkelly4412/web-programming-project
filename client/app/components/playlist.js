@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { spotifyLoginUser, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -13,6 +13,15 @@ export default class Playlist extends React.Component {
 
   onChildChanged(newState) {
     this.setState(newState);
+  }
+
+  handleSpotifyClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      spotifyLoginUser(this.props.userID, (url) => {
+        window.open(url);
+      });
+    }
   }
 
   handleAddSongClick(clickEvent) {
@@ -111,7 +120,10 @@ export default class Playlist extends React.Component {
                       data-target={playlistDivID}>
                       Songs <span className="fa fa-caret-square-o-down"></span>
                     </button>
-                    <button type="button" className="btn btn-default playlist-button disabled" title="Sync with Spotify">
+                    <button type="button"
+                            className="btn btn-default playlist-button"
+                            title="Sync with Spotify"
+                            onClick={(e) => this.handleSpotifyClick(e)}>
                       Sync With Spotify <span className="fa fa-spotify"></span>
                     </button>
                     <button type="button"

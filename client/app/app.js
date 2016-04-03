@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ErrorBanner from './components/errorbanner';
+import SpotifyLogin from './components/spotifylogin';
 import PlayListFeed from './components/playlistfeed';
 import Sidebar from './components/navbar';
 import Navbar from './components/sidebar';
@@ -243,6 +244,11 @@ class App extends React.Component {
               <div className="row">
                 <div className="col-md-12">
                   <ErrorBanner />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <SpotifyLogin userID={1} />
                 </div>
               </div>
               <div className="row">
