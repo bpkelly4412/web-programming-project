@@ -10,13 +10,28 @@ var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
 var deleteDocument = database.deleteDocument;
 
-//  Spotify
+//  Spotify API
 var SpotifyWebAPI = require('spotify-web-api-node');
 var spotifyApi = new SpotifyWebAPI({
   clientId: 'c9473ef6a4b047409ddcde165c836c0e',
   clientSecret : '4d566de3bd99456099bce4af5e18c7e1',
   redirectUri : 'http://localhost:3000/spotifycallback/'
 });
+var authorizationCode = '';
+var currentSpotifyState = '';
+
+
+// Retrieve an access token.
+// spotifyApi.clientCredentialsGrant()
+//   .then(function(data) {
+//     console.log('The access token expires in ' + data.body['expires_in']);
+//     console.log('The access token is ' + data.body['access_token']);
+//
+//     // Save the access token so that it's used in future calls
+//     spotifyApi.setAccessToken(data.body['access_token']);
+//   }, function(err) {
+//     console.log('Something went wrong when retrieving an access token', err);
+//   });
 
 //  Schema properties
 var playlistSchema = require('./schemas/playlist_schema.json');
@@ -73,13 +88,21 @@ var generateRandomString = function(length) {
   return text;
 };
 
+/**
+ * Log the user into Spotify
+ */
+
+var currentUserId = -1;
 app.get('/spotify/login/:userid', function(req, res) {
 
   var userID = parseInt(req.params.userid);
+  //  Hold the current user id in scope for the callback.
+  this.currentUserId = userID;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if (fromUser === userID) {
-    var scopes = ['user-read-private', 'user-read-email'];
+    var scopes = ['user-read-private', 'user-read-email', 'playlist-modify-public', 'playlist-read-collaborative', 'playlist-modify-private', 'playlist-read-private'];
     var state = generateRandomString(16);
+    this.currentSpotifyState = state;
     var authURL = spotifyApi.createAuthorizeURL(scopes, state);
     res.send(authURL);
   } else {
@@ -88,28 +111,38 @@ app.get('/spotify/login/:userid', function(req, res) {
   }
 });
 
+/**
+ * Callback for logging the user into spotify.
+ */
 app.get('/spotifycallback', function(req, res) {
   var code = req.query.code || null;
-  spotifyApi.authorizationCodeGrant(code).then(function(data) {
-    // Set the access token on the API object to use it in later calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-    spotifyApi.setRefreshToken(data.body['refresh_token']);
-
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
-  res.send();
+  var state = req.query.state || null;
+  if (state === this.currentSpotifyState) {
+    spotifyApi.authorizationCodeGrant(code).then(function(data) {
+      // Set the access token on the API object to use it in later calls
+      spotifyApi.setAccessToken(data.body['access_token']);
+      spotifyApi.setRefreshToken(data.body['refresh_token']);
+      this.authorizationCode = code;
+      res.redirect('back');
+      // res.send();
+    }, function(err) {
+      console.log('Spotify: could not log in: ', err);
+    });
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
 });
 
 /**
  * Checks if the user is logged into Spotify.
  */
 app.get('/spotify/loggedin/:userid', function(req, res) {
-
+  spotifyApi.refreshAccessToken();
   var userID = parseInt(req.params.userid);
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if (fromUser === userID) {
-    if (spotifyApi.getAccessToken() !== null) {
+    if (spotifyApi.getAccessToken() !== undefined && this.authorizationCode !== undefined) {
       res.send(true);
     } else {
       res.send(false);
@@ -129,12 +162,15 @@ app.delete('/spotify/login/:userid', function(req, res) {
   if (fromUser === userID) {
     spotifyApi.resetAccessToken();
     spotifyApi.resetRefreshToken();
+    this.authorizationCode = '';
     res.send();
   } else {
     // 401: Unauthorized request.
     res.status(401).end();
   }
-})
+});
+
+
 
 /**
  * Search for songs on Spotify
@@ -146,25 +182,25 @@ app.post('/songlist', function(req, res) {
     spotifyApi.searchTracks(req.body)
       .then(function(data) {
         data.body.tracks.items.map(function(nextItem) {
-            var song = {
-              spotify_id: "",
-              title: "",
-              artist: "",
-              album: "",
-              uri: "",
-              duration: 0
-            };
-            song.spotify_id = nextItem.id;
-            song.title = nextItem.name;
-            if (nextItem.artists.length > 0) {
-              song.artist = nextItem.artists[0].name;
-            } else {
-              song.artist = "Unknown";
-            }
-            song.album = nextItem.album.name;
-            song.uri = nextItem.uri;
-            song.duration = nextItem.duration_ms;
-            songList.push(song);
+          var song = {
+            spotify_id: "",
+            title: "",
+            artist: "",
+            album: "",
+            uri: "",
+            duration: 0
+          };
+          song.spotify_id = nextItem.id;
+          song.title = nextItem.name;
+          if (nextItem.artists.length > 0) {
+            song.artist = nextItem.artists[0].name;
+          } else {
+            song.artist = "Unknown";
+          }
+          song.album = nextItem.album.name;
+          song.uri = nextItem.uri;
+          song.duration = nextItem.duration_ms;
+          songList.push(song);
         });
         res.send(songList);
       })
@@ -173,6 +209,7 @@ app.post('/songlist', function(req, res) {
     res.status(400).end();
   }
 });
+
 
 /*
  *  PLAYLIST FEED FUNCTIONS
@@ -210,21 +247,31 @@ function getPlaylistFeed(userID) {
  * @return {Playlist} The playlist retrieved.
  */
 function getPlaylist(playlistID) {
-  var playlist = readDocument('playlists', playlistID);
   // playlist.contents = playlist.songs.map(getSong);
-  return playlist;
+  return readDocument('playlists', playlistID);
 }
 
 /**
- * Post a new playlist
+ * Create a new playlist locally and on Spotify.
+ * Will fail and return status 405 if there is a problem with the Spotify playlist.
  */
 app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
   var body = req.body;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if (fromUser === body.userID) {
-    var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description);
-    res.status(201);
-    res.send(newPlaylist);
+    var user = database.readDocument('users', fromUser);
+    spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
+      .then(function(data) {
+        console.log('Created playlist: ' , data.body['id']);
+        var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description);
+        newPlaylist.spotify_id = data.body['id'];
+        res.status(201);
+        res.send(newPlaylist);
+      })
+      .catch(function(err){
+        console.log('Could not create playlist: ', err.message);
+        res.status(405).end();
+      });
   } else {
     res.status(401).end();
   }
@@ -378,7 +425,7 @@ app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
 
 /*
  * Returns the Carousel object
-*/
+ */
 app.get('/carousel/', function(req, res) {
   var carouselData = readDocument('carousel', 1);
   res.send(carouselData);
@@ -386,7 +433,7 @@ app.get('/carousel/', function(req, res) {
 
 /*
  * Returns the NewsUpdates object
-*/
+ */
 app.get('/news-updates/', function(req, res) {
   var newsData = readDocument('newsUpdates', 1);
   res.send(newsData);

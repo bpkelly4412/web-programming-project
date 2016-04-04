@@ -6,6 +6,7 @@ var initialData = {
       "userName": "Jon Snow",
       "playlistfeed": 1,
       "nickName" : "4TheWatch",
+      "spotifyProfileName": "bbqforte",
       "about" : "Classic rock and League of Legends are my favorites",
       "currentPlaylistID" : 101,
       "followers" : [2,3],
@@ -23,6 +24,7 @@ var initialData = {
       "userName": "Ned Stark",
       "playlistfeed": 2,
       "nickName" : "StarkShark",
+      "spotifyProfileName": "",
       "about" : "Head of House Stark. Overall pretty chill dude, love heavy metal and Call of Duty.",
       "currentPlaylistID" : 101,
       "followers" : [3],
@@ -36,6 +38,7 @@ var initialData = {
       "userName": "Tyrion Lannister",
       "playlistfeed": 3,
       "nickName" : "SmallButFierce47",
+      "spotifyProfileName": "",
       "about" : "Big fan of Hearthstone and smooth jazz",
       "currentPlaylistID" : 101,
       "followers" : [1],
@@ -149,7 +152,7 @@ var initialData = {
   "playlist-feeds": {
     "1": {
       "_id": 1,
-      "contents": [101]
+      "contents": [101, 102]
     },
     "2": {
       "_id": 2,
@@ -214,6 +217,38 @@ var initialData = {
           "album": "The Ruination of Atlantis",
           "uri": "spotify:track:0xfvrdSqRiMpq4GeXR5JVS",
           "duration": 196161
+        }
+      ]
+    },
+    "102": {
+      "_id": 102,
+      "userId": 1,
+      "game": "Call of Duty",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Music for Shooting Folks",
+      "author": 1,
+      "votes": [],
+      "genre": "Minimalist",
+      "description": "Some weirdness.",
+      "spotify_id": "3YWnVhdaGYWscY85HVQ6HM",
+      "url": "https://api.spotify.com/v1/users/bbqforte/playlists/3YWnVhdaGYWscY85HVQ6HM",
+      "uri": "spotify:user:bbqforte:playlist:3YWnVhdaGYWscY85HVQ6HM",
+      "songs": [
+        {
+          "spotify_id": "4iDCHDK1PPIvs3IZsTcWgY",
+          "title": "Metamorphosis 1",
+          "artist": "Philip Glass",
+          "album": "Glass Piano (Extended Version)",
+          "uri": "spotify:track:4iDCHDK1PPIvs3IZsTcWgY",
+          "duration": 387490
+        },
+        {
+          "spotify_id": "5azyfcs4B1YqIxWGS7vHBR",
+          "title": "Six Etudes for Piano - q = 168",
+          "artist": "Philip Glass",
+          "album": "Time Curve: Music for Piano by Philip Glass and William Duckworth",
+          "uri": "spotify:track:5azyfcs4B1YqIxWGS7vHBR",
+          "duration": 256680
         }
       ]
     }

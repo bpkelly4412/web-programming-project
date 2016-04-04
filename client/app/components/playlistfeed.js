@@ -1,7 +1,7 @@
 import React from 'react';
 import Playlist from './playlist';
 import Recommend from './recommend';
-import { getPlaylistFeed, createNewPlaylist, getUserData } from '../server';
+import { checkSpotifyLoggedIn, spotifyLogoutUser, getPlaylistFeed, createNewPlaylist, getUserData } from '../server';
 
 export default class PlayListFeed extends React.Component {
   constructor(props) {
@@ -62,6 +62,24 @@ export default class PlayListFeed extends React.Component {
     }
   }
 
+  handleLogOutSpotifyClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      spotifyLogoutUser(this.props.userID, () => {
+        console.log("Logged out of Spotify.");
+      });
+    }
+  }
+
+  checkLogInSpotifyClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      checkSpotifyLoggedIn(this.props.userID, (isLoggedIn) => {
+        console.log("Logged into Spotify: ", isLoggedIn);
+      })
+    }
+  }
+
   componentDidMount() {
     this.refresh();
   }
@@ -76,8 +94,21 @@ export default class PlayListFeed extends React.Component {
                 <div className="text-center">
                   <button type="button"
                           className="btn btn-default playlist-button"
+                          onClick={(e) => this.handleLogOutSpotifyClick(e)}>
+                    <span className="fa fa-spotify"></span>
+                    <h5>Log out of Spotify</h5>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="panel panel-default playlist ">
+              <div className="panel-body">
+                <div className="text-center">
+                  <button type="button"
+                          className="btn btn-default playlist-button"
                           data-toggle="collapse"
-                          data-target="#addPlaylistForm">
+                          data-target="#addPlaylistForm"
+                          onClick={(e) => this.checkLogInSpotifyClick(e)}>
                     <span className="fa fa-plus fa-2x"></span>
                     <h3>Add New Playlist</h3>
                   </button>

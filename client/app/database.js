@@ -12,8 +12,9 @@ var initialData = {
       "userName": "Jon Snow",
       "playlistfeed": 1,
       "nickName" : "4TheWatch",
+      "spotifyProfileName": "bbqforte",
       "about" : "Classic rock and League of Legends are my favorites",
-      "currentPlaylistID" : 102,
+      "currentPlaylistID" : 101,
       "followers" : [2,3],
       "following" : [3],
       "profile_public": true,
@@ -29,8 +30,9 @@ var initialData = {
       "userName": "Ned Stark",
       "playlistfeed": 2,
       "nickName" : "StarkShark",
+      "spotifyProfileName": "",
       "about" : "Head of House Stark. Overall pretty chill dude, love heavy metal and Call of Duty.",
-      "currentPlaylistID" : "",
+      "currentPlaylistID" : 101,
       "followers" : [3],
       "following" : [1],
       "profile_public": false,
@@ -42,8 +44,9 @@ var initialData = {
       "userName": "Tyrion Lannister",
       "playlistfeed": 3,
       "nickName" : "SmallButFierce47",
+      "spotifyProfileName": "",
       "about" : "Big fan of Hearthstone and smooth jazz",
-      "currentPlaylistID" : 104,
+      "currentPlaylistID" : 101,
       "followers" : [1],
       "following" : [1,2],
       "profile_public": true,
@@ -159,7 +162,7 @@ var initialData = {
     },
     "2": {
       "_id": 2,
-      "contents": [102]
+      "contents": [101]
     },
     "3": {
       "_id": 3,
@@ -169,6 +172,7 @@ var initialData = {
   "playlists": {
     "101": {
       "_id": 101,
+      "userId": 1,
       "game": "Elite Dangerous",
       "imageURL": "img/elite-dangerous.jpg",
       "title": "Music for Space Travel",
@@ -176,255 +180,83 @@ var initialData = {
       "votes": [1, 3],
       "genre": "Classical",
       "description": "Epic orchestra music.",
-      "url": "TBD",
+      "spotify_id": "3ZYMZPBcsIKT61hOInhRJ6",
+      "url": "https://api.spotify.com/v1/users/1257653694/playlists/3ZYMZPBcsIKT61hOInhRJ6",
+      "uri": "spotify:user:1257653694:playlist:3ZYMZPBcsIKT61hOInhRJ6",
       "songs": [
         {
-          "title": "Flight",
+          "spotify_id": "6ZFbXIJkuI1dVNWvzJzown",
+          "title": "Time",
           "artist": "Hans Zimmer",
-          "album": "Man of Steel (Original Motion Picture Soundtrack)",
-          "duration": 5000,
-          "url": "TBD"
+          "album": "Inception (Music From The Motion Picture)",
+          "uri": "spotify:track:6ZFbXIJkuI1dVNWvzJzown",
+          "duration": 275546
         },
         {
-          "title": "Requiem (for String Orchestra)",
-          "artist": "Takemitsu",
-          "album": "Takemitsu: Orchestral Works",
-          "duration": 5000,
-          "url": "TBD"
+          "spotify_id": "778xIyFSF5rOC7Mu5d195Q",
+          "title": "Tuesday",
+          "artist": "Hans Zimmer",
+          "album": "Batman v Superman: Dawn Of Justice - Original Motion Picture Soundtrack (Standard)",
+          "uri": "spotify:track:778xIyFSF5rOC7Mu5d195Q",
+          "duration": 240919
         },
         {
-          "title": "Summa",
-          "artist": "Arvo Pärt",
-          "album": "The Very Best of Arvo Pärt",
-          "duration": 5000,
-          "url": "TBD"
+          "spotify_id": "6eWfgktrz9i593f0ivmw25",
+          "title": "Scherzo for X-Wings",
+          "artist": "John Williams",
+          "album": "Star Wars: The Force Awakens (Original Motion Picture Soundtrack)",
+          "uri": "spotify:track:6eWfgktrz9i593f0ivmw25",
+          "duration": 152146
         },
         {
-          "title": "Morag",
-          "artist": "Tyler Bates",
-          "album": "Guardians of the Galaxy (Original Score)",
-          "duration": 5000,
-          "url": "TBD"
+          "spotify_id": "73kJJ42uVT0eu1CseFBu7i",
+          "title": "The Falcon",
+          "artist": "John Williams",
+          "album": "Star Wars: The Force Awakens (Original Motion Picture Soundtrack)",
+          "uri": "spotify:track:73kJJ42uVT0eu1CseFBu7i",
+          "duration": 212493
+        },
+        {
+          "spotify_id": "0xfvrdSqRiMpq4GeXR5JVS",
+          "title": "The Ruination of Atlantis, I. Overture",
+          "artist": "Jess Hendricks",
+          "album": "The Ruination of Atlantis",
+          "uri": "spotify:track:0xfvrdSqRiMpq4GeXR5JVS",
+          "duration": 196161
         }
       ]
     },
     "102": {
       "_id": 102,
-      "game": "Fallout 4",
-      "imageURL": "img/fallout4.jpg",
-      "title": "Rockin Space shooty rock",
+      "userId": 1,
+      "game": "Call of Duty",
+      "imageURL": "img/elite-dangerous.jpg",
+      "title": "Music for Shooting Folks",
       "author": 1,
-      "votes": [2],
-      "genre": "Rock",
-      "description": "Hard Rock tracks to shoot spaceships to",
-      "url": "TBD",
+      "votes": [],
+      "genre": "Minimalist",
+      "description": "Some weirdness.",
+      "spotify_id": "3YWnVhdaGYWscY85HVQ6HM",
+      "url": "https://api.spotify.com/v1/users/bbqforte/playlists/3YWnVhdaGYWscY85HVQ6HM",
+      "uri": "spotify:user:bbqforte:playlist:3YWnVhdaGYWscY85HVQ6HM",
       "songs": [
         {
-          "title": "Rock Song Woohoo",
-          "artist": "Band",
-          "album": "Band's Cool Album",
-          "duration": 5000,
-          "url": "TBD"
+          "spotify_id": "4iDCHDK1PPIvs3IZsTcWgY",
+          "title": "Metamorphosis 1",
+          "artist": "Philip Glass",
+          "album": "Glass Piano (Extended Version)",
+          "uri": "spotify:track:4iDCHDK1PPIvs3IZsTcWgY",
+          "duration": 387490
         },
         {
-          "title": "Another Rock Song",
-          "artist": "Another Band",
-          "album": "Another Band Live",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "The Twist",
-          "artist": "Chubby Checkers",
-          "album": "50's Classics",
-          "duration": 5000,
-          "url": "TBD"
+          "spotify_id": "5azyfcs4B1YqIxWGS7vHBR",
+          "title": "Six Etudes for Piano - q = 168",
+          "artist": "Philip Glass",
+          "album": "Time Curve: Music for Piano by Philip Glass and William Duckworth",
+          "uri": "spotify:track:5azyfcs4B1YqIxWGS7vHBR",
+          "duration": 256680
         }
       ]
-    },
-    "103": {
-      "_id": 103,
-      "game": "Fallout 4",
-      "imageURL": "img/fallout4.jpg",
-      "title": "Boston Jams",
-      "author": 1,
-      "votes": [2],
-      "genre": "Pop",
-      "description": "Thematic music about Boston",
-      "url": "TBD",
-      "songs": []
-    },
-    "104": {
-      "_id": 104,
-      "game": "Fallout 4",
-      "imageURL": "img/fallout4.jpg",
-      "title": "Swinging It",
-      "author": 1,
-      "votes": [2],
-      "genre": "Pop",
-      "description": "Classic atmospheric 1950's music.",
-      "url": "TBD",
-      "songs": []
-    },
-    "105": {
-      "_id": 105,
-      "game": "Fallout 4",
-      "imageURL": "img/fallout4.jpg",
-      "title": "HEAVY METAL THUNDER",
-      "author": 1,
-      "votes": [2],
-      "genre": "Heavy Metal",
-      "description": "Heavy metal sounds for your heavy metal powersuit",
-      "url": "TBD",
-      "songs": []
-    },
-    "106": {
-      "_id": 106,
-      "game": "Fallout 4",
-      "imageURL": "img/fallout4.jpg",
-      "title": "I don't know",
-      "author": 2,
-      "votes": [2],
-      "genre": "N/A",
-      "description": "It has music, I think",
-      "url": "TBD",
-      "songs": []
-    },
-    "107": {
-      "_id": 107,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Rockin' space shooty rock",
-      "author": 3,
-      "votes": [2],
-      "genre": "N/A",
-      "description": "Hard Rock tracks to shoot spaceships to",
-      "url": "TBD",
-      "songs": []
-    },
-    "108": {
-      "_id": 108,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Chill space mining trance",
-      "author": 2,
-      "votes": [2],
-      "genre": "N/A",
-      "description": "Just Chill",
-      "url": "TBD",
-      "songs": []
-    },
-    "109": {
-      "_id": 109,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Space Piracy",
-      "author": 3,
-      "votes": [2],
-      "genre": "N/A",
-      "description": "The best of modern Pirate Metal and Pirate Rap for all your space pirate needs.",
-      "url": "TBD",
-      "songs": []
-    },
-    "110": {
-      "_id": 110,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "We can't stop here. This is space country.",
-      "author": 1,
-      "votes": [2],
-      "genre": "N/A",
-      "description": "It's classic country goodness. IN SPACE.",
-      "url": "TBD",
-      "songs": []
-    },
-    "111":{
-      "_id": 111,
-      "game": "League of Legends",
-      "imageURL": "img/league.jpg",
-      "title": "League of Legends Playlist",
-      "author": 2,
-      "votes": [],
-      "genre": "Rock, Nightcore",
-      "description": "",
-      "url": "Empty",
-      "songs": [{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "The Beginning",
-        "artist": "One Ok Rock",
-        "album": "The Beginning",
-        "type": "Rock",
-        "duration": 216,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Monster",
-        "artist": "Nightcore",
-        "album": "Nightcore",
-        "type": "Nightcore",
-        "duration": 201,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Anima Libera",
-        "artist": "Nightcore",
-        "album": "Nightcore",
-        "type": "Nightcore",
-        "duration": 265,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Moonlight Shadow",
-        "artist": "Nightcore",
-        "album": "Nightcore",
-        "type": "Nightcore",
-        "duration": 224,
-        "url": "TBD"
-      }]
-    },
-    "112": {
-      "_id": 112,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Elite Dangerous Playlist",
-      "author": 1,
-      "votes": [],
-      "genre": "Instrumental",
-      "description": "",
-      "url": "Empty",
-      "songs": [{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Flight",
-        "artist": "Hans Zimmer",
-        "album": "Man of Steel (Original Motion Picture Soundtrack)",
-        "type": "Instrumental",
-        "duration": 216,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Requiem",
-        "artist": "Takemitsu",
-        "album": "Takemitsu: Orchestral Works",
-        "type": "Instrumental",
-        "duration": 201,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Summa",
-        "artist": "	Arvo Pärt",
-        "album": "The Very Best of Arvo Pärt",
-        "type": "Instrumental",
-        "duration": 265,
-        "url": "TBD"
-      },{
-        "imgURL": "img/playlist_disc.jpg",
-        "title": "Morag",
-        "artist": "Tyler Bates",
-        "album": "Guardians of the Galaxy (Original Score)",
-        "type": "Instrumental",
-        "duration": 224,
-        "url": "TBD"
-      }]
     }
   },
   "forums": {

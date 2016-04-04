@@ -35,7 +35,7 @@ function sendXHR(verb, resource, body, cb) {
         responseText);
     }
   });
-  xhr.timeout = 10000;
+  xhr.timeout = 30000;
   xhr.addEventListener('error', function() {
     BBQError("Could not " +
       verb + " " +
@@ -65,46 +65,10 @@ function sendXHR(verb, resource, body, cb) {
 
 //  ********* Spotify Authorization Functions ************
 
-/**
- * For the given playlist ID, this compares that playlist to the user's playlists on Spotify.
- *    If it does not exist, it will create one and add all of the tracks.
- *    If it does exist, it will compare the tracks and info to the playlist on Spotify and:
- *      - Add tracks to the Spotify playlist that are on the local, but not on Spotify.
- *      - Remove tracks from the Spotify playlist that are no longer on the local.
- *      - Update the Spotify playlist info to match the local playlist.
- * @param userID
- * @param playlistID
- * @param cb
- */
-export function pushPlaylistToSpotify(userID, playlistID, cb) {
+export function checkSpotifyLoggedIn(userID, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
-
-    } else {
-      spotifyLoginUser(userID, (authURL) => {
-        //  Opens a new window that allows the user to login to Spotify
-        window.open(authURL);
-        //  Returns undefined so the calling function knows that the playlist was not actually synced.
-        cb(undefined);
-      });
-    }
-  });
-}
-
-/**
- * For the given playlist ID, this compares that playlist to the user's playlists on Spotify.
- *    If it does exist, it will compare the tracks and info to the playlist on Spotify and:
- *      - Add tracks to the local playlist that are on the Spotify, but not on local.
- *      - Remove tracks from the local playlist that are no longer on the Spotify.
- *      - Update the local playlist info to match the Spotify playlist.
- * @param userID
- * @param playlistID
- * @param cb
- */
-export function pullPlaylistFromSpotify(userID, playlistID, cb) {
-  isSpotifyLoggedIn(userID, (isLoggedIn) => {
-    if (isLoggedIn) {
-
+      cb(true);
     } else {
       spotifyLoginUser(userID, (authURL) => {
         //  Opens a new window that allows the user to login to Spotify
@@ -173,18 +137,29 @@ export function getPlaylistFeed(userID, cb) {
 }
 
 /**
-* Adds a song to a playlist
-*/
-export function createNewPlaylist(author, title, game, genre, description, cb) {
-  sendXHR('POST', '/playlist', {
-    userID: author,
-    author: author,
-    title: title,
-    game: game,
-    genre: genre,
-    description: description
-  }, (xhr) => {
-    cb(JSON.parse(xhr.responseText));
+ * Create a new playlist
+ */
+export function createNewPlaylist(userID, title, game, genre, description, cb) {
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+      sendXHR('POST', '/playlist', {
+        userID: userID,
+        author: userID,
+        title: title,
+        game: game,
+        genre: genre,
+        description: description
+      }, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+      });
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
+        window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
+        cb(undefined);
+      });
+    }
   });
 }
 
