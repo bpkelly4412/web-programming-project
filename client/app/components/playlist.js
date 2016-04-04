@@ -15,6 +15,13 @@ export default class Playlist extends React.Component {
     this.setState(newState);
   }
 
+  handleOpenInSpotify(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      window.open(this.props.data.uri);
+    }
+  }
+
   handleAddSongClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
@@ -90,11 +97,11 @@ export default class Playlist extends React.Component {
 
                 <div className="btn-toolbar playlist-toolbar" role="toolbar">
                   <div className="input-group" role="group" aria-label="Playback Buttons">
-                    <button type="button" className="btn btn-default playlist-button disabled">
-                      <span className="fa fa-stop"></span>
-                    </button>
-                    <button type="button" className="btn btn-default playlist-button disabled">
-                      <span className="fa fa-play"></span>
+                    <button type="button"
+                            className="btn btn-default playlist-button"
+                            title="Open in Spotify"
+                            onClick={(e) => this.handleOpenInSpotify(e)}>
+                      Open in Spotify <span className="fa fa-spotify"></span>
                     </button>
                   </div>
                   <div className="input-group pull-right" role="group" aria-label="Playlist Options">
