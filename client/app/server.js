@@ -164,7 +164,8 @@ export function createNewPlaylist(userID, title, game, genre, description, cb) {
 }
 
 /**
-* Removes a song from a playlist
+* Removes a playlist from the local database.
+ * Does not affect Spotify.
 */
 export function removePlaylist(playlistID, cb) {
   sendXHR('DELETE', '/playlist/' + playlistID, undefined, () => {
@@ -194,25 +195,47 @@ export function unvotePlaylist(playlistID, userId, cb) {
 * Adds a song to a playlist
 */
 export function addSong(playlistID, userID, song, cb) {
-  sendXHR('PUT', '/playlist/' + playlistID + '/songs/' + userID, {
-    spotify_id: song.spotify_id,
-    title: song.title,
-    artist: song.artist,
-    album: song.album,
-    uri: song.uri,
-    duration: song.duration
-  }, (xhr) => {
-    cb(JSON.parse(xhr.responseText));
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+      sendXHR('PUT', '/playlist/' + playlistID + '/songs/' + userID, {
+        spotify_id: song.spotify_id,
+        title: song.title,
+        artist: song.artist,
+        album: song.album,
+        uri: song.uri,
+        duration: song.duration
+      }, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+      });
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
+        window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
+        cb(undefined);
+      });
+    }
   });
 }
 
 /**
-* Removes a song from a playlist
-*/
+ * Removes a song from a playlist.
+ * Should FAIL if the user does not own the playlist.
+ */
 export function removeSong(playlistID, songIndex, cb) {
-  console.log(playlistID);
-  sendXHR('DELETE', '/playlist/' + playlistID + '/songs/' + songIndex, undefined, (xhr) => {
-    cb(JSON.parse(xhr.responseText));
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+      sendXHR('DELETE', '/playlist/' + playlistID + '/songs/' + songIndex, undefined, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+      });
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
+        window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
+        cb(undefined);
+      });
+    }
   });
 }
 

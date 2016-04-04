@@ -268,6 +268,37 @@ function getPlaylist(playlistID) {
 }
 
 /**
+ * Generates a playlist object without any tracks.
+ * @param userID
+ * @param title
+ * @param game
+ * @param genre
+ * @param description
+ * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: number, url: string, uri: string, songs: Array}}
+ */
+function createNewPlaylist(userID, title, game, genre, description, spotifyId, url, uri) {
+  var user = readDocument('users', userID);
+  var newPlaylist = {
+    "game": game,
+    "imageURL": "",
+    "title": title,
+    "author": userID,
+    "votes": [],
+    "genre": genre,
+    "description": description,
+    "spotify_id": spotifyId,
+    "url": url,
+    "uri": uri,
+    "songs": []
+  };
+  newPlaylist = addDocument('playlists', newPlaylist);
+  var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
+  playerPlaylists.contents.unshift(newPlaylist._id);
+  writeDocument('playlist-feeds', playerPlaylists);
+  return newPlaylist;
+}
+
+/**
  * Create a new playlist locally and on Spotify.
  * Will fail and return status 405 if there is a problem with the Spotify playlist.
  */
@@ -278,10 +309,8 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     var user = database.readDocument('users', fromUser);
     spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
       .then(function(data) {
-        console.log('Created playlist: ' , data.body['id']);
-        var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description);
-        newPlaylist.spotify_id = data.body['id'];
-        res.status(201);
+        console.log('Created playlist: ' , data.body.id);
+        var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description, data.body.id, data.body.href, data.body.uri);
         res.send(newPlaylist);
       })
       .catch(function(err){
@@ -294,29 +323,61 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
 });
 
 /**
- * Creates a new, empty playlist
+ * Adds a song to a particular playlist.
  */
-function createNewPlaylist(userID, title, game, genre, description) {
-  var user = readDocument('users', userID);
-  var newPlaylist = {
-    "game": game,
-    "imageURL": "",
-    "title": title,
-    "author": userID,
-    "votes": [],
-    "genre": genre,
-    "description": description,
-    "spotify_id": -1,
-    "url": "",
-    "uri": "",
-    "songs": []
-  };
-  newPlaylist = addDocument('playlists', newPlaylist);
-  var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
-  playerPlaylists.contents.unshift(newPlaylist._id);
-  writeDocument('playlist-feeds', playerPlaylists);
-  return newPlaylist;
-}
+app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
+  function(req, res) {
+    var body = req.body;
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userid, 10);
+    var playlistID = parseInt(req.params.playlistid, 10);
+    if (fromUser === userID) {
+      var playlist = readDocument('playlists', playlistID);
+      var user = database.readDocument('users', fromUser);
+      var song = {
+        "spotify_id":body.spotify_id,
+        "title":body.title,
+        "artist":body.artist,
+        "album":body.album,
+        "uri":body.uri,
+        "duration":body.duration
+      };
+      spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, [song.uri])
+        .then(function(data) {
+          playlist.songs.push(song);
+          writeDocument('playlists', playlist);
+          res.send(playlist);
+        })
+        .catch(function(err){
+          console.log('Could not add track to playlist: ', err.message);
+          res.status(405).end();
+        });
+    } else {
+      // 401: Unauthorized.
+      res.status(401).end();
+    }
+  }
+);
+
+/**
+ * Removes a song from a particular playlist.
+ */
+app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var playlist = readDocument('playlists', playlistID);
+  var songIndex = parseInt(req.params.songindex);
+  if (playlist.author === fromUser) {
+    if (songIndex !== -1) {
+      playlist.songs.splice(songIndex, 1);
+      writeDocument('playlists', playlist);
+    }
+    res.send(playlist);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
 
 /**
  * Delete a playlist.
@@ -380,55 +441,6 @@ app.delete('/playlist/:playlistid/votes/:userid', function(req, res) {
       writeDocument('playlists', playlist);
     }
     res.send(playlist.votes);
-  } else {
-    // 401: Unauthorized.
-    res.status(401).end();
-  }
-});
-
-/**
- * Adds a song to a particular playlist.
- */
-app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
-  function(req, res) {
-    var body = req.body;
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userid, 10);
-    var playlistID = parseInt(req.params.playlistid, 10);
-    if (fromUser === userID) {
-      var playlist = readDocument('playlists', playlistID);
-      var song = {
-        "spotify_id":body.spotify_id,
-        "title":body.title,
-        "artist":body.artist,
-        "album":body.album,
-        "uri":body.uri,
-        "duration":body.duration
-      };
-      playlist.songs.push(song);
-      writeDocument('playlists', playlist);
-      res.send(playlist);
-    } else {
-      // 401: Unauthorized.
-      res.status(401).end();
-    }
-  }
-);
-
-/**
- * Removes a song from a particular playlist.
- */
-app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  var playlistID = parseInt(req.params.playlistid, 10);
-  var playlist = readDocument('playlists', playlistID);
-  var songIndex = parseInt(req.params.songindex);
-  if (playlist.author === fromUser) {
-    if (songIndex !== -1) {
-      playlist.songs.splice(songIndex, 1);
-      writeDocument('playlists', playlist);
-    }
-    res.send(playlist);
   } else {
     // 401: Unauthorized.
     res.status(401).end();
