@@ -36,6 +36,7 @@ var currentSpotifyState = '';
 //  Schema properties
 var playlistSchema = require('./schemas/playlist_schema.json');
 var songSchema = require('./schemas/song_schema.json');
+var chatMessageSchema = require('./schemas/chat-message_schema.json');
 
 app.use(express.static('../client/build'));
 app.use(bodyParser.text());
@@ -210,6 +211,21 @@ app.post('/songlist', function(req, res) {
   }
 });
 
+/**
+* Given a user ID, returns a UserData object.
+*/
+app.get('/user/:userID', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  if (fromUser === userID) {
+    // Send response.
+    var userData = readDocument('users', userID);
+    res.send(userData);
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
 
 /*
  *  PLAYLIST FEED FUNCTIONS
@@ -437,6 +453,186 @@ app.get('/carousel/', function(req, res) {
 app.get('/news-updates/', function(req, res) {
   var newsData = readDocument('newsUpdates', 1);
   res.send(newsData);
+});
+
+
+/*
+ * Returns the RecentConversations object
+*/
+app.get('/private-chat/recent/:userID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+
+  if (userID === fromUser) {
+    var recentConversations = readDocument('recent-conversations', req.params.userID);
+
+    recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id));
+    res.send(recentConversations);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/*
+ * Adds a user to the RecentConversations
+*/
+app.post('/private-chat/recent/:userID/add/:otherUserID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserID = parseInt(req.params.otherUserID, 10);
+
+  if (userID === fromUser) {
+    var recentChatData = readDocument('recent-conversations', userID);
+
+    if(recentChatData.userList.indexOf(otherUserID) === -1) {
+      recentChatData.userList.unshift(otherUserID);
+      writeDocument('recent-conversations', recentChatData);
+    }
+
+    res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/*
+ * Removes a user from the RecentConversations
+*/
+app.delete('/private-chat/recent/:userID/remove/:otherUserID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserID = parseInt(req.params.otherUserID, 10);
+
+  if (userID === fromUser) {
+    var recentChatData = readDocument('recent-conversations', userID);
+    var userIndex = recentChatData.userList.indexOf(otherUserID);
+    recentChatData.userList.splice(userIndex, 1);
+    writeDocument('recent-conversations', recentChatData);
+
+    res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/*
+ * Returns the PrivateChatLiveHelp object
+*/
+app.get('/private-chat/live-help/:userID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+
+  if (userID === fromUser) {
+    var liveHelpData = readDocument('liveHelp', userID);
+    liveHelpData.contents.forEach((category) => {
+      category.userList = category.userList.map((id) => readDocument('users', id))
+    });
+
+    res.send(liveHelpData);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+function getConversationsSync(userID) {
+  var conversationsData = readDocument('conversations', userID);
+  conversationsData.chatlogs.forEach((chatlog) => {
+    chatlog.otherUser = readDocument('users', chatlog.otherUser);
+
+    chatlog.messages.forEach((message) => {
+      message.author = readDocument('users', message.author);
+    })
+  })
+  return conversationsData;
+}
+
+/*
+ * Returns the PrivateChatConversation object
+*/
+app.get('/private-chat/conversations/:userID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+
+  if (userID === fromUser) {
+    var syncedConversations = getConversationsSync(userID);
+
+    res.send(syncedConversations);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/*
+ * Adds a new conversation (chatlog entry in chatlogs index) for a user in 'conversations'
+*/
+app.post('/private-chat/conversations/:userID/create-chat/:otherUserID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserID = parseInt(req.params.otherUserID, 10);
+
+  if (userID === fromUser) {
+    var conversationsData = readDocument('conversations', userID);
+    conversationsData.chatlogs.push({
+      "otherUser": otherUserID,
+      "messages": []
+    })
+    writeDocument('conversations', conversationsData);
+
+    var syncedConversations = getConversationsSync(userID);
+    res.send(syncedConversations);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/*
+ * Adds a new message to the messages array of a user's chatlogs in 'conversations'
+*/
+app.post('/private-chat/conversations/:userID/chat-with/:otherUserIndex', validate({ body: chatMessageSchema}), function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserIndex = parseInt(req.params.otherUserIndex, 10);
+
+  if (userID === fromUser) {
+    var conversationsData = readDocument('conversations', userID);
+    conversationsData.chatlogs[otherUserIndex].messages.push({
+      "author": userID,
+      "content": req.body.content
+    })
+    writeDocument('conversations', conversationsData);
+
+    var syncedConversations = getConversationsSync(userID);
+    res.send(syncedConversations);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/**
+* Switches the chat box to display a conversation with a different user
+*/
+app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  var otherUserID = parseInt(req.params.otherUserID, 10);
+
+  if (userID === fromUser) {
+    var userData = readDocument('users', userID);
+    userData.chattingWith = otherUserID;
+    writeDocument('users', userData);
+
+    res.send(userData);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
 });
 
 /**

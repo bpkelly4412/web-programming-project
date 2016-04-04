@@ -239,8 +239,9 @@ function getPlaylistWithAuthor(playlistID) {
 * Given a user ID (for now), returns a UserData object.
 */
 export function getUserData(userID, cb) {
-  var userData = readDocument('users', userID);
-  emulateServerReturn(userData, cb);
+  sendXHR('GET', '/user/' + userID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function setUserData(data, cb) {
@@ -326,8 +327,6 @@ export function postComment( user, topicID, threadID, contents, cb) {
 * Returns a NewsUpdates object.
 */
 export function getNewsUpdates(cb) {
-  // var newsData = readDocument('newsUpdates', 1);
-  // emulateServerReturn(newsData, cb);
   sendXHR('GET', '/news-updates/', undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
@@ -337,8 +336,6 @@ export function getNewsUpdates(cb) {
 * Returns a GameCarousel object.
 */
 export function getCarousel(cb) {
-  // var carouselData = readDocument('carousel', 1);
-  // emulateServerReturn(carouselData, cb);
   sendXHR('GET', '/carousel/', undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
@@ -431,99 +428,69 @@ export function searchPlaylist(terms, cb) {
 * Given a user ID (for now), returns a PrivateChatLiveHelp object.
 */
 export function getLiveHelpList(userID, cb) {
-  var liveHelpData = readDocument('liveHelp', userID);
-  liveHelpData.contents.forEach((category) => {
-    category.userList = category.userList.map((id) => readDocument('users', id))
+  sendXHR('GET', '/private-chat/live-help/' + userID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(liveHelpData, cb);
 }
 
 /**
 * Given a user ID (for now), returns a RecentConversations object. Also adds otherUserID to the user list if not found.
 */
 export function getRecentConversations(userID, otherUserID, cb) {
-  var recentConversations = readDocument('recent-conversations', userID);
-
-  recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id))
-  emulateServerReturn(recentConversations, cb);
+  sendXHR('GET', '/private-chat/recent/' + userID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function addRecentChat(userID, otherUserID, cb) {
-  var recentChatData = readDocument('recent-conversations', userID);
-
-  if(recentChatData.userList.indexOf(otherUserID) === -1) {
-    recentChatData.userList.push(otherUserID);
-    writeDocument('recent-conversations', recentChatData);
-  }
-
-  emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
+  sendXHR('POST', '/private-chat/recent/' + userID + '/add/' + otherUserID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 /**
 * Given a user ID (for now), returns a PrivateChatConversation object.
 */
 export function getChatConversations(userID, cb) {
-  var conversationsData = readDocument('conversations', userID);
-  conversationsData.chatlogs.forEach((chatlog) => {
-    chatlog.otherUser = readDocument('users', chatlog.otherUser);
-
-    chatlog.messages.forEach((message) => {
-      message.author = readDocument('users', message.author);
-    })
-  });
-  emulateServerReturn(conversationsData, cb);
+  sendXHR('GET', '/private-chat/conversations/' + userID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 /**
 * Adds a new message to the messages array of a user's chatlogs in 'conversations'
 */
 export function sendMessage(userID, otherUserIndex, contents, cb) {
-  var conversationsData = readDocument('conversations', userID);
-  conversationsData.chatlogs[otherUserIndex].messages.push({
-    "author": userID,
-    "content": contents
+  sendXHR('POST', '/private-chat/conversations/' + userID + '/chat-with/' + otherUserIndex, {author: userID, content: contents}, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   })
-  writeDocument('conversations', conversationsData);
-
-  return getChatConversations(userID, cb);
 }
 
 /**
 * Adds a new conversation (chatlog entry in chatlogs index) for a user in 'conversations'
 */
 export function createNewChatlog(userID, otherUserID, cb) {
-  var conversationsData = readDocument('conversations', userID);
-  conversationsData.chatlogs.push({
-    "_id": conversationsData.chatlogs.length-1,
-    "otherUser": otherUserID,
-    "messages": []
+  sendXHR('POST', '/private-chat/conversations/' + userID + '/create-chat/' + otherUserID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   })
-  writeDocument('conversations', conversationsData);
-
-  return getChatConversations(userID, cb);
 }
 
 /**
 * Removes an entry in a user's Recent Conversations menu
 */
 export function removeRecentChat(userID, otherUserID, cb) {
-  var recentChatData = readDocument('recent-conversations', userID);
-  var userIndex = recentChatData.userList.indexOf(otherUserID);
-  recentChatData.userList.splice(userIndex, 1);
-  writeDocument('recent-conversations', recentChatData);
-
-  emulateServerReturn(recentChatData.userList.map((userID) => readDocument('users', userID)), cb);
+  sendXHR('DELETE', '/private-chat/recent/' + userID + '/remove/' + otherUserID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 /**
 * Switches the chat box to display a conversation with a different user
 */
 export function updateChattingWith(userID, otherUserID, cb) {
-  var userData = readDocument('users', userID);
-  userData.chattingWith = otherUserID;
-  writeDocument('users', userData);
-
-  emulateServerReturn(userData, cb);
+  sendXHR('PUT', '/private-chat/switch/' + userID + '/to/' + otherUserID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 function httpGetAsync(theUrl, callback)
