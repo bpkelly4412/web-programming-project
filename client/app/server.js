@@ -86,7 +86,7 @@ export function checkSpotifyLoggedIn(userID, cb) {
  * @param cb
  */
 function spotifyLoginUser(userID, cb) {
-  sendXHR('GET', '/spotify/login/' + userID, undefined, (xhr) => {
+  sendXHR('GET', '/spotify/user/' + userID, undefined, (xhr) => {
     cb(xhr.responseText);
   });
 }
@@ -97,7 +97,7 @@ function spotifyLoginUser(userID, cb) {
  * @param cb
  */
 function isSpotifyLoggedIn(userID, cb) {
-  sendXHR('GET', '/spotify/loggedin/' + userID, undefined, (xhr) => {
+  sendXHR('GET', '/spotify/loggedin/user/' + userID, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
@@ -109,7 +109,7 @@ function isSpotifyLoggedIn(userID, cb) {
  * @param cb
  */
 export function spotifyLogoutUser(userID, cb) {
-  sendXHR('DELETE', 'spotify/login/' + userID, undefined, () => {
+  sendXHR('DELETE', 'spotify/user/' + userID, undefined, () => {
     cb();
   });
 }
@@ -120,7 +120,19 @@ export function spotifyLogoutUser(userID, cb) {
  * This will likely need to be moved? I am just performing a GET from Spotify's song database.
  */
 export function getSongList(searchData, cb) {
-  sendXHR('POST', '/songlist', searchData, (xhr) => {
+  sendXHR('POST', '/spotify/songlist', searchData, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+/**
+ * Searches Spotify for playlists
+ * @param searchTerm
+ * @param userID
+ * @param cb
+ */
+export function searchForPlaylists(searchTerm, userID, cb) {
+  sendXHR('POST', '/spotify/playlistresults/' + userID, searchTerm, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
@@ -131,7 +143,7 @@ export function getSongList(searchData, cb) {
  * Given a user ID (for now), returns a PlaylistFeed object.
  */
 export function getPlaylistFeed(userID, cb) {
-  sendXHR('GET', '/user/' + userID + '/playlists', undefined, (xhr) => {
+  sendXHR('GET', '/playlistfeed/user/' + userID, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
@@ -236,12 +248,6 @@ export function removeSong(playlistID, userID, songIndex, cb) {
         cb(undefined);
       });
     }
-  });
-}
-
-export function searchForPlaylists(searchTerm, userID, cb) {
-  sendXHR('POST', '/playlistresults/' + userID, searchTerm, (xhr) => {
-    cb(JSON.parse(xhr.responseText));
   });
 }
 

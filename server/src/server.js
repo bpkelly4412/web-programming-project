@@ -21,17 +21,6 @@ var authorizationCode = '';
 var currentSpotifyState = '';
 
 
-// Retrieve an access token.
-// spotifyApi.clientCredentialsGrant()
-//   .then(function(data) {
-//     console.log('The access token expires in ' + data.body['expires_in']);
-//     console.log('The access token is ' + data.body['access_token']);
-//
-//     // Save the access token so that it's used in future calls
-//     spotifyApi.setAccessToken(data.body['access_token']);
-//   }, function(err) {
-//     console.log('Something went wrong when retrieving an access token', err);
-//   });
 
 //  Schema properties
 var playlistSchema = require('./schemas/playlist_schema.json');
@@ -93,12 +82,9 @@ var generateRandomString = function(length) {
  * Log the user into Spotify
  */
 
-var currentUserId = -1;
-app.get('/spotify/login/:userid', function(req, res) {
+app.get('/spotify/user/:userid', function(req, res) {
 
   var userID = parseInt(req.params.userid);
-  //  Hold the current user id in scope for the callback.
-  this.currentUserId = userID;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if (fromUser === userID) {
     var scopes = ['user-read-private', 'user-read-email', 'playlist-modify-public', 'playlist-read-collaborative', 'playlist-modify-private', 'playlist-read-private'];
@@ -138,7 +124,7 @@ app.get('/spotifycallback', function(req, res) {
 /**
  * Checks if the user is logged into Spotify.
  */
-app.get('/spotify/loggedin/:userid', function(req, res) {
+app.get('/spotify/loggedin/user/:userid', function(req, res) {
   spotifyApi.refreshAccessToken();
   var userID = parseInt(req.params.userid);
   var fromUser = getUserIdFromToken(req.get('Authorization'));
@@ -157,7 +143,7 @@ app.get('/spotify/loggedin/:userid', function(req, res) {
 /**
  * Disconnects Spotify.
  */
-app.delete('/spotify/login/:userid', function(req, res) {
+app.delete('/spotify/user/:userid', function(req, res) {
   var userID = parseInt(req.params.userid);
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if (fromUser === userID) {
@@ -176,7 +162,7 @@ app.delete('/spotify/login/:userid', function(req, res) {
 /**
  * Search for songs on Spotify
  */
-app.post('/songlist', function(req, res) {
+app.post('/spotify/songlist', function(req, res) {
   console.log(req.body);
   if (typeof(req.body) === 'string') {
     var songList = [];
@@ -214,7 +200,7 @@ app.post('/songlist', function(req, res) {
 /**
  * Search for playlists on Spotify
  */
-app.post('/playlistresults/:userid', function(req, res) {
+app.post('/spotify/playlistresults/:userid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var userID = parseInt(req.params.userid, 10);
   if (fromUser === userID) {
@@ -288,7 +274,7 @@ app.get('/user/:userID', function(req, res) {
 /**
  * Gets the PlaylistFeed for a particular user.
  */
-app.get('/user/:userid/playlists', function(req, res) {
+app.get('/playlistfeed/user/:userid', function(req, res) {
   var userid = req.params.userid;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var useridNumber = parseInt(userid, 10);
