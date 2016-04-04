@@ -246,7 +246,31 @@ export function searchForPlaylists(searchTerm, userID, cb) {
 }
 
 export function addPlaylist(playlist, userID, cb) {
-
+  isSpotifyLoggedIn(userID, (isLoggedIn) => {
+    if (isLoggedIn) {
+      sendXHR('PUT', '/playlistfeed/user/' + userID + '/playlist/', {
+        userID: playlist.playlist.author,
+        author: playlist.playlist.author,
+        title: playlist.playlist.title,
+        game: playlist.playlist.game,
+        genre: playlist.playlist.genre,
+        description: playlist.playlist.description,
+        spotify_id: playlist.playlist.spotify_id,
+        spotify_author: playlist.playlist.spotify_author,
+        url: playlist.playlist.url,
+        uri: playlist.playlist.uri
+      }, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+      });
+    } else {
+      spotifyLoginUser(userID, (authURL) => {
+        //  Opens a new window that allows the user to login to Spotify
+        window.open(authURL);
+        //  Returns undefined so the calling function knows that the playlist was not actually synced.
+        cb(undefined);
+      });
+    }
+  });
 }
 
 /**

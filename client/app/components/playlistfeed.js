@@ -77,7 +77,15 @@ export default class PlayListFeed extends React.Component {
   }
 
   handleImportPlaylistClick(clickEvent, playlist) {
-    // this.setState({ playlistSearchResults: [], value: "", playlistSearchTerm: "", contents: updatedPlaylistFeed });
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+
+      addPlaylist(playlist, this.props.userID, () =>
+      {
+        this.setState({ playlistSearchResults: [], playlistSearchTerm: "", value:"" });
+        this.refresh();
+      });
+    }
   }
 
   checkLogInSpotifyClick(clickEvent) {

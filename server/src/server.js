@@ -263,6 +263,8 @@ app.post('/playlistresults/:userid', function(req, res) {
   }
 });
 
+
+
 /**
 * Given a user ID, returns a UserData object.
 */
@@ -366,7 +368,6 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     var user = database.readDocument('users', fromUser);
     spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
       .then(function(data) {
-        console.log('Created playlist: ' , data.body.id);
         var newPlaylist = createNewPlaylist(
           body.author,
           body.title,
@@ -387,6 +388,54 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     res.status(401).end();
   }
 });
+
+/**
+ * Add a playlist from spotify
+ */
+app.put('/playlistfeed/user/:userid/playlist/', validate({body: playlistSchema}),
+  function(req, res) {
+    var body = req.body;
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userid, 10);
+    if (fromUser === userID) {
+      var importedPlaylist = createNewPlaylist(
+        userID,
+        body.title,
+        body.game,
+        body.genre,
+        body.description,
+        body.spotify_id,
+        body.spotify_author,
+        body.url,
+        body.uri);
+      spotifyApi.getPlaylistTracks(body.spotify_author, body.spotify_id)
+        .then(function(trackData) {
+          trackData.body.items.map(function (nextTrack) {
+            var song = {
+              spotify_id: nextTrack.track.id,
+              title: nextTrack.track.name,
+              artist: "",
+              album: nextTrack.track.album.name,
+              uri: nextTrack.track.uri,
+              duration: nextTrack.track.duration_ms
+            };
+            if (nextTrack.track.artists.length > 0) {
+              song.artist = nextTrack.track.artists[0].name;
+            } else {
+              song.artist = "Unknown";
+            }
+            importedPlaylist.songs.push(song);
+          });
+
+          writeDocument('playlists', importedPlaylist);
+          res.send(importedPlaylist);
+        })
+        .catch(function(err){
+          console.log('Could not create playlist: ', err.message);
+          res.status(405).end();
+        });
+    }
+  });
 
 /**
  * Adds a song to a particular playlist.
