@@ -175,6 +175,7 @@ var initialData = {
       "genre": "Classical",
       "description": "Epic orchestra music.",
       "spotify_id": "3ZYMZPBcsIKT61hOInhRJ6",
+      "spotify_author": "1257653694",
       "url": "https://api.spotify.com/v1/users/1257653694/playlists/3ZYMZPBcsIKT61hOInhRJ6",
       "uri": "spotify:user:1257653694:playlist:3ZYMZPBcsIKT61hOInhRJ6",
       "songs": [
@@ -231,6 +232,7 @@ var initialData = {
       "genre": "Minimalist",
       "description": "Some weirdness.",
       "spotify_id": "3YWnVhdaGYWscY85HVQ6HM",
+      "spotify_author": "bbqforte",
       "url": "https://api.spotify.com/v1/users/bbqforte/playlists/3YWnVhdaGYWscY85HVQ6HM",
       "uri": "spotify:user:bbqforte:playlist:3YWnVhdaGYWscY85HVQ6HM",
       "songs": [

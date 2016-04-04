@@ -274,9 +274,13 @@ function getPlaylist(playlistID) {
  * @param game
  * @param genre
  * @param description
- * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: number, url: string, uri: string, songs: Array}}
+ * @param spotifyId
+ * @param spotifyOwnerID
+ * @param url
+ * @param uri
+ * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: *, spotify_author: *, url: *, uri: *, songs: Array}}
  */
-function createNewPlaylist(userID, title, game, genre, description, spotifyId, url, uri) {
+function createNewPlaylist(userID, title, game, genre, description, spotifyId, spotifyOwnerID, url, uri) {
   var user = readDocument('users', userID);
   var newPlaylist = {
     "game": game,
@@ -287,6 +291,7 @@ function createNewPlaylist(userID, title, game, genre, description, spotifyId, u
     "genre": genre,
     "description": description,
     "spotify_id": spotifyId,
+    "spotify_author": spotifyOwnerID,
     "url": url,
     "uri": uri,
     "songs": []
@@ -310,7 +315,16 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
       .then(function(data) {
         console.log('Created playlist: ' , data.body.id);
-        var newPlaylist = createNewPlaylist(body.author, body.title, body.game, body.genre, body.description, data.body.id, data.body.href, data.body.uri);
+        var newPlaylist = createNewPlaylist(
+          body.author,
+          body.title,
+          body.game,
+          body.genre,
+          body.description,
+          data.body.id,
+          data.body.owner.id,
+          data.body.href,
+          data.body.uri);
         res.send(newPlaylist);
       })
       .catch(function(err){
@@ -334,24 +348,30 @@ app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
     if (fromUser === userID) {
       var playlist = readDocument('playlists', playlistID);
       var user = database.readDocument('users', fromUser);
-      var song = {
-        "spotify_id":body.spotify_id,
-        "title":body.title,
-        "artist":body.artist,
-        "album":body.album,
-        "uri":body.uri,
-        "duration":body.duration
-      };
-      spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, [song.uri])
-        .then(function(data) {
-          playlist.songs.push(song);
-          writeDocument('playlists', playlist);
-          res.send(playlist);
-        })
-        .catch(function(err){
-          console.log('Could not add track to playlist: ', err.message);
-          res.status(405).end();
-        });
+      if (user.spotifyProfileName === playlist.spotify_author) {
+        var song = {
+          "spotify_id":body.spotify_id,
+          "title":body.title,
+          "artist":body.artist,
+          "album":body.album,
+          "uri":body.uri,
+          "duration":body.duration
+        };
+        spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, [song.uri])
+          .then(function(data) {
+            playlist.songs.push(song);
+            writeDocument('playlists', playlist);
+            res.send(playlist);
+          })
+          .catch(function(err){
+            console.log('Could not add track to playlist: ', err.message);
+            res.status(405).end();
+          });
+      } else {
+        // 401: Unauthorized.
+        res.status(401).end();
+      }
+
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -360,27 +380,44 @@ app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
 );
 
 /**
- * Removes a song from a particular playlist.
+ * Removes a song from a particular playlist IF it is owned by the user on Spotify.
  */
 app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var playlistID = parseInt(req.params.playlistid, 10);
   var playlist = readDocument('playlists', playlistID);
+  var user = database.readDocument('users', fromUser);
   var songIndex = parseInt(req.params.songindex);
-  if (playlist.author === fromUser) {
-    if (songIndex !== -1) {
-      playlist.songs.splice(songIndex, 1);
-      writeDocument('playlists', playlist);
+  if (songIndex !== -1) {
+    var song = playlist.songs[songIndex];
+    if (playlist.author === fromUser) {
+      if (user.spotifyProfileName === playlist.spotify_author) {
+        spotifyApi.removeTracksFromPlaylist(user.spotifyProfileName, playlist.spotify_id, [{
+          'uri': song.uri
+        }])
+          .then(function(data) {
+            playlist.songs.splice(songIndex, 1);
+            writeDocument('playlists', playlist);
+            res.send(playlist);
+          })
+          .catch(function(err){
+            console.log('Could not remove track from playlist: ', err.message);
+            res.status(405).end();
+          });
+      } else {
+        // 401: Unauthorized.
+        res.status(401).end();
+      }
+    } else {
+      // 401: Unauthorized.
+      res.status(401).end();
     }
-    res.send(playlist);
-  } else {
-    // 401: Unauthorized.
-    res.status(401).end();
   }
 });
 
 /**
- * Delete a playlist.
+ * Delete a playlist from BBQForte.
+ * This does not affect Spotify.
  */
 app.delete('/playlist/:playlistid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));

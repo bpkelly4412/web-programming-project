@@ -222,7 +222,7 @@ export function addSong(playlistID, userID, song, cb) {
  * Removes a song from a playlist.
  * Should FAIL if the user does not own the playlist.
  */
-export function removeSong(playlistID, songIndex, cb) {
+export function removeSong(playlistID, userID, songIndex, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
       sendXHR('DELETE', '/playlist/' + playlistID + '/songs/' + songIndex, undefined, (xhr) => {

@@ -9,7 +9,7 @@ export default class Song extends React.Component {
       var callbackFunction = (updatedSongs) => {
         this.props.callbackPlaylist(updatedSongs);
       };
-      removeSong(this.props.playlistID, this.props.songIndex, callbackFunction);
+      removeSong(this.props.playlistID, this.props.userId, this.props.songIndex, callbackFunction);
     }
   }
 

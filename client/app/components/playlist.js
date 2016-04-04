@@ -133,6 +133,7 @@ export default class Playlist extends React.Component {
                     <Song key={i}
                       trackNumber={i + 1}
                       songIndex={i}
+                      userId = {this.props.userID}
                       spotify_id = {songItem.spotify_id}
                       title={songItem.title}
                       artist={songItem.artist}

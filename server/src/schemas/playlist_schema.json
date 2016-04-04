@@ -44,6 +44,10 @@
       "id": "spotify_id",
       "type": "string"
     },
+    "spotify_author": {
+      "id": "spotify_author",
+      "type": "string"
+    },
     "url": {
       "id": "url",
       "type": "string"
