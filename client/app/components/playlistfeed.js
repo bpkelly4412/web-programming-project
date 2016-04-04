@@ -1,7 +1,8 @@
 import React from 'react';
 import Playlist from './playlist';
 import Recommend from './recommend';
-import { checkSpotifyLoggedIn, spotifyLogoutUser, getPlaylistFeed, createNewPlaylist, getUserData } from '../server';
+import PlaylistShort from './playlist-short';
+import { checkSpotifyLoggedIn, searchForPlaylists, addPlaylist, getPlaylistFeed, createNewPlaylist, getUserData } from '../server';
 
 export default class PlayListFeed extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class PlayListFeed extends React.Component {
       newPlaylistGame: "",
       newPlaylistGenre: "",
       newPlaylistDescription: "",
-      playlistSearchTerm: ""
+      playlistSearchTerm: "",
+      playlistSearchResults: []
     };
     this.onChildChanged = this.onChildChanged.bind(this);
   }
@@ -65,12 +67,17 @@ export default class PlayListFeed extends React.Component {
     this.setState({playlistSearchTerm: e.target.value});
   }
 
-  handlePlaylistSearchClick(e) {
+  handlePlaylistSearchClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0 && this.state.playlistSearchTerm !== "") {
-      this.setState({value: ""});
-
+      searchForPlaylists(this.state.playlistSearchTerm, this.props.userID, (playlistResults) => {
+        this.setState({playlistSearchResults: playlistResults});
+      });
     }
+  }
+
+  handleImportPlaylistClick(clickEvent, playlist) {
+    // this.setState({ playlistSearchResults: [], value: "", playlistSearchTerm: "", contents: updatedPlaylistFeed });
   }
 
   checkLogInSpotifyClick(clickEvent) {
@@ -168,13 +175,17 @@ export default class PlayListFeed extends React.Component {
                   <div id="searchPlaylistForm" className="collapse">
                     <form>
                       <div className="form-group">
-                        <label htmlFor="playlistDescription">Search Spotify</label>
-                        <input type="text"
-                               id="playlistDescription"
-                               className="form-control"
-                               placeholder="Search for playlists..."
-                               value={this.state.value}
-                               onChange={(e) => this.handlePlaylistSearchValueChange(e)} />
+                        <div className="input-group">
+                          <input type="text"
+                                 id="playlistDescription"
+                                 className="form-control"
+                                 placeholder="Search for playlists..."
+                                 value={this.state.value}
+                                 onChange={(e) => this.handlePlaylistSearchValueChange(e)} />
+                        <span className="input-group-addon">
+                          <span className="fa fa-search"></span>
+                        </span>
+                        </div>
                       </div>
                       <button type="submit"
                               className="btn btn-default playlist-button"
@@ -183,7 +194,38 @@ export default class PlayListFeed extends React.Component {
                       </button>
                     </form>
                   </div>
+                  <div className="row">
+                    {(() => {
+                      switch (this.state.playlistSearchTerm) {
+                        case "":
+                          return null;
+                        default:
+                          return <p className="search-result">Results for "{this.state.playlistSearchTerm}"</p>;
+                      }
+                    })()}
+
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="panel panel-default playlist ">
+            <div className="panel-body">
+              <div className="col-md-10 col-md-offset-1 songlist-table">
+                {this.state.playlistSearchResults.map((playlist, i) => {
+                  return (
+                    <div key={i} onClick={(e) => this.handleImportPlaylistClick(e, playlist)}>
+                      <PlaylistShort title = {playlist.playlist.title}
+                                     uri = {playlist.playlist.uri}
+                                     url = {playlist.playlist.url}
+                                     owner = {playlist.playlist.spotify_author}
+                                     numTracks = {playlist.numTracks.total}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

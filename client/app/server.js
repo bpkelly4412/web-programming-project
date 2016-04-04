@@ -239,6 +239,16 @@ export function removeSong(playlistID, userID, songIndex, cb) {
   });
 }
 
+export function searchForPlaylists(searchTerm, userID, cb) {
+  sendXHR('POST', '/playlistresults/' + userID, searchTerm, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function addPlaylist(playlist, userID, cb) {
+
+}
+
 /**
 *with callback to use for profile page
 */

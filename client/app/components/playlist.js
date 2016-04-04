@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { pushPlaylistToSpotify, pullPlaylistFromSpotify, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 

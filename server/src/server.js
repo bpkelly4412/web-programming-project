@@ -212,6 +212,58 @@ app.post('/songlist', function(req, res) {
 });
 
 /**
+ * Search for playlists on Spotify
+ */
+app.post('/playlistresults/:userid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userid, 10);
+  if (fromUser === userID) {
+    if (typeof(req.body) === 'string') {
+      var playlistResults = [];
+      spotifyApi.searchPlaylists(req.body)
+        .then(function (data) {
+          data.body.playlists.items.map(function(nextPlaylist) {
+            var image = '';
+            if (nextPlaylist.images.length > 1) {
+              image = nextPlaylist.images[1].url;
+            } else if (nextPlaylist.images.length === 1) {
+              image = nextPlaylist.images[0].url;
+            }
+            var newPlaylist = {
+              playlist: {
+                game: "",
+                imageURL: image,
+                title: nextPlaylist.name,
+                author: -1,
+                votes: [],
+                genre: "",
+                description: "",
+                spotify_id: nextPlaylist.id,
+                spotify_author: nextPlaylist.owner.id,
+                url: nextPlaylist.href,
+                uri: nextPlaylist.uri,
+                songs: []
+              },
+              numTracks: {
+                total: nextPlaylist.tracks.total
+              }
+
+            };
+            playlistResults.push(newPlaylist);
+          });
+          res.send(playlistResults);
+        })
+    } else {
+      // 400: Bad Request.
+      res.status(400).end();
+    }
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
+/**
 * Given a user ID, returns a UserData object.
 */
 app.get('/user/:userID', function(req, res) {
@@ -338,6 +390,7 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
 
 /**
  * Adds a song to a particular playlist.
+ * If the playlist no longer exists on Spotify, then create it anew and add it.
  */
 app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
   function(req, res) {
@@ -364,8 +417,35 @@ app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
             res.send(playlist);
           })
           .catch(function(err){
-            console.log('Could not add track to playlist: ', err.message);
-            res.status(405).end();
+            if (err.status === 404) {
+              spotifyApi.createPlaylist(user.spotifyProfileName, playlist.title)
+                .then(function(data) {
+                  console.log('Playlist does not exist on spotify, creating new playlist: ' , data.body.id);
+                  return spotifyApi.getPlaylistTracks(user.spotifyProfileName, playlist.spotify_id);
+                })
+                .then(function(data) {
+                  console.log('...Adding tracks to the new playlist.');
+                  var trackURIs = [];
+                  for (song in playlist.songs) {
+                    trackURIs.push(song.uri);
+                  }
+                  playlist.spotify_id = data.body.id;
+                  playlist.spotify_author = data.body.owner.id;
+                  playlist.url = data.body.href;
+                  playlist.uri = data.body.uri;
+                  return spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, trackURIs);
+                })
+                .then(function(data) {
+                  res.send(playlist);
+                })
+                .catch(function(err){
+                  console.log('Could not create playlist: ', err.message);
+                  res.status(405).end();
+                });
+            } else {
+              console.log('Could not add track to playlist: ', err.message);
+              res.status(405).end();
+            }
           });
       } else {
         // 401: Unauthorized.
