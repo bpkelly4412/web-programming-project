@@ -259,6 +259,7 @@ export function addPlaylist(playlist, userID, cb) {
         author: playlist.playlist.author,
         title: playlist.playlist.title,
         game: playlist.playlist.game,
+        imageURL: playlist.playlist.imageURL,
         genre: playlist.playlist.genre,
         description: playlist.playlist.description,
         spotify_id: playlist.playlist.spotify_id,

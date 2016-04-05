@@ -163,7 +163,6 @@ app.delete('/spotify/user/:userid', function(req, res) {
  * Search for songs on Spotify
  */
 app.post('/spotify/songlist', function(req, res) {
-  console.log(req.body);
   if (typeof(req.body) === 'string') {
     var songList = [];
     spotifyApi.searchTracks(req.body)
@@ -209,16 +208,14 @@ app.post('/spotify/playlistresults/:userid', function(req, res) {
       spotifyApi.searchPlaylists(req.body)
         .then(function (data) {
           data.body.playlists.items.map(function(nextPlaylist) {
-            var image = '';
-            if (nextPlaylist.images.length > 1) {
-              image = nextPlaylist.images[1].url;
-            } else if (nextPlaylist.images.length === 1) {
-              image = nextPlaylist.images[0].url;
+            var imageurl = '';
+            if (nextPlaylist.images.length > 0) {
+              imageurl = nextPlaylist.images[0].url;
             }
             var newPlaylist = {
               playlist: {
                 game: "",
-                imageURL: image,
+                imageURL: imageurl,
                 title: nextPlaylist.name,
                 author: -1,
                 votes: [],
@@ -233,7 +230,6 @@ app.post('/spotify/playlistresults/:userid', function(req, res) {
               numTracks: {
                 total: nextPlaylist.tracks.total
               }
-
             };
             playlistResults.push(newPlaylist);
           });
@@ -320,11 +316,12 @@ function getPlaylist(playlistID) {
  * @param uri
  * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: *, spotify_author: *, url: *, uri: *, songs: Array}}
  */
-function createNewPlaylist(userID, title, game, genre, description, spotifyId, spotifyOwnerID, url, uri) {
+function createNewPlaylist(userID, title, game, genre, description, imageURL,  spotifyId, spotifyOwnerID, url, uri) {
   var user = readDocument('users', userID);
   var newPlaylist = {
+    "userId": userID,
     "game": game,
-    "imageURL": "",
+    "imageURL": imageURL,
     "title": title,
     "author": userID,
     "votes": [],
@@ -354,12 +351,14 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     var user = database.readDocument('users', fromUser);
     spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
       .then(function(data) {
+
         var newPlaylist = createNewPlaylist(
           body.author,
           body.title,
           body.game,
           body.genre,
           body.description,
+          "",
           data.body.id,
           data.body.owner.id,
           data.body.href,
@@ -390,6 +389,7 @@ app.put('/playlistfeed/user/:userid/playlist/', validate({body: playlistSchema})
         body.game,
         body.genre,
         body.description,
+        body.imageURL,
         body.spotify_id,
         body.spotify_author,
         body.url,
