@@ -320,6 +320,12 @@ body {
   font-weight: 300;
 }
 
+.playlist-subtitle {
+  color: #5fcdef;
+  font-size: 14px;
+  font-weight: 300;
+}
+
 .playlist-toolbar {
   background: rgba( 42, 63, 90, 0.6 );
 }

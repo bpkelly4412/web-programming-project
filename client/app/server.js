@@ -251,6 +251,12 @@ export function removeSong(playlistID, userID, songIndex, cb) {
   });
 }
 
+/**
+ * Adds a new, empty playlist to the local and Spotify accounts.
+ * @param playlist
+ * @param userID
+ * @param cb
+ */
 export function addPlaylist(playlist, userID, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
@@ -277,6 +283,26 @@ export function addPlaylist(playlist, userID, cb) {
         cb(undefined);
       });
     }
+  });
+}
+
+/**
+ * Edits the local playlist info.
+ * @param userID
+ * @param name
+ * @param game
+ * @param genre
+ * @param descrip
+ * @param cb
+ */
+export function editPlaylist(userID, playlistID, name, game, genre, descrip, cb) {
+  sendXHR('PUT', 'playlist/' + playlistID, {
+    name: name,
+    game: game,
+    genre: genre,
+    description: descrip
+  }, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
 }
 

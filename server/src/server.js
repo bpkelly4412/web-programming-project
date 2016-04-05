@@ -531,6 +531,27 @@ app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
 });
 
 /**
+ * Edit the local information of a playlist
+ */
+app.put('/playlist/:playlistid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var playlist = readDocument('playlists', playlistID);
+  if (playlist.author === fromUser) {
+    console.log(req.body);
+    playlist.title = req.body.name;
+    playlist.game = req.body.game;
+    playlist.genre = req.body.genre;
+    playlist.description = req.body.description;
+    writeDocument('playlists', playlist);
+    res.send(playlist);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+/**
  * Delete a playlist from BBQForte.
  * This does not affect Spotify.
  */
