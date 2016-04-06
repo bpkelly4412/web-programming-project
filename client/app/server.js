@@ -314,6 +314,7 @@ export function getPlaylistCB(playlistID, cb) {
   // playlist.contents = playlist.songs.map(getSong);
   emulateServerReturn(playlist, cb);
 }
+
 /**
 * Given a playlist ID returns a Playlist object.
 * Might considering merging with getPlaylist(playlistID)
@@ -435,55 +436,56 @@ export function getCarousel(cb) {
 * Returns a NewRelease object
 */
 export function getNewRelease(cb) {
-  var newReleaseData = readDocument('newRelease', 1);
-  newReleaseData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var newReleaseData = readDocument('newRelease', 1);
+  // newReleaseData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(newReleaseData, cb);
+  sendXHR('GET', '/new-release/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(newReleaseData, cb);
 }
 
 /**
 * Returns a MostPopular object
 */
 export function getMostPopular(cb) {
-  var mostPopularData = readDocument('mostPopular', 1);
-  mostPopularData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var mostPopularData = readDocument('mostPopular', 1);
+  // mostPopularData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(mostPopularData, cb);
+  sendXHR('GET', '/most-popular/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(mostPopularData, cb);
 }
-
-/*export function getMostPopular(cb) {
-  var playlists = readPlaylist('playlists');
-  var arr = [];
-  for (var attr in playlists){
-    arr.push(playlists[attr])
-  }
-
-
-  emulateServerReturn(mostPopularData, cb);
-}*/
 
 /**
 * Returns a HighestRated object
 */
 export function getHighestRated(cb) {
-  var highestRatedData = readDocument('highestRated', 1);
-  highestRatedData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var highestRatedData = readDocument('highestRated', 1);
+  // highestRatedData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(highestRatedData, cb);
+  sendXHR('GET', '/highest-rated/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(highestRatedData, cb);
 }
 
 /**
 * Returns a Rising object
 */
 export function getRising(cb) {
-  var risingData = readDocument('rising', 1);
-  risingData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var risingData = readDocument('rising', 1);
+  // risingData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(risingData, cb);
+  sendXHR('GET', '/rising/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(risingData, cb);
 }
 
 /**

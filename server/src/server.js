@@ -9,6 +9,7 @@ var readDocument = database.readDocument;
 var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
 var deleteDocument = database.deleteDocument;
+var getCollection = database.getCollection;
 
 //  Spotify API
 var SpotifyWebAPI = require('spotify-web-api-node');
@@ -819,6 +820,105 @@ app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
     res.status(401).end();
   }
 });
+
+/*
+ * Returns the NewRelease object
+ */
+app.get('/new-release/', function(req, res) {
+  var newReleaseData = readDocument('newRelease', 1);
+  newReleaseData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(newReleaseData);
+});
+
+/*
+* Compute the 8 most popular playlists in database and return them as mostPopular JSON
+*/
+function getMostPopular(){
+  var playlistsJSON = getCollection('playlists');
+  //var parsed = JSON.parse(playlistsJSON);
+  var playlists = [];
+  for(var x in playlistsJSON){
+    playlists.push(playlistsJSON[x]);
+  }
+  playlists.sort(function(a,b){
+    return b.votes.length - a.votes.length;
+  });
+  var newPopular = {
+    ".id": 1,
+    "contents": []
+  };
+  for(var i = 0; i<playlists.length && i < 8; i++){
+    console.log(playlists[i]);
+    var index = indexOfGame(playlists[i].game, newPopular.contents);
+    if(index == -1){
+      var newSection = {
+        "imageURL": playlists[i].imageURL,
+        "gameTitle": playlists[i].game,
+        "playlists": [playlists[i]._id]
+      };
+      newPopular.contents.push(newSection);
+    }else{
+      newPopular.contents[index].playlists.push(playlists[i]._id);
+    }
+  }
+  return newPopular;
+}
+
+/*
+* Returns the index of gameTitle (string) within contents (array) in MostPopular JSON
+*/
+function indexOfGame (gameTitle, contents) {
+  for(var i = 0; i < contents.length; i++){
+    if(contents[i].gameTitle.toLowerCase() == gameTitle.toLowerCase())
+      return i;
+  }
+  return -1;
+}
+
+/*
+ * Returns the MostPopular object
+ */
+app.get('/most-popular/', function(req, res) {
+  var mostPopularData = getMostPopular();
+  mostPopularData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(mostPopularData);
+});
+
+/*
+ * Returns the HighestRated object
+ */
+app.get('/highest-rated/', function(req, res) {
+  var highestRatedData = readDocument('highestRated', 1);
+  highestRatedData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(highestRatedData);
+});
+
+/*
+ * Returns the Rising object
+ */
+app.get('/rising/', function(req, res) {
+  var risingData = readDocument('rising', 1);
+  risingData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(risingData);
+});
+
+/**
+* Given a playlist ID returns a Playlist object.
+*/
+function getPlaylistWithAuthor(playlistID) {
+  var playlist = readDocument('playlists', playlistID);
+  var userID = playlist.author;
+  playlist.author = readDocument('users', userID).userName
+  return playlist;
+}
 
 /**
  * Reset the database

@@ -588,15 +588,15 @@ var initialData = {
     "1": {
       "._id": 1,
       "contents": [
-        {
+        /*{
           "imageURL": "img/fallout4.jpg",
           "gameTitle": "Fallout 4",
           "playlists": [103,104,105,106]
-        },
+        },*/
         {
           "imageURL": "img/elite-dangerous.jpg",
           "gameTitle": "Elite Dangerous",
-          "playlists": [107,108,109,110]
+          "playlists": [101, 102]
         }
       ]
     }
@@ -605,15 +605,15 @@ var initialData = {
     "1": {
       "._id": 1,
       "contents": [
-        {
+        /*{
           "imageURL": "img/fallout4.jpg",
           "gameTitle": "Fallout 4",
           "playlists": [103,104,105,106]
-        },
+        },*/
         {
           "imageURL": "img/elite-dangerous.jpg",
           "gameTitle": "Elite Dangerous",
-          "playlists": [107,108,109,110]
+          "playlists": [101, 102]
         }
       ]
     }
@@ -623,15 +623,15 @@ var initialData = {
       "._id": 1,
       // first newRelease Section
       "contents": [
-        {
+        /*{
           "imageURL": "img/fallout4.jpg",
           "gameTitle": "Fallout 4",
           "playlists": [103,104,105,106]
-        },
+        },*/
         {
           "imageURL": "img/elite-dangerous.jpg",
           "gameTitle": "Elite Dangerous",
-          "playlists": [107,108,109,110]
+          "playlists": [101, 102]
         }
       ]
     }
@@ -672,15 +672,15 @@ var initialData = {
       "._id": 1,
       // first newRelease Section
       "contents": [
-        {
+        /*{
           "imageURL": "img/fallout4.jpg",
           "gameTitle": "Fallout 4",
           "playlists": [103,104,105,106]
-        },
+        },*/
         {
           "imageURL": "img/elite-dangerous.jpg",
           "gameTitle": "Elite Dangerous",
-          "playlists": [107,108,109,110]
+          "playlists": [101, 102]
         }
       ]
     }
