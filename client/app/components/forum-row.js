@@ -6,24 +6,15 @@ export default class ForumRow extends React.Component {
     return (
       <tr>
         <td className="discussion">
-          <Link to={"/forum-topic/" +this.props.fid +this.props.id}>{this.props.title}</Link>
+          <Link to={"/forum-topic/" +this.props.id + "/" + this.props.userID}>{this.props.title}</Link>
         </td>
         <td className="threads">
           {this.props.threadCount}
         </td>
         <td className="posts">
-          2
+          {this.props.postCOunt}
         </td>
         <td className="lastdisc">
-          <p className="prvw-p">
-            <Link to={"/forum-thread/" + this.props.userID}>First Thread</Link>
-          </p>
-          <p className="prvw-p">
-            XX-XX-XXXX XX:XX
-          </p>
-          <p className="prvw-p">
-            <Link to={"/profile/" + 2}>Ned Stark</Link>
-          </p>
         </td>
       </tr>
     )
