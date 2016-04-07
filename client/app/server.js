@@ -334,6 +334,11 @@ export function getUserData(userID, cb) {
   });
 }
 
+export function getUserNickName(userID, cb) {
+  sendXHR('GET', '/user/' + userID + '/nickName', undefined, xhr => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
 export function setUserData(data, cb) {
     var userData = writeDocument('users', data);
     emulateServerReturn(userData, cb);

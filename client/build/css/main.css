@@ -805,3 +805,8 @@ img.img-resize {
     font-size: 16px;
     margin-bottom: 20px;
 }
+textarea.profile-edit {
+  resize: none;
+  box-shadow: none !important;
+  border: none;
+}

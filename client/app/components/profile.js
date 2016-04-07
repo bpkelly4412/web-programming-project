@@ -1,79 +1,77 @@
 import React from 'react';
-import Playlist from './playlist';
-import { getUserData, getPlaylistCB, getPlaylistFeed} from '../server';
+import { getUserData, getUserNickName} from '../server';
 
 
 export default class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {currentPlaylist: {
-      "_id": 101,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Music for Space Travel",
-      "author": 1,
-      "votes": [1, 3],
-      "genre": "Classical",
-      "description": "Epic orchestra music.",
-      "url": "TBD",
-      "songs": [
-        {
-          "title": "Flight",
-          "artist": "Hans Zimmer",
-          "album": "Man of Steel (Original Motion Picture Soundtrack)",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Requiem (for String Orchestra)",
-          "artist": "Takemitsu",
-          "album": "Takemitsu: Orchestral Works",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Summa",
-          "artist": "Arvo Pärt",
-          "album": "The Very Best of Arvo Pärt",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Morag",
-          "artist": "Tyler Bates",
-          "album": "Guardians of the Galaxy (Original Score)",
-          "duration": 5000,
-          "url": "TBD"
-        }
-      ]
-    }, editing: false, savedPlaylists: {contents: []}};
+    this.state = {editing: false, editSubmitted: false, editedNameValue: '', editedAboutValue: '', followers: [],
+                  followerNickNames: [], following: [], followingNickNames: []};
   }
 
+  onEditClick(e) {
+    e.preventDefault();
+    this.setState({
+      editing: true,
+      editSubmitted: false,
+      editedValue: this.props.value
+    });
+  }
+
+  onEditCancel(e) {
+  e.preventDefault();
+  this.setState({
+    editing: false,
+    editSubmitted: false
+  });
+}
+
+onEdit(e) {
+    e.preventDefault();
+    this.props.onContentUpdate(this.state.editedValue);
+    this.setState({
+      editSubmitted: true
+    });
+  }
+
+  handleEditChange(e) {
+    e.preventDefault();
+    this.setState({ editedValue: e.target.value });
+  }
+
+  componentWillReceiveProps() {
+    if (this.state.editing && this.state.editSubmitted) {
+      // Component has received its new status update text!
+      this.setState({
+        editing: false,
+        editSubmitted: false
+      });
+    }
+  }
 
   refresh() {
     getUserData(this.props.userID, (userData) => {
-      var data = userData
-      getPlaylistCB(userData.currentPlaylistID, (playlist) => {
-        data.currentPlaylist = playlist;
+      var data = userData;
+      data.followers.map( (followerID) => {
+        getUserNickName(followerID, (nickname) => {
+          this.state.followerNickNames.push(nickname);
+         this.setState({followerNickNames: this.state.followerNickNames});
+        });
       });
-      getPlaylistFeed(this.props.userID, (feedData) => {
-        data.savedPlaylists = feedData;
+      data.following.map( (followingID) => {
+        getUserNickName(followingID, (nickname) => {
+          this.state.followingNickNames.push(nickname);
+         this.setState({followingNickNames: this.state.followingNickNames});
+        });
       });
-      //console.log(data);
-      //console.log(data.editing);
-      //console.log(data.currentPlaylist);
-      window.userData = data;
       this.setState(data);
-      //console.log(this.state);
     });
-      //this.setState({"currentPlaylist" :  getPlaylist(this.state.currentPlaylistID) });
-    //getPlaylist(this.state.currentPlaylistID)};
 
   }
 
   render() {
-    //console.log(this.state);
+
     // Render the component differently based on state.
     if (this.state.editing) {
       return this.renderEdit();
@@ -100,7 +98,6 @@ export default class Profile extends React.Component {
 
 
   renderSaved() {
-    //console.log(this.state.currentPlaylist)
     return (
       <div className="col-md-10 col-md-offset-1 transparent-background">
         <div className="row profile-row">
@@ -135,14 +132,6 @@ export default class Profile extends React.Component {
           {/* end profile header container*/}
         </div>
         {/* end of profile pic row*/}
-
-        <div className="row">
-          <Playlist key={this.state.currentPlaylist._id}
-            userID={this.props.userID}
-            data={this.state.currentPlaylist}
-            plFeedID={""}
-            callbackPlaylistFeed = {""} />
-      </div>
         <div className="row profile-row">
           <div className="col-md-2 col-md-offset-4">
             Name:
@@ -184,7 +173,11 @@ export default class Profile extends React.Component {
             Following:
           </div>
           <div className="col-md-4">
-            Username1, Username2, Username3, Username_Four, Username_Five
+            {
+                this.state.followerNickNames.map( (nickname, i ) => {
+                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                })
+            }
           </div>
         </div>
         {/*end of 7th row*/}
@@ -193,7 +186,11 @@ export default class Profile extends React.Component {
             Followers:
           </div>
           <div className="col-md-4">
-            Username6, Username7, Username8, Username_Nine, Username_Ten
+            {
+                this.state.followingNickNames.map( (nickname, i ) => {
+                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                })
+            }
           </div>
         </div>
         {/*end of 8th row*/}
@@ -236,90 +233,6 @@ export default class Profile extends React.Component {
         {/* end profile header container*/}
       </div>
       {/* end of profile pic row*/}
-{/*
-      <div className="row">
-        <Playlist key={this.state.currentPlaylist._id}
-          userID={this.props.userID}
-          data={this.state.currentPlaylist}
-          plFeedID={""}
-          callbackPlaylistFeed = {""} />
-    </div>
-*/}
-
-      <div className="row profile-row">
-        <div className="playlist col-md-12 table-responsive profile-playlist">
-          <div className="row">
-            <div className="col-md-8">
-              <h3 className="playlist-title">
-                <strong>Current Game: </strong>
-                Elite Dangerous
-              </h3>
-            </div>
-            <div className="col-md-4">
-              <img
-                src="img/elite-dangerous.jpg"
-                className="img-responsive"
-                alt="Elite Dangerous" />
-            </div>
-          </div>
-          <div
-            className="btn-toolbar playlist-toolbar"
-            role="toolbar">
-            <div
-              className="input-group"
-              role="group"
-              aria-label="Playback Buttons">
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-stop" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-backward" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-play" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-forward" />
-              </button>
-            </div>
-            <div
-              className="input-group pull-right"
-              role="group"
-              aria-label="Playlist Options">
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Add Track">
-                <span className="glyphicon glyphicon-plus-sign" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Share Playlist">
-                <span className="glyphicon glyphicon-share" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Options">
-                <span className="glyphicon glyphicon-cog" />
-              </button>
-            </div>
-          </div>
-          <table className="table table-hover">
-            <thead>
-            </thead>
-          </table>
-        </div>
-      </div>
       {/*end of 2nd row*/}
       <div className="row profile-row">
         <div className="col-md-2 col-md-offset-4">

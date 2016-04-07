@@ -263,6 +263,12 @@ app.get('/user/:userID', function(req, res) {
   }
 });
 
+app.get('/user/:userID/nickName', function(req, res) {
+  var userID = parseInt(req.params.userID, 10);
+  // Send response.
+  var userData = readDocument('users', userID);
+  res.send(JSON.stringify(userData.nickName));
+});
 /*
  *  PLAYLIST FEED FUNCTIONS
  */
