@@ -810,3 +810,6 @@ textarea.profile-edit {
   box-shadow: none !important;
   border: none;
 }
+.hidden {
+display: 'none';
+}

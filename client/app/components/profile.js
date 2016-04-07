@@ -1,6 +1,27 @@
 import React from 'react';
 import { getUserData, getUserNickName} from '../server';
+import {hideElement} from '../util'
 
+function countLines(str) {
+  // Number of lines is the number of newlines plus 1.
+  // Example:
+  // "Fee\nFi\nFo\nFum" is:
+  // Fee
+  // Fi
+  // Fo
+  // Fum
+  // Three newlines, four lines of text.
+  if(str == undefined){
+    return 1;
+  }
+  var count = 1;
+  for (var i = 0; i < str.length; i++) {
+    if (str[i] === '\n') {
+      count++;
+    }
+  }
+  return count;
+}
 
 export default class Profile extends React.Component {
 
@@ -9,6 +30,8 @@ export default class Profile extends React.Component {
     this.state = {editing: false, editSubmitted: false, editedNameValue: '', editedAboutValue: '', followers: [],
                   followerNickNames: [], following: [], followingNickNames: []};
   }
+
+
 
   onEditClick(e) {
     e.preventDefault();
@@ -35,9 +58,14 @@ onEdit(e) {
     });
   }
 
-  handleEditChange(e) {
+  handleEditNameChange(e) {
     e.preventDefault();
-    this.setState({ editedValue: e.target.value });
+    this.setState({ editedNameValue: e.target.value });
+  }
+
+  handleEditAboutChange(e) {
+    e.preventDefault();
+    this.setState({ editedAboutValue: e.target.value });
   }
 
   componentWillReceiveProps() {
@@ -65,6 +93,8 @@ onEdit(e) {
          this.setState({followingNickNames: this.state.followingNickNames});
         });
       });
+      this.setState({editedNameValue: data.userName});
+      this.setState({editedAboutValue: data.about});
       this.setState(data);
     });
 
@@ -73,11 +103,11 @@ onEdit(e) {
   render() {
 
     // Render the component differently based on state.
-    if (this.state.editing) {
-      return this.renderEdit();
-    } else {
+    // if (this.state.editing) {
+    //   return this.renderEdit();
+    // } else {
       return this.renderSaved();
-    }
+    //}
   }
 
   edit() {
@@ -122,12 +152,28 @@ onEdit(e) {
           <div
             className="btn-group pull-right"
             role="group">
-            <button
-              type="button"
-              className="btn btn-default profile-button"
-              onClick={this.edit.bind(this)}>
-              <span className="glyphicon glyphicon-pencil"  />
-            </button>
+            <span className={hideElement(this.state.editing)}>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick={this.edit.bind(this)}>
+                <span className="glyphicon glyphicon-pencil"  />
+              </button>
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick={this.finishEdit.bind(this)}>
+                SAVE
+              </button>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick={this.finishEdit.bind(this)}>
+                CANCEL
+              </button>
+            </span>
           </div>
           {/* end profile header container*/}
         </div>
@@ -137,7 +183,12 @@ onEdit(e) {
             Name:
           </div>
           <div className="col-md-4">
+            <span className={hideElement(this.state.editing)}>
             {this.state.userName}
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <textarea disabled={this.state.editSubmitted} className="form-control profile-edit" rows={countLines(this.state.editedNameValue).toString()} value={this.state.editedNameValue} onChange={(e) => this.handleEditNameChange(e)} />
+            </span>
           </div>
         </div>
         {/*end of 3rd row*/}
@@ -146,8 +197,13 @@ onEdit(e) {
             About:
           </div>
           <div className="col-md-4">
-            {this.state.about}
-          </div>
+            <span className={hideElement(this.state.editing)}>
+              {this.state.about}
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <textarea disabled={this.state.editSubmitted} className="form-control profile-edit" rows={countLines(this.state.editedAboutValue).toString()} value={this.state.editedAboutValue} onChange={(e) => this.handleEditAboutChange(e)} />
+            </span>
+        </div>
         </div>
         {/*end of 4th row*/}
         <div className="row profile-row">
@@ -281,7 +337,11 @@ onEdit(e) {
           Following:
         </div>
         <div className="col-md-4">
-          Username1, Username2, Username3, Username_Four, Username_Five
+          {
+          this.state.followerNickNames.map( (nickname, i ) => {
+            return <a href="#" key = {i}>{nickname + ", "}</a>
+          })
+        }
         </div>
       </div>
       {/*end of 7th row*/}
@@ -290,7 +350,11 @@ onEdit(e) {
           Followers:
         </div>
         <div className="col-md-4">
-          Username6, Username7, Username8, Username_Nine, Username_Ten
+          {
+          this.state.followingNickNames.map( (nickname, i ) => {
+            return <a href="#" key = {i}>{nickname + ", "}</a>
+          })
+        }
         </div>
       </div>
       {/*end of 8th row*/}
