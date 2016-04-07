@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "category": {
+      "id": "category",
+      "type": "integer"
+    },
+    "topicId": {
+      "id": "topicId",
+      "type": "integer"
+    },
+    "threadId": {
+      "id": "threadId",
+      "type": "integer"
+    },
+    "author": {
+      "id": "author",
+      "type": "integer"
+    },
+    "contents": {
+      "id": "contents",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "category",
+    "topicId",
+    "threadId",
+    "author",
+    "contents"
+  ]
+}

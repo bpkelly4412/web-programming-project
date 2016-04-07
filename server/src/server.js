@@ -27,6 +27,8 @@ var currentSpotifyState = '';
 var playlistSchema = require('./schemas/playlist_schema.json');
 var songSchema = require('./schemas/song_schema.json');
 var chatMessageSchema = require('./schemas/chat-message_schema.json');
+var threadSchema = require('./schemas/thread_schema.json');
+var commentSchema = require('./schemas/comment_schema.json');
 
 app.use(express.static('../client/build'));
 app.use(bodyParser.text());
@@ -983,11 +985,85 @@ app.get('/forum/', function(req,res){
 /*
  * Returns the Topics object
  */
-app.get('/forum/category/:category/topic/:topicID', function(req,res){
+app.get('/forum/category/:category/topic/:topicID',  function(req,res){
   var forumData = readDocument('forums', 1);
   var topic = forumData.categories[parseInt(req.params.category)].topics[parseInt(req.params.topicID)];
   res.send(topic);
 });
+
+
+/*
+ * Adds a Thread object
+ */
+
+function postThread(category, topicId, title, author, contents){
+  var time = new Date().getTime();
+  var forumData = readDocument('forums', 1);
+
+  forumData.categories[category].topics[topicId].threads.push({
+    "title": title,
+    "postCount": 0,
+    "posts": [
+      {
+      "_id": forumData.categories[category].topics[topicId].threads.length,
+      "author": author,
+      "postDate": time,
+      "contents": contents
+    }
+  ]
+})
+writeDocument('forums', forumData);
+forumData.categories[category].topics[topicId].postCount = forumData.categories[category].topics[topicId].postCount + 1;
+writeDocument('forums', forumData);
+forumData.categories[parseInt(category)].topics[topicId].threadCount = forumData.categories[category].topics[topicId].threadCount + 1;
+writeDocument('forums', forumData);
+
+}
+
+app.post('/forum/category/:category/topic/:topicId/newTopic', function(req, res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if (fromUser == body.author){
+    postThread(req.params.category, req.params.topicId, body.title, body.author, body.contents)
+    res.status(201);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+/*
+ * Adds a Comment object
+ */
+
+ function postComment( user, category, topicID, threadID, contents) {
+   var time = new Date().getTime();
+   var forumData = readDocument('forums', 1);
+
+   forumData.categories[category].topics[topicID].threads[threadID].posts.push({
+         "author": user,
+         "postDate": time,
+         "contents": contents
+       });
+   writeDocument('forums', forumData);
+   forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
+   writeDocument('forums', forumData);
+   forumData.categories[category].topics[topicID].threads[threadID].postCount =  forumData.categories[category].topics[topicID].threads[threadID].postCount + 1;
+   writeDocument('forums', forumData);
+ }
+
+ app.post('/forum/category/:category/topic/:topicId/thread/:threadid', function(req, res){
+   var body = req.body;
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   if (fromUser == body.author){
+     postComment(body.author, body.category, body.topicId, body.threadId, body.contents)
+     res.status(201);
+   }
+   else{
+     res.status(401).end();
+   }
+ });
+
 
 /**
  * Reset the database
