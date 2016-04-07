@@ -807,7 +807,18 @@ img.img-resize {
     margin-bottom: 20px;
 }
 
+
 /*For User-Options on Navbar*/
 .user-options{
   margin-right: 50px;
+}
+
+textarea.profile-edit {
+  resize: none;
+  box-shadow: none !important;
+  border: none;
+}
+
+.hidden {
+display: 'none';
 }
