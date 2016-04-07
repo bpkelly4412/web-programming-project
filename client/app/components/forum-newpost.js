@@ -21,7 +21,7 @@ handlePost(e) {
      e.preventDefault();
      var newPostText = this.state.value.trim();
      if (newPostText !== "") {
-       postComment(this.props.userID, this.props.tid, this.props.thid, newPostText, () => {
+       postComment(this.props.userId, this.props.tid, this.props.thid, newPostText, () => {
          // Database is now updated. Refresh the feed.
          this.refresh();
 });
@@ -40,10 +40,10 @@ handlePost(e) {
                 <Link to={"/forum/" + this.props.userID}>Forums</Link>
               </li>
               <li>
-                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.userID}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userId}>General Forte Discussion</Link>
               </li>
               <li>
-                <Link to={"/forum-thread/" + this.props.thid + "/" + this.props.tid + "/" + this.props.userID}>First Thread</Link>
+                <Link to={"/forum-thread/" +  this.props.thid + "/" + this.props.tid + "/" + this.props.category + "/" + this.props.id }>First Thread</Link>
               </li>
               <li className="active">New Post</li>
             </ol>

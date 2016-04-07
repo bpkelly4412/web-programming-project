@@ -200,12 +200,14 @@ export function getForum(cb) {
   emulateServerReturn(forumData, cb);
 }
 
-export function postThread(user, topicID, title, contents, cb) {
+export function postThread(user, category, topicID, title, contents) {
 
 
   var time = new Date().getTime();
+  var forumData = readDocument('forums', 1);
+  var topic = forumData.categories[category].topics[topicID];
 
-  var newThread = {
+  topic.threads.push({
     "title": title,
     "postCount": [0],
     "posts": [
@@ -216,14 +218,7 @@ export function postThread(user, topicID, title, contents, cb) {
         "contents": contents
       }
     ]
-  };
-
-  var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
-  newThread = addDocument(topic, newThread);
-
-  // Return the newly-posted object  emulateServerReturn(newThread, cb);
-  emulateServerReturn(newThread, cb);
+  });
 }
 
 export function postComment( user, topicID, threadID, contents, cb) {

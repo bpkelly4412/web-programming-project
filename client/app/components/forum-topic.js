@@ -9,15 +9,15 @@ export default class ForumTopic extends React.Component {
     super(props);
     this.state = {
       "data" : {
-    "_id": 0,
-    "title": "Empty",
-    "category": "empty",
-    "threadCount": [],
-    "postCount": [],
-    "threads": []
+        "_id": 0,
+        "title": "Empty",
+        "category": "empty",
+        "threadCount": [],
+        "postCount": [],
+        "threads": []
+      }
+    };
   }
-};
-}
 
   refresh() {
      getTopic(this.props.category, this.props.tid, (topicData) => {
@@ -48,7 +48,7 @@ export default class ForumTopic extends React.Component {
                   <div className="col-md-3">
                     <div className="btn-group" role="group" aria-label="...">
                       <button type="button" className="btn btn-default cr-btn">
-                        <Link to={"/forum-newthread/" + this.props.tid + "/" + this.props.userID}><span className="glyphicon glyphicon-comment" /> New Thread
+                        <Link to={"/forum-newthread/" + this.props.tid + "/" + this.props.category +"/" +this.props.userId}><span className="glyphicon glyphicon-comment" /> New Thread
                         </Link>
                       </button>
                     </div>

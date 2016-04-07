@@ -34,12 +34,12 @@ export default class ForumThread extends React.Component {
         <div className="row forum-header">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userId}>Home</Link></li>
               <li>
-                <Link to={"/forum/" + this.props.userID}>Forums</Link>
+                <Link to={"/forum/" + this.props.userId}>Forums</Link>
               </li>
               <li>
-                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.userID}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userId}>General Forte Discussion</Link>
               </li>
               <li className="active">
                 First Thread
