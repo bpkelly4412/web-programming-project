@@ -455,7 +455,7 @@ var initialData = {
                   {
                     "_id": 2,
                     "author": 2,
-                    "postdate": 1453690800000,
+                    "postDate": 1453668480000,
                     "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
                   }
                 ]
