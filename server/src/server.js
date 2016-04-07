@@ -288,7 +288,9 @@ app.put('/user/:userID/recommendations/:key', function(req, res) {
     var userID = parseInt(req.params.userID, 10);
     if (fromUser === userID) {
 	var userData = readDocument('users', userID);
-	userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	var playlist = readDocument('playlists', userData.recommendations[key].plid);
+	    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	playlist.songs.push({"title": userData.recommendations[key].song, "artist": userData.recommendations[key].artist});
 	res.send(userData);
     }
     else {
