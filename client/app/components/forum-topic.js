@@ -1,25 +1,27 @@
 import React from 'react';
 import { getTopic } from '../server';
 import { Link } from 'react-router';
-
+import ForumThreadRow from './forum-thread-row';
 
 export default class ForumTopic extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-    "_id": 1,
-    "title": "General Forte Discussion",
-    "category": "forte",
-    "threadCount": [2],
-    "postCount": [2],
+      "data" : {
+    "_id": 0,
+    "title": "Empty",
+    "category": "empty",
+    "threadCount": [],
+    "postCount": [],
     "threads": []
-      }
   }
+};
+}
 
   refresh() {
-     getTopic(this.props.tid, (topicData) => {
-       this.setState({topicData})
+     getTopic(this.props.category, this.props.tid, (topicData) => {
+       this.setState({data: topicData})
      })
   }
 
@@ -37,9 +39,9 @@ export default class ForumTopic extends React.Component {
             <div className="row forum-header">
               <div className="col-md-12">
                 <ol className="breadcrumb">
-                  <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
-                  <li><Link to={"/forum/" + this.props.userID}>Forums</Link></li>
-                  <li className="active">{this.state.title}</li>
+                  <li><Link to={"/home/" + this.props.userId}>Home</Link></li>
+                  <li><Link to={"/forum/" + this.props.userId}>Forums</Link></li>
+                  <li className="active">{this.state.data.title}</li>
                 </ol>
                 <h2> {this.state.title}</h2>
                 <div className="row">
@@ -95,7 +97,7 @@ export default class ForumTopic extends React.Component {
                     </tr>
                     <tr className="board-title">
                       <td>
-                        General Forte Discussion
+                        {this.state.data.title}
                       </td>
                       <td>
                       </td>
@@ -104,33 +106,20 @@ export default class ForumTopic extends React.Component {
                       <td>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="discussion">
-                        <Link to={"/forum-thread/" + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>First Thread</Link>
-                      </td>
-                      <td className="threads">
-                        1
-                      </td>
-                      <td className="posts">
-                        1
-                      </td>
-                      <td className="lastdisc">
-                        <p className="prvw-p">XX-XX-XXXX XX:XX</p>
-                        <p className="prvw-p"><Link to={"/profile/" + 2}>Ned Stark</Link></p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="discussion">
-                        <Link to={"/forum-thread/"  + this.state._id + "/" + this.props.tid + "/" + this.props.userID}>Let's Discuss</Link>
-                      </td>
-                      <td className="threads">
-                      </td>
-                      <td className="posts">
-                      </td>
-                      <td className="lastdisc">
-                      </td>
-                    </tr>
-                  </tbody></table>
+                    {
+                      this.state.data.threads.map((threadItem, i) => {
+                      return (
+                        <ForumThreadRow key = {i}
+                          id = {this.props.userId}
+                          tid = {this.props.tid}
+                          thid = {i}
+                          category = {this.props.category}
+                          title = {threadItem.title}
+                          replyCount = {threadItem.postCount}
+                        />
+                    );})}
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="row nav-btm">

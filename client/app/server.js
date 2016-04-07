@@ -185,9 +185,9 @@ export function useRecommendation(userID, key, cb) {
 /**
 * Returns a Topic object.
 */
-export function getTopic(topicID, cb ) {
+export function getTopic(category, topicID, cb ) {
   var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
+  var topic = forumData.categories[category].topics[topicID];
   // playlist.contents = playlist.songs.map(getSong);
   emulateServerReturn(topic, cb);
 }

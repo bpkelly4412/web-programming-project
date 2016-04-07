@@ -34,7 +34,7 @@ export default class Forum extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
-              <li><Link to={"/home/" + this.props.userID}>Home</Link></li>
+              <li><Link to={"/home/" + this.props.userId}>Home</Link></li>
               <li className="active">Forums</li>
             </ol>
             <h2> Forums</h2>
@@ -64,6 +64,7 @@ export default class Forum extends React.Component {
                   this.state.categories.map((cat,i) => {
                     return (
                       <Category key={i}
+                        category = {i}
                         userId = {this.props.userId}
                         title = {cat.title}
                         topics = {cat.topics} />

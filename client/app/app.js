@@ -126,7 +126,7 @@ class ForumTopicPage extends React.Component {
 class ForumThreadPage extends React.Component {
   render() {
       return (
-        <ForumThread thid={this.props.params.thid} tid={this.props.params.tid} userId={this.props.params.id}/>
+        <ForumThread thid={this.props.params.thid} category={this.props.params.cat} tid={this.props.params.tid} userId={this.props.params.id}/>
       );
   }
 }
@@ -134,7 +134,7 @@ class ForumThreadPage extends React.Component {
 class ForumNewThreadPage extends React.Component {
   render() {
       return (
-        <ForumNewThread tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumNewThread tid={this.props.params.tid} category={this.props.params.cat} userID={this.props.params.id}/>
       );
   }
 }
@@ -142,7 +142,7 @@ class ForumNewThreadPage extends React.Component {
 class ForumNewPostPage extends React.Component {
   render() {
       return (
-        <ForumNewPost thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumNewPost thid={this.props.params.thid} category={this.props.params.cat} tid={this.props.params.tid} userID={this.props.params.id}/>
       );
   }
 }
@@ -272,9 +272,9 @@ ReactDOM.render((
       <Route path="settings/:id" component={SettingsPage} />
       <Route path="forum/:id" component={ForumPage} />
       <Route path="forum-topic/:tid/:cat/:id" component={ForumTopicPage} />
-      <Route path="forum-thread/:thid/:tid/:id" component={ForumThreadPage} />
-      <Route path="forum-newthread/:tid/:id" component={ForumNewThreadPage} />
-      <Route path="forum-newpost/:thid/:tid/:id" component={ForumNewPostPage} />
+      <Route path="forum-thread/:thid/:tid/:cat/:id" component={ForumThreadPage} />
+      <Route path="forum-newthread/:tid/:cat/:id" component={ForumNewThreadPage} />
+      <Route path="forum-newpost/:thid/:tid/:cat/:id" component={ForumNewPostPage} />
       <Route path="private-chat/:id" component={PrivateChatPage} />
       <Route path="about-us/:id" component={AboutUsPage} />
       <Route path="song-list/:pid/:id" component={SongListPage} />

@@ -28,7 +28,7 @@ export default class Category extends React.Component{
           <ForumRow key = {i}
             id = {this.props.userId}
             tid = {i}
-            category = {this.props.title}
+            category = {this.props.category}
             title = {topicsItem.title}
             threadCount = {topicsItem.threadCount}
             postCount = {topicsItem.postCount}
