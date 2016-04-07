@@ -19,8 +19,6 @@ export default class Category extends React.Component{
         </td>
         <td>
         </td>
-        <td>
-        </td>
       </tr>
       {
         this.props.topics.map((topicsItem, i) => {

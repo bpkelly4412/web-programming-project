@@ -55,9 +55,6 @@ export default class Forum extends React.Component {
                   <td>
                     Posts
                   </td>
-                  <td>
-                    Last Discussion
-                  </td>
                 </tr>
                 </tbody>
                 {

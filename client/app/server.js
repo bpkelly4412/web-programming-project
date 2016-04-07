@@ -170,6 +170,11 @@ export function getUserData(userID, cb) {
   emulateServerReturn(userData, cb);
 }
 
+export function getUserName(userId, cb) {
+  var author = readDocument('users', userId).userName;
+  emulateServerReturn(author, cb);
+}
+
 export function setUserData(data, cb) {
     var userData = writeDocument('users', data);
     emulateServerReturn(userData, cb);

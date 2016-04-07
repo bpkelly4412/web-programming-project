@@ -14,8 +14,6 @@ export default class ForumRow extends React.Component {
         <td className="posts">
           {this.props.postCount}
         </td>
-        <td className="lastdisc">
-        </td>
       </tr>
     )
   }

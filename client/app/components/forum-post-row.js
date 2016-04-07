@@ -1,25 +1,25 @@
 import React from 'react';
 import {unixTimeToString} from '../util';
 import { Link } from 'react-router';
-import { getUserData } from '../server';
+import { getUserName } from '../server';
 
 export default class ForumPostRow extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      "userName": "Empty",
-      "data": {}
+      "userName": "Empty"
       }
     }
 
   refresh() {
-     getUserData(this.props.author, (userData) => {
-       this.setState({data: userData})
+     getUserName(this.props.author, (userName) => {
+       this.setState({userName: userName})
      });
   }
 
-//componentdidmount
+  
+
 
   render() {
     return (

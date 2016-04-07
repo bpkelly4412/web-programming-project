@@ -58,37 +58,6 @@ export default class ForumThread extends React.Component {
                   </Link>
                 </button>
               </div>
-              <div className="col-md-4 col-md-offset-5">
-                <nav>
-                  <ul className="pagination pagination-sm pull-right">
-                    <li className="disabled">
-                      <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">«</span>
-                      </a>
-                    </li>
-                    <li className="active">
-                      <a href="#">1</a>
-                    </li>
-                    <li>
-                      <a href="#">2</a>
-                    </li>
-                    <li>
-                      <a href="#">3</a>
-                    </li>
-                    <li>
-                      <a href="#">4</a>
-                    </li>
-                    <li>
-                      <a href="#">5</a>
-                    </li>
-                    <li>
-                      <a href="#" aria-label="Next">
-                        <span aria-hidden="true">»</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
             </div>
           </div>
         </div>
@@ -115,37 +84,7 @@ export default class ForumThread extends React.Component {
               </Link>
             </button>
           </div>
-          <div className="col-md-4 col-md-offset-5">
-            <nav>
-              <ul className="pagination pagination-sm pull-right">
-                <li className="disabled">
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                  </a>
-                </li>
-                <li className="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+        
         </div>
       </div>
 )
