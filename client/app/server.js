@@ -334,9 +334,12 @@ export function getUserData(userID, cb) {
   });
 }
 
-export function setUserData(data, cb) {
-    var userData = writeDocument('users', data);
-    emulateServerReturn(userData, cb);
+export function setUserData(userID, data, cb) {
+    console.log(data);
+
+    sendXHR('PUT', '/user/' + userID, { data: data }, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
 
 export function useRecommendation(userID, key, cb) {
@@ -352,7 +355,7 @@ export function useRecommendation(userID, key, cb) {
 export function getTopic(topicID, cb ) {
   var forumData = readDocument('forums', 1);
   var topic = forumData.topics[topicID];
-  // playlist.contents = playlist.songs.map(getSong);
+  /* playlist.contents = playlist.songs.map(getSong); */
   emulateServerReturn(topic, cb);
 }
 

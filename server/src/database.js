@@ -12,7 +12,7 @@ var initialData = {
       "followers" : [2,3],
       "following" : [3],
       "profile_public": true,
-      "recommend": false,
+      "recommend": true,
       "status": "online",
       "chattingWith": 2,
       "recommendations":

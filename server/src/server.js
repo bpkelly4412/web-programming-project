@@ -263,6 +263,24 @@ app.get('/user/:userID', function(req, res) {
   }
 });
 
+/**
+* Given a user ID and data, sets the users data to the new data
+ */
+app.put('/user/:userID', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    var userData = req.body.data;
+    if (fromUser === userID) {
+	// Send response.
+	var userData = writeDocument('users', userData);
+	res.send(userData);
+    } else {
+	// 401: Unauthorized request.
+	res.status(401).end();
+    }
+});
+
+
 /*
  *  PLAYLIST FEED FUNCTIONS
  */
