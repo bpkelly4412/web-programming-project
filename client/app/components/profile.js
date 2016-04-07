@@ -1,86 +1,111 @@
 import React from 'react';
-import Playlist from './playlist';
-import { getUserData, getPlaylistCB, getPlaylistFeed} from '../server';
+import { getUserData, getUserNickName, setUserName, setUserAbout} from '../server';
+import {hideElement} from '../util'
 
+function countLines(str) {
+  // Number of lines is the number of newlines plus 1.
+  // Example:
+  // "Fee\nFi\nFo\nFum" is:
+  // Fee
+  // Fi
+  // Fo
+  // Fum
+  // Three newlines, four lines of text.
+  if(str == undefined){
+    return 1;
+  }
+  var count = 1;
+  for (var i = 0; i < str.length; i++) {
+    if (str[i] === '\n') {
+      count++;
+    }
+  }
+  return count;
+}
 
 export default class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {currentPlaylist: {
-      "_id": 101,
-      "game": "Elite Dangerous",
-      "imageURL": "img/elite-dangerous.jpg",
-      "title": "Music for Space Travel",
-      "author": 1,
-      "votes": [1, 3],
-      "genre": "Classical",
-      "description": "Epic orchestra music.",
-      "url": "TBD",
-      "songs": [
-        {
-          "title": "Flight",
-          "artist": "Hans Zimmer",
-          "album": "Man of Steel (Original Motion Picture Soundtrack)",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Requiem (for String Orchestra)",
-          "artist": "Takemitsu",
-          "album": "Takemitsu: Orchestral Works",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Summa",
-          "artist": "Arvo Pärt",
-          "album": "The Very Best of Arvo Pärt",
-          "duration": 5000,
-          "url": "TBD"
-        },
-        {
-          "title": "Morag",
-          "artist": "Tyler Bates",
-          "album": "Guardians of the Galaxy (Original Score)",
-          "duration": 5000,
-          "url": "TBD"
-        }
-      ]
-    }, editing: false, savedPlaylists: {contents: []}};
+    this.state = {editing: false, editSubmitted: false, editedNameValue: '', editedAboutValue: '', followers: [],
+                  followerNickNames: [], following: [], followingNickNames: []};
   }
 
+
+
+  onEditClick(e) {
+    e.preventDefault();
+    this.setState({
+      editing: true,
+      editSubmitted: false,
+      editedValue: this.props.value
+    });
+  }
+
+  onEditCancel(e) {
+  e.preventDefault();
+  this.setState({
+    editing: false,
+    editSubmitted: false
+  });
+}
+
+onEdit(e) {
+    e.preventDefault();
+    setUserAbout(this.state._id, this.state.editedAboutValue, (updatedUser) => {
+      this.setState(updatedUser);
+    });
+    setUserName(this.state._id, this.state.editedNameValue, (updatedUser) => {
+      this.setState(updatedUser);
+    });
+    this.setState({
+      editSubmitted: true,
+      editing: false
+    });
+  }
+
+  handleEditNameChange(e) {
+    e.preventDefault();
+    this.setState({ editedNameValue: e.target.value });
+  }
+
+  handleEditAboutChange(e) {
+    e.preventDefault();
+    this.setState({ editedAboutValue: e.target.value });
+  }
+
+  componentWillReceiveProps() {
+    if (this.state.editing && this.state.editSubmitted) {
+      // Component has received its new status update text!
+      this.setState({
+        editing: false,
+        editSubmitted: false
+      });
+    }
+  }
 
   refresh() {
     getUserData(this.props.userID, (userData) => {
-      var data = userData
-      getPlaylistCB(userData.currentPlaylistID, (playlist) => {
-        data.currentPlaylist = playlist;
+      var data = userData;
+      data.followers.map( (followerID) => {
+        getUserNickName(followerID, (nickname) => {
+          this.state.followerNickNames.push(nickname);
+         this.setState({followerNickNames: this.state.followerNickNames});
+        });
       });
-      getPlaylistFeed(this.props.userID, (feedData) => {
-        data.savedPlaylists = feedData;
+      data.following.map( (followingID) => {
+        getUserNickName(followingID, (nickname) => {
+          this.state.followingNickNames.push(nickname);
+         this.setState({followingNickNames: this.state.followingNickNames});
+        });
       });
-      //console.log(data);
-      //console.log(data.editing);
-      //console.log(data.currentPlaylist);
-      window.userData = data;
+      this.setState({editedNameValue: data.userName});
+      this.setState({editedAboutValue: data.about});
       this.setState(data);
-      //console.log(this.state);
     });
-      //this.setState({"currentPlaylist" :  getPlaylist(this.state.currentPlaylistID) });
-    //getPlaylist(this.state.currentPlaylistID)};
 
   }
 
-  render() {
-    //console.log(this.state);
-    // Render the component differently based on state.
-    if (this.state.editing) {
-      return this.renderEdit();
-    } else {
-      return this.renderSaved();
-    }
-  }
 
   edit() {
     this.setState({
@@ -99,8 +124,7 @@ export default class Profile extends React.Component {
   }
 
 
-  renderSaved() {
-    //console.log(this.state.currentPlaylist)
+  render() {
     return (
       <div className="col-md-10 col-md-offset-1 transparent-background">
         <div className="row profile-row">
@@ -125,30 +149,45 @@ export default class Profile extends React.Component {
           <div
             className="btn-group pull-right"
             role="group">
-            <button
-              type="button"
-              className="btn btn-default profile-button"
-              onClick={this.edit.bind(this)}>
-              <span className="glyphicon glyphicon-pencil"  />
-            </button>
+            <span className={hideElement(this.state.editing)}>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick= {(e) => this.onEditClick(e)}>
+                <span className="glyphicon glyphicon-pencil"  />
+              </button>
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick={(e) => this.onEdit(e)}
+                disabled={this.state.editSubmitted}>
+                SAVE
+              </button>
+              <button
+                type="button"
+                className="btn btn-default profile-button"
+                onClick={(e) => this.onEditCancel(e)}
+                disabled={this.state.editSubmitted}>
+                CANCEL
+              </button>
+            </span>
           </div>
           {/* end profile header container*/}
         </div>
         {/* end of profile pic row*/}
-
-        <div className="row">
-          <Playlist key={this.state.currentPlaylist._id}
-            userID={this.props.userID}
-            data={this.state.currentPlaylist}
-            plFeedID={""}
-            callbackPlaylistFeed = {""} />
-      </div>
         <div className="row profile-row">
           <div className="col-md-2 col-md-offset-4">
             Name:
           </div>
           <div className="col-md-4">
+            <span className={hideElement(this.state.editing)}>
             {this.state.userName}
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <textarea disabled={this.state.editSubmitted} className="form-control profile-edit" rows={countLines(this.state.editedNameValue).toString()} value={this.state.editedNameValue} onChange={(e) => this.handleEditNameChange(e)} />
+            </span>
           </div>
         </div>
         {/*end of 3rd row*/}
@@ -157,8 +196,13 @@ export default class Profile extends React.Component {
             About:
           </div>
           <div className="col-md-4">
-            {this.state.about}
-          </div>
+            <span className={hideElement(this.state.editing)}>
+              {this.state.about}
+            </span>
+            <span className={hideElement(!this.state.editing)}>
+              <textarea disabled={this.state.editSubmitted} className="form-control profile-edit" rows={countLines(this.state.editedAboutValue).toString()} value={this.state.editedAboutValue} onChange={(e) => this.handleEditAboutChange(e)} />
+            </span>
+        </div>
         </div>
         {/*end of 4th row*/}
         <div className="row profile-row">
@@ -184,7 +228,11 @@ export default class Profile extends React.Component {
             Following:
           </div>
           <div className="col-md-4">
-            Username1, Username2, Username3, Username_Four, Username_Five
+            {
+                this.state.followerNickNames.map( (nickname, i ) => {
+                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                })
+            }
           </div>
         </div>
         {/*end of 7th row*/}
@@ -193,195 +241,16 @@ export default class Profile extends React.Component {
             Followers:
           </div>
           <div className="col-md-4">
-            Username6, Username7, Username8, Username_Nine, Username_Ten
+            {
+                this.state.followingNickNames.map( (nickname, i ) => {
+                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                })
+            }
           </div>
         </div>
         {/*end of 8th row*/}
       </div>
 
-    )
-  }
-  renderEdit(){
-    return(
-    <div className="col-md-10 col-md-offset-1 transparent-background">
-      <div className="row profile-row">
-        <div className="profile-header-container">
-          <div className="profile-header-img">
-            <img
-              className="img-circle"
-              src="img/profile_pic_default.png" />
-            {/* badge */}
-            <div className="rank-label-container">
-              <span className="label label-default rank-label username-under-picture">{this.state.nickName}</span>
-            </div>
-          </div>
-        </div>
-        <div className="btn-group pull-left" role="group">
-          <button
-            type="button"
-            className="btn btn-default profile-button">
-            FOLLOW
-          </button>
-        </div>
-        <div
-          className="btn-group pull-right"
-          role="group">
-          <button
-            type="button"
-            className="btn btn-default profile-button"
-            onClick={this.finishEdit.bind(this)}>
-            SAVE
-          </button>
-        </div>
-        {/* end profile header container*/}
-      </div>
-      {/* end of profile pic row*/}
-{/*
-      <div className="row">
-        <Playlist key={this.state.currentPlaylist._id}
-          userID={this.props.userID}
-          data={this.state.currentPlaylist}
-          plFeedID={""}
-          callbackPlaylistFeed = {""} />
-    </div>
-*/}
-
-      <div className="row profile-row">
-        <div className="playlist col-md-12 table-responsive profile-playlist">
-          <div className="row">
-            <div className="col-md-8">
-              <h3 className="playlist-title">
-                <strong>Current Game: </strong>
-                Elite Dangerous
-              </h3>
-            </div>
-            <div className="col-md-4">
-              <img
-                src="img/elite-dangerous.jpg"
-                className="img-responsive"
-                alt="Elite Dangerous" />
-            </div>
-          </div>
-          <div
-            className="btn-toolbar playlist-toolbar"
-            role="toolbar">
-            <div
-              className="input-group"
-              role="group"
-              aria-label="Playback Buttons">
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-stop" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-backward" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-play" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button">
-                <span className="glyphicon glyphicon-forward" />
-              </button>
-            </div>
-            <div
-              className="input-group pull-right"
-              role="group"
-              aria-label="Playlist Options">
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Add Track">
-                <span className="glyphicon glyphicon-plus-sign" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Share Playlist">
-                <span className="glyphicon glyphicon-share" />
-              </button>
-              <button
-                type="button"
-                className="btn btn-default playlist-button"
-                title="Options">
-                <span className="glyphicon glyphicon-cog" />
-              </button>
-            </div>
-          </div>
-          <table className="table table-hover">
-            <thead>
-            </thead>
-          </table>
-        </div>
-      </div>
-      {/*end of 2nd row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          Name:
-        </div>
-        <div className="col-md-4">
-          <input type="text"
-             ref={(e) => e ? e.selectionStart = this.state.userName.length : null}
-             autoFocus={true}
-             defaultValue={this.state.userName}/>
-        </div>
-      </div>
-      {/*end of 3rd row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          About:
-        </div>
-        <div className="col-md-4">
-          <input type="text"
-             ref={(e) => e ? e.selectionStart = this.state.about.length : null}
-             autoFocus={true}
-             defaultValue={this.state.about}/>
-        </div>
-      </div>
-      {/*end of 4th row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          Favorite Artists:
-        </div>
-        <div className="col-md-4">
-          Artist1, Artist2, Artist3, Artist5, Artist6, Artist Seven, Artist Eight
-        </div>
-      </div>
-      {/*end of 5th row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          Favorite Games:
-        </div>
-        <div className="col-md-4">
-          Game1, Game2, Game3, Game4, Game Five, Game Six, Game Seven
-        </div>
-      </div>
-      {/*end of 6th row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          Following:
-        </div>
-        <div className="col-md-4">
-          Username1, Username2, Username3, Username_Four, Username_Five
-        </div>
-      </div>
-      {/*end of 7th row*/}
-      <div className="row profile-row">
-        <div className="col-md-2 col-md-offset-4">
-          Followers:
-        </div>
-        <div className="col-md-4">
-          Username6, Username7, Username8, Username_Nine, Username_Ten
-        </div>
-      </div>
-      {/*end of 8th row*/}
-    </div>
     )
   }
 
