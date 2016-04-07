@@ -972,6 +972,23 @@ function getPlaylistWithAuthor(playlistID) {
   return playlist;
 }
 
+/*
+ * Returns the Forum object
+ */
+app.get('/forum/', function(req,res){
+  var forumData = readDocument('forums', 1);
+  res.send(forumData);
+});
+
+/*
+ * Returns the Topics object
+ */
+app.get('/forum/category/:category/topic/:topicID', function(req,res){
+  var forumData = readDocument('forums', 1);
+  var topic = forumData.categories[parseInt(req.params.category)].topics[parseInt(req.params.topicID)];
+  res.send(topic);
+});
+
 /**
  * Reset the database
  */

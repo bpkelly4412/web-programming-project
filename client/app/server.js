@@ -353,22 +353,22 @@ export function delRecommendation(userID, key, cb) {
     });
 }
 
+/**
+* Returns a Forum object.
+*/
+export function getForum(cb) {
+  sendXHR('GET', '/forum/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
 
 /**
 * Returns a Topic object.
 */
 export function getTopic(category, topicID, cb ) {
-  var forumData = readDocument('forums', 1);
-  var topic = forumData.categories[category].topics[topicID];
-  emulateServerReturn(topic, cb);
-}
-
-/**
-* Returns a Forum object.
-*/
-export function getForum(cb) {
-  var forumData = readDocument('forums', 1);
-  emulateServerReturn(forumData, cb);
+  sendXHR('GET', '/forum/' + 1 + '/category/' + category + '/topic/' + topicID, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function postThread(user, category, topicID, title, contents) {
