@@ -256,254 +256,267 @@ var initialData = {
     }
   },
   "forums": {
-    "1": {
-      "_id": 1,
-      "topics": [
-        {
-          "_id": 1,
-          "title": "General Forte Discussion",
-          "category": "forte",
-          "threadCount": [2],
-          "postCount": [2],
-          "threads": [
+      "1": {
+        "_id": 1,
+        "categories": [ {
+          "forte":{
+            "title": "BBQ Forte",
+            "topics": [
             {
               "_id": 1,
-              "title": "First Thread",
-              "postCount": [1],
-              "posts": [
+              "title": "General Forte Discussion",
+              "category": "forte",
+              "threadCount": [2],
+              "postCount": [2],
+              "threads": [
                 {
                   "_id": 1,
-                  "author": 1,
-                  "postDate": 1453668480000,
-                  "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
+                  "title": "First Thread",
+                  "postCount": [1],
+                  "posts": [
+                    {
+                      "_id": 1,
+                      "author": 1,
+                      "postDate": 1453668480000,
+                      "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
+                    },
+                    {
+                      "_id": 2,
+                      "author": 2,
+                      "postdate": 1453690800000,
+                      "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
+                    }
+                  ]
                 },
                 {
                   "_id": 2,
-                  "author": 2,
-                  "postdate": 1453690800000,
-                  "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
+                  "title": "Let's Discuss",
+                  "postCount": [0],
+                  "posts": []
                 }
               ]
             },
             {
               "_id": 2,
-              "title": "Let's Discuss",
+              "title": "Help and Suggestions",
+              "category": "forte",
+              "threadCount": [0],
               "postCount": [0],
-              "posts": []
+              "threads": []
+            },
+            {
+              "_id": 3,
+              "title": "Off-Topic",
+              "category": "forte",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            }
+          ]}
+        },
+          {"music":
+            {"title": "BBQ Forte",
+            "topics": [{
+              "_id": 4,
+              "title": "Music General",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 5,
+              "title": "Polls/Quizzes/Games",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 6,
+              "title": "Ambient",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 7,
+              "title": "Classical",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 8,
+              "title": "Electronic",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 9,
+              "title": "Folk",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 10,
+              "title": "Hip-Hop",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 11,
+              "title": "Indie",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 12,
+              "title": "Jazz/Blues",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 13,
+              "title": "Metal",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 14,
+              "title": "Pop",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 15,
+              "title": "Rock",
+              "category": "music",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            }
+          ]}},
+          {"games":{
+            "title": "games",
+            "topics":[
+            {
+              "_id": 16,
+              "title": "Games General",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 17,
+              "title": "Polls/Quizzes/Games",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 18,
+              "title": "Action-Adventure",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 19,
+              "title": "Fighters",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 20,
+              "title": "Shooters",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 21,
+              "title": "JRPGs",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 22,
+              "title": "MOBAs/MMOs",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 23,
+              "title": "Platformers",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 24,
+              "title": "Sandbox RPGs",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 25,
+              "title": "Sports",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 26,
+              "title": "Strategy",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
+            },
+            {
+              "_id": 27,
+              "title": "Visual Novel/Adventure",
+              "category": "games",
+              "threadCount": [0],
+              "postCount": [0],
+              "threads": []
             }
           ]
-        },
-        {
-          "_id": 2,
-          "title": "Help and Suggestions",
-          "category": "forte",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 3,
-          "title": "Off-Topic",
-          "category": "forte",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 4,
-          "title": "Music General",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 5,
-          "title": "Polls/Quizzes/Games",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 6,
-          "title": "Ambient",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 7,
-          "title": "Classical",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 8,
-          "title": "Electronic",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 9,
-          "title": "Folk",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 10,
-          "title": "Hip-Hop",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 11,
-          "title": "Indie",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 12,
-          "title": "Jazz/Blues",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 13,
-          "title": "Metal",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 14,
-          "title": "Pop",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 15,
-          "title": "Rock",
-          "category": "music",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 16,
-          "title": "Games General",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 17,
-          "title": "Polls/Quizzes/Games",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 18,
-          "title": "Action-Adventure",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 19,
-          "title": "Fighters",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 20,
-          "title": "Shooters",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 21,
-          "title": "JRPGs",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 22,
-          "title": "MOBAs/MMOs",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 23,
-          "title": "Platformers",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 24,
-          "title": "Sandbox RPGs",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 25,
-          "title": "Sports",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 26,
-          "title": "Strategy",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        },
-        {
-          "_id": 27,
-          "title": "Visual Novel/Adventure",
-          "category": "games",
-          "threadCount": [0],
-          "postCount": [0],
-          "threads": []
-        }
-      ]
-    }
-  },
+        }}
+        ]
+      }
+    },
   "newsUpdates": {
     "1": {
       "_id": 1,

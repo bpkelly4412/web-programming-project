@@ -307,6 +307,11 @@ export function getUserData(userID, cb) {
   });
 }
 
+export function getUserName(userId, cb) {
+  var author = readDocument('users', userId).userName;
+  emulateServerReturn(author, cb);
+}
+
 export function setUserData(data, cb) {
     var userData = writeDocument('users', data);
     emulateServerReturn(userData, cb);
@@ -322,9 +327,9 @@ export function useRecommendation(userID, key, cb) {
 /**
 * Returns a Topic object.
 */
-export function getTopic(topicID, cb ) {
+export function getTopic(category, topicID, cb ) {
   var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
+  var topic = forumData.categories[category].topics[topicID];
   // playlist.contents = playlist.songs.map(getSong);
   emulateServerReturn(topic, cb);
 }
@@ -337,12 +342,13 @@ export function getForum(cb) {
   emulateServerReturn(forumData, cb);
 }
 
-export function postThread(user, topicID, title, contents, cb) {
+export function postThread(user, category, topicID, title, contents) {
 
 
   var time = new Date().getTime();
+  var forumData = readDocument('forums', 1);
 
-  var newThread = {
+  forumData.categories[category].topics[topicID].threads.push({
     "title": title,
     "postCount": [0],
     "posts": [
@@ -353,36 +359,35 @@ export function postThread(user, topicID, title, contents, cb) {
         "contents": contents
       }
     ]
-  };
+  });
 
-  var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
-  newThread = addDocument(topic, newThread);
+writeDocument('forums', forumData);
 
-  // Return the newly-posted object  emulateServerReturn(newThread, cb);
-  emulateServerReturn(newThread, cb);
+forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
+writeDocument('forums', forumData);
+forumData.categories[category].topics[topicID].threadCount = forumData.categories[category].topics[topicID].threadCount + 1;
+writeDocument('forums', forumData);
+
 }
 
-export function postComment( user, topicID, threadID, contents, cb) {
+export function postComment( user, category, topicID, threadID, contents) {
 
-  // Get the current UNIX time.
+
   var time = new Date().getTime();
-  // The new status update. The database will assign the ID for us.
-  var newPost = {
+  var forumData = readDocument('forums', 1);
+
+  forumData.categories[category].topics[topicID].threads[threadID].posts.push({
         "author": user,
         "postDate": time,
         "contents": contents
-      };
+      });
 
-  // Add the new Thread to the database.
-  // Returns the new Thread w/ an ID assigned.
-  var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
-  var thread = topic[threadID].thread
-  newPost = addDocument(thread.posts, newPost);
+  writeDocument('forums', forumData);
 
-  // Return the newly-posted object.
-  emulateServerReturn(newPost, cb);
+  forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
+  writeDocument('forums', forumData);
+  forumData.categories[category].topics[topicID].threads[threadID].postCount =  forumData.categories[category].topics[topicID].threads[threadID].postCount + 1;
+  writeDocument('forums', forumData);
 }
 
 
