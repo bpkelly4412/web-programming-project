@@ -34,7 +34,6 @@ export default class Profile extends React.Component {
 
 
   onEditClick(e) {
-    console.log("called onEditClick");
     e.preventDefault();
     this.setState({
       editing: true,
@@ -44,7 +43,6 @@ export default class Profile extends React.Component {
   }
 
   onEditCancel(e) {
-    console.log("called onEditCancel");
   e.preventDefault();
   this.setState({
     editing: false,
@@ -53,7 +51,6 @@ export default class Profile extends React.Component {
 }
 
 onEdit(e) {
-    console.log("called onEdit");
     e.preventDefault();
     setUserAbout(this.state._id, this.state.editedAboutValue, (updatedUser) => {
       this.setState(updatedUser);
@@ -68,19 +65,16 @@ onEdit(e) {
   }
 
   handleEditNameChange(e) {
-    console.log("called handleName");
     e.preventDefault();
     this.setState({ editedNameValue: e.target.value });
   }
 
   handleEditAboutChange(e) {
-    console.log("called Handleabout");
     e.preventDefault();
     this.setState({ editedAboutValue: e.target.value });
   }
 
   componentWillReceiveProps() {
-    console.log("called receive props");
     if (this.state.editing && this.state.editSubmitted) {
       // Component has received its new status update text!
       this.setState({

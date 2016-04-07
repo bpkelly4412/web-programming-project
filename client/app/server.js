@@ -335,14 +335,12 @@ export function getUserData(userID, cb) {
 }
 
 export function setUserName(userID, nickname, cb) {
-  console.log("attempting to set username");
   sendXHR('PUT', '/user/' + userID + '/name', nickname, xhr => {
     cb(JSON.parse(xhr.responseText));
   });
 }
 
 export function setUserAbout(userID, about, cb) {
-  console.log("attempting to set about");
   sendXHR('PUT', '/user/' + userID + '/about', about, xhr => {
     cb(JSON.parse(xhr.responseText));
   });
