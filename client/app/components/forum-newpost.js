@@ -1,33 +1,54 @@
 import React from 'react';
+import { getTopic } from '../server';
 import { Link } from 'react-router';
 import { postComment } from '../server';
+import { hashHistory } from 'react-router';
 
 
 export default class ForumNewPost extends React.Component {
 
-  constructor(props) {
-  super(props);
-  this.state = {
-    value: ""
-  };
-}
+    constructor(props) {
+      super(props);
+      this.state = {
+        "thread": {
+          "title": "Empty",
+          "postCount": [],
+          "posts": [
+            {
+              "author": 0,
+              "postDate": 1000000000000,
+              "contents": "Empty"
+            }
+          ]
+        },
+        newPostContents:""
+      }
+    }
 
-handleChange(e) {
-  e.preventDefault();
- this.setState({ value: e.target.value });
-}
+  refresh() {
+    getTopic(this.props.category, this.props.tid, (topicData) => {
+      this.setState({thread: topicData.threads[this.props.thid]})
+      });
+    }
 
-handlePost(e) {
-     e.preventDefault();
-     var newPostText = this.state.value.trim();
-     if (newPostText !== "") {
-       postComment(this.props.userId, this.props.tid, this.props.thid, newPostText, () => {
-         // Database is now updated. Refresh the feed.
-         this.refresh();
-});
-       this.setState({value: ""});
+  componentDidMount() {
+    this.refresh();
+  }
+
+
+  handleNewPostContentsChange(e){
+    e.preventDefault();
+    this.setState({newPostContents: e.target.value })
+  }
+
+  handleNewPostClick(e) {
+       e.preventDefault();
+      if (e.button === 0 && this.state.newPostContents !== "") {
+        postComment(this.props.userID, this.props.category, this.props.tid, this.props.thid, this.state.newPostContents);
+        const path = `/forum-thread/${this.props.thid}/${this.props.tid}/${this.props.category}/${this.props.userID}` ;
+        hashHistory.push(path);
+      }
      }
-   }
 
   render() {
     return (
@@ -40,10 +61,10 @@ handlePost(e) {
                 <Link to={"/forum/" + this.props.userID}>Forums</Link>
               </li>
               <li>
-                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userId}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userID}>General Forte Discussion</Link>
               </li>
               <li>
-                <Link to={"/forum-thread/" +  this.props.thid + "/" + this.props.tid + "/" + this.props.category + "/" + this.props.id }>First Thread</Link>
+                <Link to={"/forum-thread/" +  this.props.thid + "/" + this.props.tid + "/" + this.props.category + "/" + this.props.userID }>First Thread</Link>
               </li>
               <li className="active">New Post</li>
             </ol>
@@ -57,10 +78,7 @@ handlePost(e) {
             </h4>
             <div className="panel panel-default">
               <div className="panel-body panel-comment">
-                Jon Snow said:
-                <p className="tab">Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat.
-                  Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?
-                </p>
+                {this.state.thread.posts[0].contents}
               </div>
             </div>
             <h4>
@@ -68,27 +86,24 @@ handlePost(e) {
             </h4>
             <div className="panel panel-default">
               <div className="panel-body panel-comment">
-                Ned Stark said:
-                <p className="tab">Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis.
-                  No! Hoc non credant? Gus habet cameras ubique placet. Audire te! Non, omnia novit, omnia simul. Ubi eras hodie? In Lab! Et vos nolite cogitare suus possible ut Tyrus de cigarette elevaverunt CAPSA vestris? Age! Tu non vides? Pompeius extrema partem es. Tu omne quod ille voluit.
-                  Tu nunc coci ejus. Tu autem cocus Lab et probavimus liceat mihi sine causa est nunc coci interficere. Reputo it! Suus egregie. Ut antecedat. Quod si putas me posse facere, ergo ante. Pone aute in caput, et nunc interficere. Faciat! Fac. Fac. Fac.
-                  Saule ... , ostendit quod hoc quidem ... hoc quod dixit, ... potuit adiutorium mihi, et educat me in tota vita nova facio certus ut Im non invenit. Ego quidem illius memini Saul. Gus sit amet interfíciat mei tota familia. Nunc opus est mihi iste. Saul ... nunc Saule.
-                </p>
+                {this.state.thread.posts[this.state.thread.posts.length-1].contents}
               </div>
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-md-8">
-            <textarea className="form-control" rows={15} value={this.state.value} onChange={(e) => this.handleChange(e)} />
+            <textarea className="form-control" rows={15} value={this.state.value} onChange={(e) => this.handleNewPostContentsChange(e)} />
             <br />
           </div>
         </div>
         <div className="row">
           <div className="col-md-8">
             <button
-              className="btn btn-default pull-right nav-btm cr-btn"type="submit">
-              <Link to={"/forum-thread/" + this.state._id}>Submit</Link></button>
+              className="btn btn-default pull-right nav-btm cr-btn"type="submit"
+              onClick={(e) => this.handleNewPostClick(e)}>
+                Submit
+             </button>
           </div>
         </div>
       </div>

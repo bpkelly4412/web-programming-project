@@ -19,8 +19,7 @@ export default class ForumPostRow extends React.Component {
      });
   }
 
-
-
+//componentdidmount
 
   render() {
     return (

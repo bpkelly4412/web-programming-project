@@ -54,7 +54,7 @@ export default class ForumThread extends React.Component {
             <div className="row">
               <div className="col-md-3">
                 <button type="button" className="btn btn-default cr-btn">
-                  <Link to={"/forum-newpost/" + this.props.thid + "/" +  this.props.tid + "/" + this.props.userID}><span className="glyphicon glyphicon-pencil" /> Reply
+                  <Link to={"/forum-newpost/" + this.props.thid + "/" +  this.props.tid + "/" + this.props.category + "/" + this.props.userId}><span className="glyphicon glyphicon-pencil" /> Reply
                   </Link>
                 </button>
               </div>
@@ -111,7 +111,7 @@ export default class ForumThread extends React.Component {
         <div className="row nav-btm">
           <div className="col-md-3">
             <button type="button" className="btn btn-default cr-btn">
-              <Link to={"/forum-newpost/" + this.state._id}><span className="glyphicon glyphicon-pencil" /> Reply
+              <Link to={"/forum-newpost/" + this.props.thid + "/" +  this.props.tid + "/" + this.props.category + "/" + this.props.userId}><span className="glyphicon glyphicon-pencil" /> Reply
               </Link>
             </button>
           </div>

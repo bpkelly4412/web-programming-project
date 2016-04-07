@@ -40,7 +40,7 @@ export default class ForumNewThread extends React.Component {
     }
 
     handleNewThreadContentsChange(e){
-      e.preventDefault()
+      e.preventDefault();
       this.setState({newThreadContents: e.target.value })
     }
 

@@ -205,9 +205,8 @@ export function postThread(user, category, topicID, title, contents) {
 
   var time = new Date().getTime();
   var forumData = readDocument('forums', 1);
-  var topic = forumData.categories[category].topics[topicID];
 
-  topic.threads.push({
+  forumData.categories[category].topics[topicID].threads.push({
     "title": title,
     "postCount": [0],
     "posts": [
@@ -219,28 +218,34 @@ export function postThread(user, category, topicID, title, contents) {
       }
     ]
   });
+
+writeDocument('forums', forumData);
+
+forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
+writeDocument('forums', forumData);
+forumData.categories[category].topics[topicID].threadCount = forumData.categories[category].topics[topicID].threadCount + 1;
+writeDocument('forums', forumData);
+
 }
 
-export function postComment( user, topicID, threadID, contents, cb) {
+export function postComment( user, category, topicID, threadID, contents) {
 
-  // Get the current UNIX time.
+
   var time = new Date().getTime();
-  // The new status update. The database will assign the ID for us.
-  var newPost = {
+  var forumData = readDocument('forums', 1);
+
+  forumData.categories[category].topics[topicID].threads[threadID].posts.push({
         "author": user,
         "postDate": time,
         "contents": contents
-      };
+      });
 
-  // Add the new Thread to the database.
-  // Returns the new Thread w/ an ID assigned.
-  var forumData = readDocument('forums', 1);
-  var topic = forumData.topics[topicID];
-  var thread = topic[threadID].thread
-  newPost = addDocument(thread.posts, newPost);
+  writeDocument('forums', forumData);
 
-  // Return the newly-posted object.
-  emulateServerReturn(newPost, cb);
+  forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
+  writeDocument('forums', forumData);
+  forumData.categories[category].topics[topicID].threads[threadID].postCount =  forumData.categories[category].topics[topicID].threads[threadID].postCount + 1;
+  writeDocument('forums', forumData);
 }
 
 
