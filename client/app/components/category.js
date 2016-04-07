@@ -10,7 +10,7 @@ export default class Category extends React.Component{
 
   render() {
     return (
-      <div>
+      <tbody>
       <tr className="board-title">
         <td>
           {this.props.title}
@@ -23,18 +23,19 @@ export default class Category extends React.Component{
         </td>
       </tr>
       {
-        this.state.topics.map((topicsItem, i) => {
+        this.props.topics.map((topicsItem, i) => {
         return (
           <ForumRow key = {i}
-            fid = {1}
-            id = {i}
+            id = {this.props.userId}
+            tid = {i}
+            category = {this.props.title}
             title = {topicsItem.title}
             threadCount = {topicsItem.threadCount}
             postCount = {topicsItem.postCount}
           />
         );
       })}
-      </div>
+      </tbody>
     )
   }
 }

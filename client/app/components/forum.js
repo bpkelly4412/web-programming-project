@@ -9,7 +9,6 @@ export default class Forum extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ".id" : 0,
       "categories": [
         {
           "title": "Empty",
@@ -60,15 +59,17 @@ export default class Forum extends React.Component {
                     Last Discussion
                   </td>
                 </tr>
+                </tbody>
                 {
                   this.state.categories.map((cat,i) => {
                     return (
                       <Category key={i}
+                        userId = {this.props.userId}
                         title = {cat.title}
                         topics = {cat.topics} />
                     );
                   })}
-              </tbody>
+
             </table>
           </div>
         </div>

@@ -110,7 +110,7 @@ class HighestRatedPage extends React.Component {
 class ForumPage extends React.Component {
   render() {
       return (
-        <Forum userID={this.props.params.id}/>
+        <Forum userId={this.props.params.id}/>
       );
   }
 }
@@ -118,7 +118,7 @@ class ForumPage extends React.Component {
 class ForumTopicPage extends React.Component {
   render() {
       return (
-        <ForumTopic tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumTopic tid={this.props.params.tid} category={this.props.params.cat} userId={this.props.params.id}/>
       );
   }
 }
@@ -126,7 +126,7 @@ class ForumTopicPage extends React.Component {
 class ForumThreadPage extends React.Component {
   render() {
       return (
-        <ForumThread thid={this.props.params.thid} tid={this.props.params.tid} userID={this.props.params.id}/>
+        <ForumThread thid={this.props.params.thid} tid={this.props.params.tid} userId={this.props.params.id}/>
       );
   }
 }
@@ -271,7 +271,7 @@ ReactDOM.render((
       <Route path="profile/:id" component={ProfilePage} />
       <Route path="settings/:id" component={SettingsPage} />
       <Route path="forum/:id" component={ForumPage} />
-      <Route path="forum-topic/:tid/:id" component={ForumTopicPage} />
+      <Route path="forum-topic/:tid/:cat/:id" component={ForumTopicPage} />
       <Route path="forum-thread/:thid/:tid/:id" component={ForumThreadPage} />
       <Route path="forum-newthread/:tid/:id" component={ForumNewThreadPage} />
       <Route path="forum-newpost/:thid/:tid/:id" component={ForumNewPostPage} />

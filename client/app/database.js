@@ -430,8 +430,8 @@ var initialData = {
   "forums": {
     "1": {
       "_id": 1,
-      "categories": [ {
-        "forte":{
+      "categories": [
+        {
           "title": "BBQ Forte",
           "topics": [
           {
@@ -484,10 +484,9 @@ var initialData = {
             "postCount": [0],
             "threads": []
           }
-        ]}
-      },
-        {"music":
-          {"title": "BBQ Forte",
+        ]},
+        {
+          "title": "Music",
           "topics": [{
             "_id": 4,
             "title": "Music General",
@@ -584,9 +583,9 @@ var initialData = {
             "postCount": [0],
             "threads": []
           }
-        ]}},
-        {"games":{
-          "title": "games",
+        ]},
+        {
+          "title": "Games",
           "topics":[
           {
             "_id": 16,
@@ -685,7 +684,7 @@ var initialData = {
             "threads": []
           }
         ]
-      }}
+      }
       ]
     }
   },
