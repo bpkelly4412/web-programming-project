@@ -1,18 +1,59 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { editPlaylist, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
 
 export default class Playlist extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { songs: this.props.data.songs, votes: this.props.data.votes }
+    this.state = {
+      title: this.props.data.title,
+      game: this.props.data.game,
+      description: this.props.data.description,
+      genre: this.props.data.genre,
+      songs: this.props.data.songs,
+      votes: this.props.data.votes,
+      newPlaylistName: "",
+      newPlaylistGame: "",
+      newPlaylistGenre: "",
+      newPlaylistDescription: ""
+    };
     this.onChildChanged = this.onChildChanged.bind(this);
   }
 
   onChildChanged(newState) {
     this.setState(newState);
+  }
+
+  handleNewPlaylistNameChange(e) {
+    this.setState({newPlaylistName: e.target.value});
+  }
+
+  handleNewPlaylistGameChange(e) {
+    this.setState({newPlaylistGame: e.target.value});
+  }
+
+  handleNewPlaylistGenreChange(e) {
+    this.setState({newPlaylistGenre: e.target.value});
+  }
+
+  handleNewPlaylistDescChange(e) {
+    this.setState({newPlaylistDescription: e.target.value});
+  }
+
+  handleEditPlaylistClick(clickEvent) {
+    clickEvent.preventDefault();
+    if (clickEvent.button === 0) {
+      this.setState({value: ""});
+      var name = this.state.newPlaylistName !== "" ? this.state.newPlaylistName : this.props.data.title;
+      var game = this.state.newPlaylistGame !== "" ? this.state.newPlaylistGame : this.props.data.game;
+      var genre = this.state.newPlaylistGenre !== "" ? this.state.newPlaylistGenre : this.props.data.genre;
+      var descrip = this.state.newPlaylistDescription !== "" ? this.state.newPlaylistDescription : this.props.data.description;
+      editPlaylist(this.props.data.userID, this.props.data._id, name, game, genre, descrip, (playlist) => {
+        this.setState({title: playlist.title, game: playlist.game});
+      });
+    }
   }
 
   handleOpenInSpotify(clickEvent) {
@@ -74,6 +115,7 @@ export default class Playlist extends React.Component {
       voteButtonDesc = "Unvote.";
     }
     var playlistDivID = "#" + this.props.data._id;
+    var playlistEditDivID = "#" + this.props.data.spotify_id;
     return (
       <div className="row">
         <div className="col-md-10 col-md-offset-1">
@@ -81,8 +123,10 @@ export default class Playlist extends React.Component {
             <div className="panel-heading">
               <div className="row">
                 <div className="col-md-8">
-                  <h3 className="playlist-title"><strong>{this.props.data.title}</strong></h3>
-                  <h4 className="playlist-title"><strong>Game: </strong>{this.props.data.game}</h4>
+                  <h3 className="playlist-title"><strong>{this.state.title}</strong></h3>
+                  <h4 className="playlist-subtitle"><strong>Game: </strong>{this.state.game}</h4>
+                  <h4 className="playlist-subtitle"><strong>Genre: </strong>{this.state.genre}</h4>
+                  <h5 className="playlist-subtitle"><strong>Description: </strong>{this.state.description}</h5>
                     <button type="button"
                       className="btn btn-default playlist-button"
                       title={voteButtonDesc}
@@ -113,6 +157,13 @@ export default class Playlist extends React.Component {
                       Songs <span className="fa fa-caret-square-o-down"></span>
                     </button>
                     <button type="button"
+                            className="btn btn-default playlist-button"
+                            title="Edit Playlist"
+                            data-toggle="collapse"
+                            data-target={playlistEditDivID}>
+                      Edit <span className="fa fa-cogs"></span>
+                    </button>
+                    <button type="button"
                       className="btn btn-default playlist-button"
                       title="Delete Playlist"
                       onClick={(e) => this.handleRemovePlaylistClick(e)}>
@@ -120,6 +171,51 @@ export default class Playlist extends React.Component {
                     </button>
                   </div>
                 </div>
+              </div>
+              <div id={this.props.data.spotify_id} className="panel-collapse collapse">
+                <form>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="playlistName">Name</label>
+                    <input type="text"
+                           id="playlistName"
+                           className="form-control"
+                           placeholder="Name"
+                           value={this.state.value}
+                           onChange={(e) => this.handleNewPlaylistNameChange(e)} />
+                  </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="playlistGame">Game</label>
+                    <input type="text"
+                           id="playlistGame"
+                           className="form-control"
+                           placeholder="Game"
+                           value={this.state.value}
+                           onChange={(e) => this.handleNewPlaylistGameChange(e)} />
+                  </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="playlistGenre">Genre</label>
+                    <input type="text"
+                           id="playlistGenre"
+                           className="form-control"
+                           placeholder="Genre"
+                           value={this.state.value}
+                           onChange={(e) => this.handleNewPlaylistGenreChange(e)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="playlistDescription">Description</label>
+                    <input type="text"
+                           id="playlistDescription"
+                           className="form-control"
+                           placeholder="Description"
+                           value={this.state.value}
+                           onChange={(e) => this.handleNewPlaylistDescChange(e)} />
+                  </div>
+                  <button type="submit"
+                          className="btn btn-default playlist-button"
+                          onClick={(e) => this.handleEditPlaylistClick(e)}>
+                    Submit
+                  </button>
+                </form>
               </div>
               <div id={this.props.data._id} className="panel-collapse collapse">
                 <SongList pid={this.props.data._id}

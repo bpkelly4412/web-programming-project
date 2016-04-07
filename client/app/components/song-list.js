@@ -10,10 +10,12 @@ export default class SongList extends React.Component {
   }
 
   handleSongSearch(searchText) {
-    this.setState({currentSearch: searchText});
-    getSongList(searchText, (songList) => {
-      this.setState({songs: songList, value: ""});
-    })
+    if (searchText !== "") {
+      this.setState({currentSearch: searchText});
+      getSongList(searchText, (songList) => {
+        this.setState({songs: songList, value: ""});
+      });
+    }
   }
 
   handleChange(e) {

@@ -9,6 +9,7 @@ var readDocument = database.readDocument;
 var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
 var deleteDocument = database.deleteDocument;
+var getCollection = database.getCollection;
 
 //  Spotify API
 var SpotifyWebAPI = require('spotify-web-api-node');
@@ -163,7 +164,6 @@ app.delete('/spotify/user/:userid', function(req, res) {
  * Search for songs on Spotify
  */
 app.post('/spotify/songlist', function(req, res) {
-  console.log(req.body);
   if (typeof(req.body) === 'string') {
     var songList = [];
     spotifyApi.searchTracks(req.body)
@@ -209,16 +209,14 @@ app.post('/spotify/playlistresults/:userid', function(req, res) {
       spotifyApi.searchPlaylists(req.body)
         .then(function (data) {
           data.body.playlists.items.map(function(nextPlaylist) {
-            var image = '';
-            if (nextPlaylist.images.length > 1) {
-              image = nextPlaylist.images[1].url;
-            } else if (nextPlaylist.images.length === 1) {
-              image = nextPlaylist.images[0].url;
+            var imageurl = '';
+            if (nextPlaylist.images.length > 0) {
+              imageurl = nextPlaylist.images[0].url;
             }
             var newPlaylist = {
               playlist: {
                 game: "",
-                imageURL: image,
+                imageURL: imageurl,
                 title: nextPlaylist.name,
                 author: -1,
                 votes: [],
@@ -233,7 +231,6 @@ app.post('/spotify/playlistresults/:userid', function(req, res) {
               numTracks: {
                 total: nextPlaylist.tracks.total
               }
-
             };
             playlistResults.push(newPlaylist);
           });
@@ -266,6 +263,58 @@ app.get('/user/:userID', function(req, res) {
     res.status(401).end();
   }
 });
+
+/**
+* Given a user ID and data, sets the users data to the new data
+*/
+app.put('/user/:userID', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    var userData = req.body.data;
+    if (fromUser === userID) {
+	// Send response.
+	var userData = writeDocument('users', userData);
+	res.send(userData);
+    } else {
+	// 401: Unauthorized request.
+	res.status(401).end();
+    }
+});
+
+/*
+* Given a recommendation key, removes the recommendation and adds the song to the playlist
+ */
+app.put('/user/:userID/recommendations/:key', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    if (fromUser === userID) {
+	var userData = readDocument('users', userID);
+	var playlist = readDocument('playlists', userData.recommendations[key].plid);
+	    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	playlist.songs.push({"title": userData.recommendations[key].song, "artist": userData.recommendations[key].artist});
+	res.send(userData);
+    }
+    else {
+	res.status(401).end();
+    }
+});
+
+/*
+ * Given a recommendation key, removes the recommendation and adds the song to the playlist
+ */
+app.delete('/user/:userID/recommendations/:key', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    if (fromUser === userID) {
+	var userData = readDocument('users', userID);
+	userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	res.send(userData);
+    }
+    else {
+	res.status(401).end();
+    }
+});
+
 
 /*
  *  PLAYLIST FEED FUNCTIONS
@@ -320,11 +369,12 @@ function getPlaylist(playlistID) {
  * @param uri
  * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: *, spotify_author: *, url: *, uri: *, songs: Array}}
  */
-function createNewPlaylist(userID, title, game, genre, description, spotifyId, spotifyOwnerID, url, uri) {
+function createNewPlaylist(userID, title, game, genre, description, imageURL,  spotifyId, spotifyOwnerID, url, uri) {
   var user = readDocument('users', userID);
   var newPlaylist = {
+    "userId": userID,
     "game": game,
-    "imageURL": "",
+    "imageURL": imageURL,
     "title": title,
     "author": userID,
     "votes": [],
@@ -354,12 +404,14 @@ app.post('/playlist', validate({body: playlistSchema}), function(req, res) {
     var user = database.readDocument('users', fromUser);
     spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
       .then(function(data) {
+
         var newPlaylist = createNewPlaylist(
           body.author,
           body.title,
           body.game,
           body.genre,
           body.description,
+          "",
           data.body.id,
           data.body.owner.id,
           data.body.href,
@@ -390,6 +442,7 @@ app.put('/playlistfeed/user/:userid/playlist/', validate({body: playlistSchema})
         body.game,
         body.genre,
         body.description,
+        body.imageURL,
         body.spotify_id,
         body.spotify_author,
         body.url,
@@ -527,6 +580,27 @@ app.delete('/playlist/:playlistid/songs/:songindex', function(req, res) {
       // 401: Unauthorized.
       res.status(401).end();
     }
+  }
+});
+
+/**
+ * Edit the local information of a playlist
+ */
+app.put('/playlist/:playlistid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var playlistID = parseInt(req.params.playlistid, 10);
+  var playlist = readDocument('playlists', playlistID);
+  if (playlist.author === fromUser) {
+    console.log(req.body);
+    playlist.title = req.body.name;
+    playlist.game = req.body.game;
+    playlist.genre = req.body.genre;
+    playlist.description = req.body.description;
+    writeDocument('playlists', playlist);
+    res.send(playlist);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
   }
 });
 
@@ -798,6 +872,105 @@ app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
     res.status(401).end();
   }
 });
+
+/*
+ * Returns the NewRelease object
+ */
+app.get('/new-release/', function(req, res) {
+  var newReleaseData = readDocument('newRelease', 1);
+  newReleaseData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(newReleaseData);
+});
+
+/*
+* Compute the 8 most popular playlists in database and return them as mostPopular JSON
+*/
+function getMostPopular(){
+  var playlistsJSON = getCollection('playlists');
+  //var parsed = JSON.parse(playlistsJSON);
+  var playlists = [];
+  for(var x in playlistsJSON){
+    playlists.push(playlistsJSON[x]);
+  }
+  playlists.sort(function(a,b){
+    return b.votes.length - a.votes.length;
+  });
+  var newPopular = {
+    ".id": 1,
+    "contents": []
+  };
+  for(var i = 0; i<playlists.length && i < 8; i++){
+    console.log(playlists[i]);
+    var index = indexOfGame(playlists[i].game, newPopular.contents);
+    if(index == -1){
+      var newSection = {
+        "imageURL": playlists[i].imageURL,
+        "gameTitle": playlists[i].game,
+        "playlists": [playlists[i]._id]
+      };
+      newPopular.contents.push(newSection);
+    }else{
+      newPopular.contents[index].playlists.push(playlists[i]._id);
+    }
+  }
+  return newPopular;
+}
+
+/*
+* Returns the index of gameTitle (string) within contents (array) in MostPopular JSON
+*/
+function indexOfGame (gameTitle, contents) {
+  for(var i = 0; i < contents.length; i++){
+    if(contents[i].gameTitle.toLowerCase() == gameTitle.toLowerCase())
+      return i;
+  }
+  return -1;
+}
+
+/*
+ * Returns the MostPopular object
+ */
+app.get('/most-popular/', function(req, res) {
+  var mostPopularData = getMostPopular();
+  mostPopularData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(mostPopularData);
+});
+
+/*
+ * Returns the HighestRated object
+ */
+app.get('/highest-rated/', function(req, res) {
+  var highestRatedData = readDocument('highestRated', 1);
+  highestRatedData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(highestRatedData);
+});
+
+/*
+ * Returns the Rising object
+ */
+app.get('/rising/', function(req, res) {
+  var risingData = readDocument('rising', 1);
+  risingData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(risingData);
+});
+
+/**
+* Given a playlist ID returns a Playlist object.
+*/
+function getPlaylistWithAuthor(playlistID) {
+  var playlist = readDocument('playlists', playlistID);
+  var userID = playlist.author;
+  playlist.author = readDocument('users', userID).userName
+  return playlist;
+}
 
 /**
  * Reset the database

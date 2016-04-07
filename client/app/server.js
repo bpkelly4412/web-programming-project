@@ -251,6 +251,12 @@ export function removeSong(playlistID, userID, songIndex, cb) {
   });
 }
 
+/**
+ * Adds a new, empty playlist to the local and Spotify accounts.
+ * @param playlist
+ * @param userID
+ * @param cb
+ */
 export function addPlaylist(playlist, userID, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
@@ -259,6 +265,7 @@ export function addPlaylist(playlist, userID, cb) {
         author: playlist.playlist.author,
         title: playlist.playlist.title,
         game: playlist.playlist.game,
+        imageURL: playlist.playlist.imageURL,
         genre: playlist.playlist.genre,
         description: playlist.playlist.description,
         spotify_id: playlist.playlist.spotify_id,
@@ -280,6 +287,26 @@ export function addPlaylist(playlist, userID, cb) {
 }
 
 /**
+ * Edits the local playlist info.
+ * @param userID
+ * @param name
+ * @param game
+ * @param genre
+ * @param descrip
+ * @param cb
+ */
+export function editPlaylist(userID, playlistID, name, game, genre, descrip, cb) {
+  sendXHR('PUT', 'playlist/' + playlistID, {
+    name: name,
+    game: game,
+    genre: genre,
+    description: descrip
+  }, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+/**
 *with callback to use for profile page
 */
 export function getPlaylistCB(playlistID, cb) {
@@ -287,6 +314,7 @@ export function getPlaylistCB(playlistID, cb) {
   // playlist.contents = playlist.songs.map(getSong);
   emulateServerReturn(playlist, cb);
 }
+
 /**
 * Given a playlist ID returns a Playlist object.
 * Might considering merging with getPlaylist(playlistID)
@@ -307,22 +335,24 @@ export function getUserData(userID, cb) {
   });
 }
 
-export function getUserName(userId, cb) {
-  var author = readDocument('users', userId).userName;
-  emulateServerReturn(author, cb);
-}
-
-export function setUserData(data, cb) {
-    var userData = writeDocument('users', data);
-    emulateServerReturn(userData, cb);
+export function setUserData(userID, data, cb) {
+    sendXHR('PUT', '/user/' + userID, { data: data }, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
 
 export function useRecommendation(userID, key, cb) {
-    var userData = readDocument('users', userID);
-    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
-    writeDocument('users', userData);
-    emulateServerReturn(userData, cb);
+    sendXHR('PUT', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
+
+export function delRecommendation(userID, key, cb) {
+    sendXHR('DELETE', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
+}
+
 
 /**
 * Returns a Topic object.
@@ -330,7 +360,6 @@ export function useRecommendation(userID, key, cb) {
 export function getTopic(category, topicID, cb ) {
   var forumData = readDocument('forums', 1);
   var topic = forumData.categories[category].topics[topicID];
-  // playlist.contents = playlist.songs.map(getSong);
   emulateServerReturn(topic, cb);
 }
 
@@ -413,55 +442,56 @@ export function getCarousel(cb) {
 * Returns a NewRelease object
 */
 export function getNewRelease(cb) {
-  var newReleaseData = readDocument('newRelease', 1);
-  newReleaseData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var newReleaseData = readDocument('newRelease', 1);
+  // newReleaseData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(newReleaseData, cb);
+  sendXHR('GET', '/new-release/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(newReleaseData, cb);
 }
 
 /**
 * Returns a MostPopular object
 */
 export function getMostPopular(cb) {
-  var mostPopularData = readDocument('mostPopular', 1);
-  mostPopularData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var mostPopularData = readDocument('mostPopular', 1);
+  // mostPopularData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(mostPopularData, cb);
+  sendXHR('GET', '/most-popular/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(mostPopularData, cb);
 }
-
-/*export function getMostPopular(cb) {
-  var playlists = readPlaylist('playlists');
-  var arr = [];
-  for (var attr in playlists){
-    arr.push(playlists[attr])
-  }
-
-
-  emulateServerReturn(mostPopularData, cb);
-}*/
 
 /**
 * Returns a HighestRated object
 */
 export function getHighestRated(cb) {
-  var highestRatedData = readDocument('highestRated', 1);
-  highestRatedData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var highestRatedData = readDocument('highestRated', 1);
+  // highestRatedData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(highestRatedData, cb);
+  sendXHR('GET', '/highest-rated/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(highestRatedData, cb);
 }
 
 /**
 * Returns a Rising object
 */
 export function getRising(cb) {
-  var risingData = readDocument('rising', 1);
-  risingData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // var risingData = readDocument('rising', 1);
+  // risingData.contents.forEach((n) => {
+  //   n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  // });
+  // emulateServerReturn(risingData, cb);
+  sendXHR('GET', '/rising/', undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
   });
-  emulateServerReturn(risingData, cb);
 }
 
 /**

@@ -72,10 +72,8 @@ export default class Navbar extends React.Component {
 
             <ul className="nav navbar-nav navbar-right">
               <div className="btn-group" role="group">
-                <button type="button" className="btn btn-default message-button navbar-btn">
-                  <span className="glyphicon glyphicon-envelope"></span>
-                </button>
-                <button type="button" className="btn btn-default dropdown-toggle navbar-btn" data-toggle="dropdown">
+
+                <button type="button" className="btn btn-default dropdown-toggle navbar-btn user-options" data-toggle="dropdown">
                   Hello, {this.state.userName}! <span className="caret"></span>
               </button>
               <ul className="dropdown-menu">

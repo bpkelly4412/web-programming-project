@@ -63,26 +63,32 @@ export default class PlayListFeed extends React.Component {
     }
   }
 
-  handlePlaylistSearchValueChange(e) {
-    this.setState({playlistSearchTerm: e.target.value});
-  }
-
-  handlePlaylistSearchClick(clickEvent) {
-    clickEvent.preventDefault();
-    if (clickEvent.button === 0 && this.state.playlistSearchTerm !== "") {
+  onPlaylistSearch() {
+    if (!this.state.playlistSearchTerm) {
+    } else {
       searchForPlaylists(this.state.playlistSearchTerm, this.props.userID, (playlistResults) => {
         this.setState({playlistSearchResults: playlistResults});
       });
     }
   }
 
+  handlePlaylistSearchValueChange(e) {
+    this.setState({playlistSearchTerm: e.target.value});
+  }
+
+  handlePlaylistKeyUp(e) {
+    e.preventDefault();
+    if(e.key === "Enter") {
+      this.onPlaylistSearch();
+    }
+  }
+
   handleImportPlaylistClick(clickEvent, playlist) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-
       addPlaylist(playlist, this.props.userID, () =>
       {
-        this.setState({ playlistSearchResults: [], playlistSearchTerm: "", value:"" });
+        this.setState({ playlistSearchResults: []});
         this.refresh();
       });
     }
@@ -105,135 +111,128 @@ export default class PlayListFeed extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-md-12">
-            <div className="col-md-6">
-              <div className="panel panel-default playlist ">
-                <div className="panel-body">
-                  <div className="text-center">
-                    <button type="button"
-                            className="btn btn-default playlist-button"
-                            data-toggle="collapse"
-                            data-target="#addPlaylistForm"
-                            onClick={(e) => this.checkLogInSpotifyClick(e)}>
-                      <span className="fa fa-plus fa-2x"></span>
-                      <h3>Create Playlist</h3>
-                    </button>
-                  </div>
-                  <div id="addPlaylistForm" className="collapse">
-                    <form>
-                      <div className="form-group col-md-4">
-                        <label htmlFor="playlistName">Name</label>
-                        <input type="text"
-                               id="playlistName"
-                               className="form-control"
-                               placeholder="Name"
-                               value={this.state.value}
-                               onChange={(e) => this.handleNewPlaylistNameChange(e)} />
-                      </div>
-                      <div className="form-group col-md-4">
-                        <label htmlFor="playlistGame">Game</label>
-                        <input type="text"
-                               id="playlistGame"
-                               className="form-control"
-                               placeholder="Game"
-                               value={this.state.value}
-                               onChange={(e) => this.handleNewPlaylistGameChange(e)} />
-                      </div>
-                      <div className="form-group col-md-4">
-                        <label htmlFor="playlistGenre">Genre</label>
-                        <input type="text"
-                               id="playlistGenre"
-                               className="form-control"
-                               placeholder="Genre"
-                               value={this.state.value}
-                               onChange={(e) => this.handleNewPlaylistGenreChange(e)} />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="playlistDescription">Description</label>
-                        <input type="text"
-                               id="playlistDescription"
-                               className="form-control"
-                               placeholder="Description"
-                               value={this.state.value}
-                               onChange={(e) => this.handleNewPlaylistDescChange(e)} />
-                      </div>
-                      <button type="submit"
-                              className="btn btn-default playlist-button"
-                              onClick={(e) => this.handleAddPlaylistClick(e)}>
-                        Submit
-                      </button>
-                    </form>
-                  </div>
+          <div className="col-md-10 col-md-offset-1">
+            <div className="panel panel-default playlist ">
+              <div className="panel-body">
+                <div className="text-center">
+                  <button type="button"
+                          className="btn btn-default playlist-button"
+                          data-toggle="collapse"
+                          data-target="#addPlaylistForm"
+                          onClick={(e) => this.checkLogInSpotifyClick(e)}>
+                    <span className="fa fa-plus fa-2x"></span>
+                    <h3>Create Playlist</h3>
+                  </button>
                 </div>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="panel panel-default playlist ">
-                <div className="panel-body">
-                  <div className="text-center">
-                    <button type="button"
+                <div id="addPlaylistForm" className="collapse">
+                  <form>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="playlistName">Name</label>
+                      <input type="text"
+                             id="playlistName"
+                             className="form-control"
+                             placeholder="Name"
+                             value={this.state.value}
+                             onChange={(e) => this.handleNewPlaylistNameChange(e)} />
+                    </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="playlistGame">Game</label>
+                      <input type="text"
+                             id="playlistGame"
+                             className="form-control"
+                             placeholder="Game"
+                             value={this.state.value}
+                             onChange={(e) => this.handleNewPlaylistGameChange(e)} />
+                    </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="playlistGenre">Genre</label>
+                      <input type="text"
+                             id="playlistGenre"
+                             className="form-control"
+                             placeholder="Genre"
+                             value={this.state.value}
+                             onChange={(e) => this.handleNewPlaylistGenreChange(e)} />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="playlistDescription">Description</label>
+                      <input type="text"
+                             id="playlistDescription"
+                             className="form-control"
+                             placeholder="Description"
+                             value={this.state.value}
+                             onChange={(e) => this.handleNewPlaylistDescChange(e)} />
+                    </div>
+                    <button type="submit"
                             className="btn btn-default playlist-button"
-                            data-toggle="collapse"
-                            data-target="#searchPlaylistForm"
-                            onClick={(e) => this.checkLogInSpotifyClick(e)}>
-                      <span className="fa fa-search fa-2x"></span>
-                      <h3>Import Playlist</h3>
+                            onClick={(e) => this.handleAddPlaylistClick(e)}>
+                      Submit
                     </button>
-                  </div>
-                  <div id="searchPlaylistForm" className="collapse">
-                    <form>
-                      <div className="form-group">
-                        <div className="input-group">
-                          <input type="text"
-                                 id="playlistDescription"
-                                 className="form-control"
-                                 placeholder="Search for playlists..."
-                                 value={this.state.value}
-                                 onChange={(e) => this.handlePlaylistSearchValueChange(e)} />
-                        <span className="input-group-addon">
-                          <span className="fa fa-search"></span>
-                        </span>
-                        </div>
-                      </div>
-                      <button type="submit"
-                              className="btn btn-default playlist-button"
-                              onClick={(e) => this.handlePlaylistSearchClick(e)}>
-                        Submit
-                      </button>
-                    </form>
-                  </div>
-                  <div className="row">
-                    {(() => {
-                      switch (this.state.playlistSearchTerm) {
-                        case "":
-                          return null;
-                        default:
-                          return <p className="search-result">Results for "{this.state.playlistSearchTerm}"</p>;
-                      }
-                    })()}
-
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="row">
-          <div className="panel panel-default playlist ">
-            <div className="panel-body">
-              <div className="col-md-10 col-md-offset-1 songlist-table">
-                {this.state.playlistSearchResults.map((playlist, i) => {
-                  return (
-                    <div key={i} onClick={(e) => this.handleImportPlaylistClick(e, playlist)}>
-                      <PlaylistShort title = {playlist.playlist.title}
-                                     uri = {playlist.playlist.uri}
-                                     url = {playlist.playlist.url}
-                                     owner = {playlist.playlist.spotify_author}
-                                     numTracks = {playlist.numTracks.total}
-                      />
+          <div className="col-md-10 col-md-offset-1">
+            <div className="panel panel-default playlist ">
+              <div className="panel-body">
+                <div className="text-center">
+                  <button type="button"
+                          className="btn btn-default playlist-button"
+                          data-toggle="collapse"
+                          data-target="#searchPlaylistForm"
+                          onClick={(e) => this.checkLogInSpotifyClick(e)}>
+                    <span className="fa fa-search fa-2x"></span>
+                    <h3>Import Playlist</h3>
+                  </button>
+                </div>
+                <div id="searchPlaylistForm" className="collapse">
+                  <form>
+                    <div className="form-group">
+                      <div className="input-group">
+                        <input  type="text"
+                                id="playlistDescription"
+                                className="form-control"
+                                placeholder="Search for playlists..."
+                                value={this.state.value}
+                                onChange={(e) => this.handlePlaylistSearchValueChange(e)}
+                                onKeyUp={(e) => this.handlePlaylistKeyUp(e)}/>
+                        <span className="input-group-addon">
+                          <span className="fa fa-search"></span>
+                        </span>
+                      </div>
                     </div>
-                  );
-                })}
+                  </form>
+                </div>
+                <div className="row">
+                  {(() => {
+                    switch (this.state.playlistSearchTerm) {
+                      case "":
+                        return null;
+                      default:
+                        return <p className="search-result">Results for "{this.state.playlistSearchTerm}"</p>;
+                    }
+                  })()}
+
+                </div>
+                <div className="row">
+                  <div className="col-md-10 col-md-offset-1 songlist-table">
+                    {this.state.playlistSearchResults.map((playlist, i) => {
+                      return (
+                        <div key={i} onClick={(e) => this.handleImportPlaylistClick(e, playlist)}>
+                          <PlaylistShort
+                            title = {playlist.playlist.title}
+                            uri = {playlist.playlist.uri}
+                            url = {playlist.playlist.url}
+                            owner = {playlist.playlist.spotify_author}
+                            numTracks = {playlist.numTracks.total}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -242,7 +241,7 @@ export default class PlayListFeed extends React.Component {
           {this.state.contents.map((playlist, i) => {
             return (
               <div key={i}>
-                <Playlist key={i}
+                <Playlist key={playlist._id}
                           userID={this.props.userID}
                           data={playlist}
                           plFeedID={this.state._id}
