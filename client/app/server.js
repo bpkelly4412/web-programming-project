@@ -335,19 +335,23 @@ export function getUserData(userID, cb) {
 }
 
 export function setUserData(userID, data, cb) {
-    console.log(data);
-
     sendXHR('PUT', '/user/' + userID, { data: data }, (xhr) => {
 	cb(JSON.parse(xhr.responseText));
     });
 }
 
 export function useRecommendation(userID, key, cb) {
-    var userData = readDocument('users', userID);
-    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
-    writeDocument('users', userData);
-    emulateServerReturn(userData, cb);
+    sendXHR('PUT', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
+
+export function delRecommendation(userID, key, cb) {
+    sendXHR('DELETE', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
+}
+
 
 /**
 * Returns a Topic object.

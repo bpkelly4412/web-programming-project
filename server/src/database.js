@@ -16,8 +16,8 @@ var initialData = {
       "status": "online",
       "chattingWith": 2,
       "recommendations":
-        [{"_id": 201, "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
-          {"_id": 202, "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
+        [{"_id": 201, "plid": "101", "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
+          {"_id": 202, "plid": "101",  "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
     },
     "2": {
       "_id": 2,
