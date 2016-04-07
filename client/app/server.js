@@ -335,17 +335,24 @@ export function getUserData(userID, cb) {
   });
 }
 
-export function setUserData(data, cb) {
-    var userData = writeDocument('users', data);
-    emulateServerReturn(userData, cb);
+export function setUserData(userID, data, cb) {
+    sendXHR('PUT', '/user/' + userID, { data: data }, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
 
 export function useRecommendation(userID, key, cb) {
-    var userData = readDocument('users', userID);
-    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
-    writeDocument('users', userData);
-    emulateServerReturn(userData, cb);
+    sendXHR('PUT', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
 }
+
+export function delRecommendation(userID, key, cb) {
+    sendXHR('DELETE', '/user/' + userID + '/recommendations/' + key, (xhr) => {
+	cb(JSON.parse(xhr.responseText));
+    });
+}
+
 
 /**
 * Returns a Topic object.
@@ -353,7 +360,7 @@ export function useRecommendation(userID, key, cb) {
 export function getTopic(topicID, cb ) {
   var forumData = readDocument('forums', 1);
   var topic = forumData.topics[topicID];
-  // playlist.contents = playlist.songs.map(getSong);
+  /* playlist.contents = playlist.songs.map(getSong); */
   emulateServerReturn(topic, cb);
 }
 

@@ -25,12 +25,12 @@ export default class Settings extends React.Component {
 
     handlePublicClick(e){
 	this.state.userInfo.profile_public = !this.state.userInfo.profile_public;
-	setUserData(this.state.userInfo, () => this.refresh());
+	setUserData(this.props.userID, this.state.userInfo, () => this.refresh());
     }
 
     handleRecommendClick(e){
 	this.state.userInfo.recommend = !this.state.userInfo.recommend;
-	setUserData(this.state.userInfo, () => this.refresh());
+	setUserData(this.props.userID, this.state.userInfo, () => this.refresh());
     }
 
     render() {

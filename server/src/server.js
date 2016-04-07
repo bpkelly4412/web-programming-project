@@ -264,6 +264,58 @@ app.get('/user/:userID', function(req, res) {
   }
 });
 
+/**
+* Given a user ID and data, sets the users data to the new data
+*/
+app.put('/user/:userID', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    var userData = req.body.data;
+    if (fromUser === userID) {
+	// Send response.
+	var userData = writeDocument('users', userData);
+	res.send(userData);
+    } else {
+	// 401: Unauthorized request.
+	res.status(401).end();
+    }
+});
+
+/*
+* Given a recommendation key, removes the recommendation and adds the song to the playlist
+ */
+app.put('/user/:userID/recommendations/:key', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    if (fromUser === userID) {
+	var userData = readDocument('users', userID);
+	var playlist = readDocument('playlists', userData.recommendations[key].plid);
+	    userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	playlist.songs.push({"title": userData.recommendations[key].song, "artist": userData.recommendations[key].artist});
+	res.send(userData);
+    }
+    else {
+	res.status(401).end();
+    }
+});
+
+/*
+ * Given a recommendation key, removes the recommendation and adds the song to the playlist
+ */
+app.delete('/user/:userID/recommendations/:key', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userID = parseInt(req.params.userID, 10);
+    if (fromUser === userID) {
+	var userData = readDocument('users', userID);
+	userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
+	res.send(userData);
+    }
+    else {
+	res.status(401).end();
+    }
+});
+
+
 /*
  *  PLAYLIST FEED FUNCTIONS
  */
