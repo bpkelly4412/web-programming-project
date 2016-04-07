@@ -263,6 +263,52 @@ app.get('/user/:userID', function(req, res) {
   }
 });
 
+app.put('/user/:userID/name', function(req, res) {
+  console.log("Server Side attempting to set nickname");
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  if (fromUser == userID) {
+    // Send response.
+    if (typeof(req.body) !== 'string') {
+      // 400: Bad request.
+      res.status(400).end();
+      return;
+    }
+    var userData = readDocument('users', userID);
+    userData.userName = body;
+    writeDocument('users', userData)
+    res.send(userData);
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
+app.put('/user/:userID/about', function(req, res) {
+  console.log("Server Side attempting to set about");
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = parseInt(req.params.userID, 10);
+  console.log(fromUser);
+  console.log(userID);
+  if (fromUser == userID) {
+    // Send response.
+    if (typeof(body) !== 'string') {
+      // 400: Bad request.
+      res.status(400).end();
+      return;
+    }
+    var userData = readDocument('users', userID);
+    userData.about = body;
+    writeDocument('users', userData)
+    res.send(userData);
+  } else {
+    // 401: Unauthorized request.
+    res.status(401).end();
+  }
+});
+
 app.get('/user/:userID/nickName', function(req, res) {
   var userID = parseInt(req.params.userID, 10);
   // Send response.
