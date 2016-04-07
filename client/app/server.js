@@ -116,6 +116,34 @@ export function spotifyLogoutUser(userID, cb) {
 
 //  ********* END Spotify Authorization Functions ************
 
+// Steam API
+var steamKey = '0FA3A4F28AF88CB432578F4EAE64D2A5';
+
+export function steamGetSteamId(userName, cb){
+  sendXHR('GET', 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/' + '?key=' + steamKey + '&vanityurl=' + userName, undefined, () => {
+    cb();
+  });
+}
+
+export function steamOwnedGames(steamId, cb){
+  sendXHR('GET', 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v2' + '?key=' + steamKey + '&steamid=' + steamId, undefined, () => {
+    cb();
+  });
+}
+
+
+export function steamGameSchema(appId, cb) {
+  sendXHR('GET', 'https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/' + '?key=' + steamKey + '&appid=' + appId, undefined, () => {
+    cb();
+  });
+}
+
+export function steamProfileSchema(steamId, cb) {
+  sendXHR('GET', 'https://api.steampowered.com/ISteamUserStats/GetPlayerSummaries/v2/' + '?key=' + steamKey + '&steamids=' + steamId, undefined, () => {
+    cb();
+  });
+}
+
 /**
  * This will likely need to be moved? I am just performing a GET from Spotify's song database.
  */
@@ -386,57 +414,24 @@ export function getForum(cb) {
 * Returns a Topic object.
 */
 export function getTopic(category, topicID, cb ) {
-  sendXHR('GET', '/forum/' + 1 + '/category/' + category + '/topic/' + topicID, undefined, (xhr) => {
+  sendXHR('GET', '/forum/' +  'category/' + category + '/topic/' + topicID, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
 
-export function postThread(user, category, topicID, title, contents) {
+export function postThread(author, category, topicId, title, contents) {
+  sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/newTopic" ,
+  {  author: author, title: title, contents : contents})
+  }
 
 
-  var time = new Date().getTime();
-  var forumData = readDocument('forums', 1);
-
-  forumData.categories[category].topics[topicID].threads.push({
-    "title": title,
-    "postCount": [0],
-    "posts": [
-      {
-        "_id": 1,
-        "author": user,
-        "postDate": time,
-        "contents": contents
-      }
-    ]
-  });
-
-writeDocument('forums', forumData);
-
-forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
-writeDocument('forums', forumData);
-forumData.categories[category].topics[topicID].threadCount = forumData.categories[category].topics[topicID].threadCount + 1;
-writeDocument('forums', forumData);
-
-}
-
-export function postComment( user, category, topicID, threadID, contents) {
-
-
-  var time = new Date().getTime();
-  var forumData = readDocument('forums', 1);
-
-  forumData.categories[category].topics[topicID].threads[threadID].posts.push({
-        "author": user,
-        "postDate": time,
-        "contents": contents
-      });
-
-  writeDocument('forums', forumData);
-
-  forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
-  writeDocument('forums', forumData);
-  forumData.categories[category].topics[topicID].threads[threadID].postCount =  forumData.categories[category].topics[topicID].threads[threadID].postCount + 1;
-  writeDocument('forums', forumData);
+export function postComment( user, category, topicId, threadId, contents) {
+  sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/thread/" + threadId , {
+    category: category,
+    topicId : topicId,
+    threadId : threadId,
+    author: user,
+    contents : contents})
 }
 
 
