@@ -434,6 +434,8 @@ function createNewPlaylist(userID, title, game, genre, description, imageURL,  s
     "title": title,
     "author": userID,
     "votes": [],
+    "popularity": 0,
+    "timestamp": new Date().getTime(),
     "genre": genre,
     "description": description,
     "spotify_id": spotifyId,
@@ -929,49 +931,41 @@ app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
   }
 });
 
-/*
- * Returns the NewRelease object
- */
-app.get('/new-release/', function(req, res) {
-  var newReleaseData = readDocument('newRelease', 1);
-  newReleaseData.contents.forEach((n) => {
-    n.playlists = n.playlists.map(getPlaylistWithAuthor)
-  });
-  res.send(newReleaseData);
-});
 
 /*
-* Compute the 8 most popular playlists in database and return them as mostPopular JSON
+* Compute the 8 highest rated playlists in database and return them as highRated JSON
 */
-function getMostPopular(){
+function getTopCategory(compare){
   var playlistsJSON = getCollection('playlists');
-  //var parsed = JSON.parse(playlistsJSON);
+  // converting playlistsJSON to an array of JSON
   var playlists = [];
   for(var x in playlistsJSON){
     playlists.push(playlistsJSON[x]);
   }
-  playlists.sort(function(a,b){
-    return b.votes.length - a.votes.length;
-  });
-  var newPopular = {
+  // sorting playlists
+  playlists.sort(compare);
+  console.log("sorted playlist");
+  console.log(playlists);
+  var newCategory = {
     ".id": 1,
     "contents": []
   };
+  // Traversing the top 8 most highest rated playlists and creating new entry
+  // for each playlists corresponding to different games
   for(var i = 0; i<playlists.length && i < 8; i++){
-    console.log(playlists[i]);
-    var index = indexOfGame(playlists[i].game, newPopular.contents);
+    var index = indexOfGame(playlists[i].game, newCategory.contents);
     if(index == -1){
       var newSection = {
         "imageURL": playlists[i].imageURL,
         "gameTitle": playlists[i].game,
         "playlists": [playlists[i]._id]
       };
-      newPopular.contents.push(newSection);
+      newCategory.contents.push(newSection);
     }else{
-      newPopular.contents[index].playlists.push(playlists[i]._id);
+      newCategory.contents[index].playlists.push(playlists[i]._id);
     }
   }
-  return newPopular;
+  return newCategory;
 }
 
 /*
@@ -989,7 +983,9 @@ function indexOfGame (gameTitle, contents) {
  * Returns the MostPopular object
  */
 app.get('/most-popular/', function(req, res) {
-  var mostPopularData = getMostPopular();
+  var mostPopularData = getTopCategory(function(a,b){
+    return b.votes.length - a.votes.length;
+  });
   mostPopularData.contents.forEach((n) => {
     n.playlists = n.playlists.map(getPlaylistWithAuthor)
   });
@@ -1000,7 +996,10 @@ app.get('/most-popular/', function(req, res) {
  * Returns the HighestRated object
  */
 app.get('/highest-rated/', function(req, res) {
-  var highestRatedData = readDocument('highestRated', 1);
+  var highestRatedData = getTopCategory(function(a,b){
+    return b.votes.length - a.votes.length;
+  });
+
   highestRatedData.contents.forEach((n) => {
     n.playlists = n.playlists.map(getPlaylistWithAuthor)
   });
@@ -1016,6 +1015,21 @@ app.get('/rising/', function(req, res) {
     n.playlists = n.playlists.map(getPlaylistWithAuthor)
   });
   res.send(risingData);
+});
+
+/*
+ * Returns the NewRelease object
+ */
+app.get('/new-release/', function(req, res) {
+  var newReleaseData = getTopCategory(function(a,b){
+    return b.timestamp.length - a.timestamp.length;
+  });
+  console.log("new release data: ");
+  console.log(newReleaseData);
+  newReleaseData.contents.forEach((n) => {
+    n.playlists = n.playlists.map(getPlaylistWithAuthor)
+  });
+  res.send(newReleaseData);
 });
 
 /**
