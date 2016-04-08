@@ -931,9 +931,9 @@ app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res){
   }
 });
 
-
 /*
-* Compute the 8 highest rated playlists in database and return them as highRated JSON
+* Compute the 8 top playlists (according to @param compare) in database
+* and return them as Top JSON
 */
 function getTopCategory(compare){
   var playlistsJSON = getCollection('playlists');
@@ -944,13 +944,11 @@ function getTopCategory(compare){
   }
   // sorting playlists
   playlists.sort(compare);
-  console.log("sorted playlist");
-  console.log(playlists);
   var newCategory = {
     ".id": 1,
     "contents": []
   };
-  // Traversing the top 8 most highest rated playlists and creating new entry
+  // Traversing the top 8 top playlists and creating new entry
   // for each playlists corresponding to different games
   for(var i = 0; i<playlists.length && i < 8; i++){
     var index = indexOfGame(playlists[i].game, newCategory.contents);
@@ -1007,10 +1005,57 @@ app.get('/highest-rated/', function(req, res) {
 });
 
 /*
+* Compute the 8 Rising playlists in database and return them as Rising JSON
+*/
+function getRising(){
+  var playlistsJSON = getCollection('playlists');
+  // converting playlistsJSON to an array of JSON
+  var playlists = [];
+  var rising = [];
+  for(var x in playlistsJSON){
+    playlists.push(playlistsJSON[x]);
+  }
+  // sorting playlists
+  playlists.sort(function(a,b){
+    return b.votes.length - a.votes.length;
+  });
+  for(var i = 0; i<playlists.length && rising.length < 8; i++){
+    var year = new Date().getUTCFullYear();
+    var playlistYear = new Date(playlists[i].timestamp).getUTCFullYear();
+    console.log("yaer:" + year + " - " + "playlistYear: " + playlistYear);
+    if(year - playlistYear <= 1){
+      rising.push(playlists[i]);
+      console.log("playlists[i]");
+      console.log(playlists[i]);
+    }
+  }
+  var newCategory = {
+    ".id": 1,
+    "contents": []
+  };
+  // Traversing the top 8 top playlists and creating new entry
+  // for each playlists corresponding to different games
+  for(var j = 0; j<rising.length && j < 8; j++){
+    var index = indexOfGame(rising[j].game, newCategory.contents);
+    if(index == -1){
+      var newSection = {
+        "imageURL": rising[j].imageURL,
+        "gameTitle": rising[j].game,
+        "playlists": [rising[j]._id]
+      };
+      newCategory.contents.push(newSection);
+    }else{
+      newCategory.contents[index].playlists.push(rising[j]._id);
+    }
+  }
+  return newCategory;
+}
+
+/*
  * Returns the Rising object
  */
 app.get('/rising/', function(req, res) {
-  var risingData = readDocument('rising', 1);
+  var risingData = getRising();
   risingData.contents.forEach((n) => {
     n.playlists = n.playlists.map(getPlaylistWithAuthor)
   });
@@ -1024,8 +1069,6 @@ app.get('/new-release/', function(req, res) {
   var newReleaseData = getTopCategory(function(a,b){
     return b.timestamp.length - a.timestamp.length;
   });
-  console.log("new release data: ");
-  console.log(newReleaseData);
   newReleaseData.contents.forEach((n) => {
     n.playlists = n.playlists.map(getPlaylistWithAuthor)
   });
