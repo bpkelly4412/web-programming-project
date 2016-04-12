@@ -919,15 +919,31 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/playlist/:playlistid/votes/:userid', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var playlistID = parseInt(req.params.playlistid, 10);
-    var userId = parseInt(req.params.userid, 10);
+    var playlistID = new ObjectID(req.params.playlistid);
+    var userId = req.params.userid;
     if (fromUser === userId) {
-      var playlist = readDocument('playlists', playlistID);
-      if (playlist.votes.indexOf(userId) === -1) {
-        playlist.votes.push(userId);
-        writeDocument('playlists', playlist);
-      }
-      res.send(playlist.votes);
+      db.collection('playlists').updateOne({ _id: playlistID },
+        {
+          $addToSet: {
+            votes: new ObjectID(userId)
+          }
+        }, function(err) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          db.collection('playlists').findOne({ _id: playlistID }, function(err, playlist) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            }
+            resolveUserObjects(playlist.votes, function(err, userMap) {
+              if (err) {
+                return sendDatabaseError(res, err);
+              }
+              res.send(playlist.votes.map((userId) => userMap[userId]));
+            });
+          });
+        }
+      );
     } else {
       res.status(401).end();
     }
