@@ -711,7 +711,7 @@ MongoClient.connect(url, function(err, db) {
                     }
                   }, function (err) {
                     if (err) {
-                      sendDatabaseError(res, err);
+                      return sendDatabaseError(res, err);
                     }
                     console.log(importedPlaylist);
                     res.status(201);
@@ -731,74 +731,67 @@ MongoClient.connect(url, function(err, db) {
 
   /**
    * Adds a song to a particular playlist.
-   * If the playlist no longer exists on Spotify, then create it anew and add it.
    */
   app.put('/playlist/:playlistid/songs/:userid', validate({body: songSchema}),
     function (req, res) {
       var body = req.body;
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userID = parseInt(req.params.userid, 10);
-      var playlistID = parseInt(req.params.playlistid, 10);
+      var userID = req.params.userid;
+      var playlistID = req.params.playlistid;
       if (fromUser === userID) {
-        var playlist = readDocument('playlists', playlistID);
-        var user = database.readDocument('users', fromUser);
-        if (user.spotifyProfileName === playlist.spotify_author) {
-          var song = {
-            "spotify_id": body.spotify_id,
-            "title": body.title,
-            "artist": body.artist,
-            "album": body.album,
-            "uri": body.uri,
-            "duration": body.duration
-          };
-          spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, [song.uri])
-            .then(function (data) {
-              playlist.songs.push(song);
-              writeDocument('playlists', playlist);
-              res.send(playlist);
-            })
-            .catch(function (err) {
-              if (err.status === 404) {
-                spotifyApi.createPlaylist(user.spotifyProfileName, playlist.title)
-                  .then(function (data) {
-                    console.log('Playlist does not exist on spotify, creating new playlist: ', data.body.id);
-                    return spotifyApi.getPlaylistTracks(user.spotifyProfileName, playlist.spotify_id);
-                  })
-                  .then(function (data) {
-                    console.log('...Adding tracks to the new playlist.');
-                    var trackURIs = [];
-                    for (song in playlist.songs) {
-                      trackURIs.push(song.uri);
-                    }
-                    playlist.spotify_id = data.body.id;
-                    playlist.spotify_author = data.body.owner.id;
-                    playlist.url = data.body.href;
-                    playlist.uri = data.body.uri;
-                    return spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, trackURIs);
-                  })
-                  .then(function (data) {
-                    res.send(playlist);
-                  })
-                  .catch(function (err) {
-                    console.log('Could not create playlist: ', err.message);
-                    res.status(405).end();
-                  });
-              } else {
-                console.log('Could not add track to playlist: ', err.message);
-                res.status(405).end();
-              }
-            });
-        } else {
-          // 401: Unauthorized.
-          res.status(401).end();
-        }
 
-      } else {
-        // 401: Unauthorized.
-        res.status(401).end();
-      }
+        //  Check if the user's spotify id is the same as the playlist's spotify id
+        db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, user) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          db.collection('playlists').findOne({ _id: new ObjectID(playlistID) }, function (err, playlist) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            }
+
+            //  Add the song to the playlist
+            if (user.spotifyProfileName === playlist.spotify_author) {
+              var song = {
+                "spotify_id": body.spotify_id,
+                "title": body.title,
+                "artist": body.artist,
+                "album": body.album,
+                "uri": body.uri,
+                "duration": body.duration
+              };
+              spotifyApi.addTracksToPlaylist(user.spotifyProfileName, playlist.spotify_id, [song.uri])
+                .then(function (data) {
+                  //  After adding the track to the Spotify playlist, add it to the user's local playlist
+                  db.collection('playlists').updateOne({ _id: new ObjectID(playlistID) }, {
+                    $push: {
+                      songs: song
+                    }
+                  }, function(err) {
+                    if (err) {
+                      return sendDatabaseError(res, err);
+                    }
+                    playlist.songs.push(song);
+                    res.status(201);
+                    res.send(playlist);
+                  });
+
+                })
+                .catch(function (err) {
+                  return sendDatabaseError(res, err);
+                });
+            } else {
+              // 401: Unauthorized.
+              res.status(401).end();
+            }
+          });
+        });
+    } else {
+      // 401: Unauthorized.
+      res.status(401).end();
     }
-  );
+  }
+);
 
   /**
    * Removes a song from a particular playlist IF it is owned by the user on Spotify.
