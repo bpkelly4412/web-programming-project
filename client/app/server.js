@@ -289,7 +289,7 @@ export function addPlaylist(playlist, userID, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
       sendXHR('PUT', '/playlistfeed/user/' + userID + '/playlist/', {
-        userID: playlist.playlist.author,
+        userID: userID,
         author: playlist.playlist.author,
         title: playlist.playlist.title,
         game: playlist.playlist.game,

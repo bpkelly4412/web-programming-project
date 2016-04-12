@@ -281,7 +281,7 @@ MongoClient.connect(url, function(err, db) {
                   game: "",
                   imageURL: imageurl,
                   title: nextPlaylist.name,
-                  author: -1,
+                  author: "",
                   votes: [],
                   genre: "",
                   description: "",
@@ -670,9 +670,9 @@ MongoClient.connect(url, function(err, db) {
     function (req, res) {
       var body = req.body;
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userID = parseInt(req.params.userid, 10);
+      var userID = req.params.userid;
       if (fromUser === userID) {
-        var importedPlaylist = createNewPlaylist(
+        createNewPlaylist(
           userID,
           body.title,
           body.game,
@@ -682,33 +682,50 @@ MongoClient.connect(url, function(err, db) {
           body.spotify_id,
           body.spotify_author,
           body.url,
-          body.uri);
-        spotifyApi.getPlaylistTracks(body.spotify_author, body.spotify_id)
-          .then(function (trackData) {
-            trackData.body.items.map(function (nextTrack) {
-              var song = {
-                spotify_id: nextTrack.track.id,
-                title: nextTrack.track.name,
-                artist: "",
-                album: nextTrack.track.album.name,
-                uri: nextTrack.track.uri,
-                duration: nextTrack.track.duration_ms
-              };
-              if (nextTrack.track.artists.length > 0) {
-                song.artist = nextTrack.track.artists[0].name;
-              } else {
-                song.artist = "Unknown";
-              }
-              importedPlaylist.songs.push(song);
-            });
+          body.uri, function (err, importedPlaylist) {
+            spotifyApi.getPlaylistTracks(body.spotify_author, body.spotify_id)
+              .then(function (trackData) {
+                trackData.body.items.map(function (nextTrack) {
+                  var song = {
+                    spotify_id: nextTrack.track.id,
+                    title: nextTrack.track.name,
+                    artist: "",
+                    album: nextTrack.track.album.name,
+                    uri: nextTrack.track.uri,
+                    duration: nextTrack.track.duration_ms
+                  };
+                  if (nextTrack.track.artists.length > 0) {
+                    song.artist = nextTrack.track.artists[0].name;
+                  } else {
+                    song.artist = "Unknown";
+                  }
+                  importedPlaylist.songs.push(song);
+                });
 
-            writeDocument('playlists', importedPlaylist);
-            res.send(importedPlaylist);
-          })
-          .catch(function (err) {
-            console.log('Could not create playlist: ', err.message);
-            res.status(405).end();
-          });
+                db.collection('playlists').updateOne( { _id: new ObjectID(importedPlaylist._id) },
+                  {
+                    $push: {
+                      songs:{
+                        $each: importedPlaylist.songs
+                      }
+                    }
+                  }, function (err) {
+                    if (err) {
+                      sendDatabaseError(res, err);
+                    }
+                    console.log(importedPlaylist);
+                    res.status(201);
+                    res.set('Location', '/playlist/' + importedPlaylist._id);
+                    res.send(importedPlaylist);
+                  });
+              })
+              .catch(function (err) {
+                res.status(405).send('Could not create playlist: ' + err.message);
+              });
+          }
+        );
+      } else {
+        res.status(401).end();
       }
     });
 
