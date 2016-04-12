@@ -1,15 +1,11 @@
 import React from 'react';
-import { removeSong } from '../server';
 
 export default class Song extends React.Component {
 
   handleRemoveSongClick(clickEvent) {
     clickEvent.preventDefault();
     if (clickEvent.button === 0) {
-      var callbackFunction = (updatedSongs) => {
-        this.props.callbackPlaylist(updatedSongs);
-      };
-      removeSong(this.props.playlistID, this.props.userId, this.props.songIndex, callbackFunction);
+      this.props.callbackPlaylist(this.props.songIndex);
     }
   }
 

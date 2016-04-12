@@ -796,36 +796,51 @@ MongoClient.connect(url, function(err, db) {
   /**
    * Removes a song from a particular playlist IF it is owned by the user on Spotify.
    */
-  app.delete('/playlist/:playlistid/songs/:songindex', function (req, res) {
+  app.delete('/playlist/:playlistid/spotify/:spotifyauthor/spotifyuser/:userspotify/songs/:songindex/user/:userid', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var playlistID = parseInt(req.params.playlistid, 10);
-    var playlist = readDocument('playlists', playlistID);
-    var user = database.readDocument('users', fromUser);
-    var songIndex = parseInt(req.params.songindex);
-    if (songIndex !== -1) {
-      var song = playlist.songs[songIndex];
-      if (playlist.author === fromUser) {
-        if (user.spotifyProfileName === playlist.spotify_author) {
-          spotifyApi.removeTracksFromPlaylist(user.spotifyProfileName, playlist.spotify_id, [{
-              'uri': song.uri
-            }])
-            .then(function (data) {
-              playlist.songs.splice(songIndex, 1);
-              writeDocument('playlists', playlist);
-              res.send(playlist);
-            })
-            .catch(function (err) {
-              console.log('Could not remove track from playlist: ', err.message);
-              res.status(405).end();
-            });
-        } else {
-          // 401: Unauthorized.
-          res.status(401).end();
+    var userId = req.params.userid;
+    var playlistID = req.params.playlistid;
+    var spotifyAuthor = req.params.spotifyauthor;
+    var userSpotify = req.params.userspotify;
+    var songIndex = req.params.songindex;
+
+
+    //  The playlist can only have songs removed if the user is also the playlist's author.
+    if (userId === fromUser && spotifyAuthor === userSpotify) {
+      db.collection('playlists').findOne({ _id: new ObjectID(playlistID) }, function (err, playlist) {
+        if (err) {
+          return sendDatabaseError(res, err);
         }
-      } else {
-        // 401: Unauthorized.
-        res.status(401).end();
-      }
+        var song = playlist.songs[songIndex];
+        var songId = song.spotify_id;
+        spotifyApi.removeTracksFromPlaylist(userSpotify, playlist.spotify_id, [{ 'uri': song.uri }])
+          .then(function () {
+            db.collection('playlists').updateOne({ _id: new ObjectID(playlistID) },
+              {
+                $pull: {
+                  songs: { spotify_id: songId }
+                }
+              }, function(err) {
+                if (err) {
+                  return sendDatabaseError(res, err);
+                }
+                db.collection('playlists').findOne({ _id: new ObjectID(playlistID) }, function (err, editedPlaylist) {
+                  if (err) {
+                    return sendDatabaseError(res, err);
+                  }
+                  res.status(201);
+                  res.send(editedPlaylist);
+                });
+              }
+            );
+          })
+          .catch(function (err) {
+            res.status(405).send('Could not remove track from playlist: ' + err);
+          });
+      });
+    } else {
+      // 401: Unauthorized.
+      res.status(401).end();
     }
   });
 

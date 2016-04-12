@@ -243,6 +243,7 @@ export default class PlayListFeed extends React.Component {
               <div key={i}>
                 <Playlist key={playlist._id}
                           userID={this.props.userID}
+                          spotifyID = {this.state.userData.spotifyProfileName}
                           data={playlist}
                           plFeedID={this.state._id}
                           callbackPlaylistFeed = {this.onChildChanged} />

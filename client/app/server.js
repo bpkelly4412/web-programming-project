@@ -262,12 +262,19 @@ export function addSong(playlistID, userID, song, cb) {
  * Removes a song from a playlist.
  * Should FAIL if the user does not own the playlist.
  */
-export function removeSong(playlistID, userID, songIndex, cb) {
+export function removeSong(playlistID, spotifyAuthorID, userID, userSpotify, songIndex, cb) {
   isSpotifyLoggedIn(userID, (isLoggedIn) => {
     if (isLoggedIn) {
-      sendXHR('DELETE', '/playlist/' + playlistID + '/songs/' + songIndex, undefined, (xhr) => {
-        cb(JSON.parse(xhr.responseText));
-      });
+      sendXHR('DELETE',
+        '/playlist/' + playlistID +
+        '/spotify/' + spotifyAuthorID +
+        '/spotifyuser/' + userSpotify +
+        '/songs/' + songIndex +
+        '/user/' + userID, undefined,
+        (xhr) =>
+        {
+          cb(JSON.parse(xhr.responseText));
+        });
     } else {
       spotifyLoginUser(userID, (authURL) => {
         //  Opens a new window that allows the user to login to Spotify

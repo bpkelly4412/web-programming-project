@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './song';
 import SongList from './song-list';
-import { editPlaylist, unvotePlaylist, votePlaylist, removePlaylist } from '../server';
+import { editPlaylist, unvotePlaylist, votePlaylist, removePlaylist, removeSong } from '../server';
 
 export default class Playlist extends React.Component {
 
@@ -20,6 +20,13 @@ export default class Playlist extends React.Component {
       newPlaylistDescription: ""
     };
     this.onChildChanged = this.onChildChanged.bind(this);
+    this.onRemoveSong = this.onRemoveSong.bind(this);
+  }
+
+  onRemoveSong(songIndex) {
+    removeSong(this.props.data._id, this.props.data.spotify_author, this.props.userID, this.props.spotifyID, songIndex, (playlist) => {
+      this.setState(playlist);
+    })
   }
 
   onChildChanged(newState) {
@@ -244,7 +251,7 @@ export default class Playlist extends React.Component {
                       uri={songItem.uri}
                       duration={songItem.duration}
                       playlistID={this.props.data._id}
-                      callbackPlaylist = {this.onChildChanged}
+                      callbackPlaylist = {this.onRemoveSong}
                       hideRemoveSong="false" />
                   );
                 })}
