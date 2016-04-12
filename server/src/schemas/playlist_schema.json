@@ -3,13 +3,9 @@
   "id": "/",
   "type": "object",
   "properties": {
-    "_id": {
-      "id": "_id",
-      "type": "integer"
-    },
     "userID": {
       "id": "userID",
-      "type": "integer"
+      "type": "string"
     },
     "game": {
       "id": "game",
@@ -25,7 +21,7 @@
     },
     "author": {
       "id": "author",
-      "type": "integer"
+      "type": "string"
     },
     "votes": {
       "id": "votes",

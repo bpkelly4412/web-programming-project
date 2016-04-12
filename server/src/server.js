@@ -545,8 +545,19 @@ MongoClient.connect(url, function(err, db) {
    * @param uri
    * @returns {{game: *, imageURL: string, title: *, author: *, votes: Array, genre: *, description: *, spotify_id: *, spotify_author: *, url: *, uri: *, songs: Array}}
    */
-  function createNewPlaylist(userID, title, game, genre, description, imageURL, spotifyId, spotifyOwnerID, url, uri) {
-    var user = readDocument('users', userID);
+  function createNewPlaylist(
+    userID,
+    title,
+    game,
+    genre,
+    description,
+    imageURL,
+    spotifyId,
+    spotifyOwnerID,
+    url,
+    uri,
+    callback)
+  {
     var newPlaylist = {
       "userId": userID,
       "game": game,
@@ -564,46 +575,92 @@ MongoClient.connect(url, function(err, db) {
       "uri": uri,
       "songs": []
     };
-    newPlaylist = addDocument('playlists', newPlaylist);
-    var playerPlaylists = readDocument('playlist-feeds', user.playlistfeed);
-    playerPlaylists.contents.unshift(newPlaylist._id);
-    writeDocument('playlist-feeds', playerPlaylists);
-    return newPlaylist;
+
+    db.collection('playlists').insertOne(newPlaylist, function(err, result) {
+      if (err) {
+        return callback(err);
+      }
+      // Update the playlist id
+      newPlaylist._id = result.insertedId;
+      // Retrieve the author's user object
+      db.collection('users').findOne({ _id: new ObjectID(userID) }, function(err, userObject) {
+        if (err) {
+          return callback(err);
+        }
+        // Update the author's feed with the new status update's ID.
+        db.collection('playlist-feeds').updateOne({ _id: new ObjectID(userObject.playlistfeed) },
+          {
+            $push: {
+              contents: {
+                $each: [newPlaylist._id],
+                $position: 0
+              }
+            }
+          },
+          function(err) {
+            if (err) {
+              return callback(err);
+            }
+            // Return the new status update to the application.
+            callback(null, newPlaylist);
+          }
+        );
+      });
+    });
   }
 
   /**
    * Create a new playlist locally and on Spotify.
    * Will fail and return status 405 if there is a problem with the Spotify playlist.
    */
-  app.post('/playlist', validate({body: playlistSchema}), function (req, res) {
-    var body = req.body;
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    if (fromUser === body.userID) {
-      var user = database.readDocument('users', fromUser);
-      spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
-        .then(function (data) {
+  app.post('/playlist', validate({body: playlistSchema}),
+    function (req, res) {
+      var body = req.body;
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      if (fromUser === body.userID) {
+        db.collection('users').findOne({ _id: new ObjectID(body.userID) },
+          function (err, user) {
+            if (err) {
+              res.status(500).send("A database error occurred: " + err);
+            } else {
+              spotifyApi.createPlaylist(user.spotifyProfileName, body.title)
+                .then(function (data) {
+                  createNewPlaylist(
+                    body.author,
+                    body.title,
+                    body.game,
+                    body.genre,
+                    body.description,
+                    "",
+                    data.body.id,
+                    data.body.owner.id,
+                    data.body.href,
+                    data.body.uri,
+                    function (err, newPlaylist) {
+                      if (err) {
+                        // A database error happened.
+                        // 500: Internal error.
+                        res.status(500).send("A database error occurred: " + err);
+                      } else {
+                        // When POST creates a new resource, we should tell the client about it
+                        // in the 'Location' header and use status code 201.
+                        res.status(201);
+                        res.set('Location', '/playlist/' + newPlaylist._id);
+                        // Send the update!
+                        res.send(newPlaylist);
+                      }
+                    });
+                })
+                .catch(function (err) {
+                  res.status(405).send('Could not create playlist: ' + err);
+                });
+            }
+          });
 
-          var newPlaylist = createNewPlaylist(
-            body.author,
-            body.title,
-            body.game,
-            body.genre,
-            body.description,
-            "",
-            data.body.id,
-            data.body.owner.id,
-            data.body.href,
-            data.body.uri);
-          res.send(newPlaylist);
-        })
-        .catch(function (err) {
-          console.log('Could not create playlist: ', err.message);
-          res.status(405).end();
-        });
-    } else {
-      res.status(401).end();
-    }
-  });
+      } else {
+        res.status(401).end();
+      }
+    });
 
   /**
    * Add a playlist from spotify
