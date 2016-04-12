@@ -935,12 +935,13 @@ MongoClient.connect(url, function(err, db) {
             if (err) {
               return sendDatabaseError(res, err);
             }
-            resolveUserObjects(playlist.votes, function(err, userMap) {
-              if (err) {
-                return sendDatabaseError(res, err);
-              }
-              res.send(playlist.votes.map((userId) => userMap[userId]));
-            });
+            res.send(playlist.votes);
+            // resolveUserObjects(playlist.votes, function(err, userMap) {
+            //   if (err) {
+            //     return sendDatabaseError(res, err);
+            //   }
+            //   res.send(playlist.votes.map((userId) => userMap[userId]));
+            // });
           });
         }
       );
@@ -954,19 +955,33 @@ MongoClient.connect(url, function(err, db) {
    */
   app.delete('/playlist/:playlistid/votes/:userid', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    // Convert params from string to number.
-    var playlistID = parseInt(req.params.playlistid, 10);
-    var userId = parseInt(req.params.userid, 10);
+    var playlistID = new ObjectID(req.params.playlistid);
+    var userId = req.params.userid;
     if (fromUser === userId) {
-      var playlist = readDocument('playlists', playlistID);
-      var voteIndex = playlist.votes.indexOf(userId);
-      if (voteIndex !== -1) {
-        playlist.votes.splice(voteIndex, 1);
-        writeDocument('playlists', playlist);
-      }
-      res.send(playlist.votes);
+      db.collection('playlists').updateOne({ _id: playlistID },
+        {
+          $pull: {
+            votes: new ObjectID(userId)
+          }
+        }, function(err) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          db.collection('playlists').findOne({ _id: playlistID }, function(err, playlist) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            }
+            res.send(playlist.votes);
+            // resolveUserObjects(playlist.votes, function(err, userMap) {
+            //   if (err) {
+            //     return sendDatabaseError(res, err);
+            //   }
+            //   res.send(playlist.votes.map((userId) => userMap[userId]));
+            // });
+          });
+        }
+      );
     } else {
-      // 401: Unauthorized.
       res.status(401).end();
     }
   });
