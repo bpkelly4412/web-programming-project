@@ -44,7 +44,7 @@ class StartPage extends React.Component {
 class ProfilePage extends React.Component {
   render() {
     return (
-      <Profile userID={1} />
+      <Profile userID={"000000000000000000000001"} />
     );
   }
 }
@@ -52,7 +52,7 @@ class ProfilePage extends React.Component {
 class SettingsPage extends React.Component {
     render() {
 	return (
-	    <Settings userID={1} />
+	    <Settings userID={"000000000000000000000001"} />
 	);
     }
 }
@@ -66,7 +66,7 @@ class SettingsPage extends React.Component {
 class SavedPlayListPage extends React.Component {
   render() {
       return (
-        <PlayListFeed userID={1} />
+        <PlayListFeed userID={"000000000000000000000001"} />
       );
   }
 }
@@ -164,7 +164,7 @@ class RisingPlaylistsPage extends React.Component {
 class PrivateChatPage extends React.Component {
   render() {
       return (
-        <PrivateChat userID={1}/>
+        <PrivateChat userID={"000000000000000000000001"}/>
       );
   }
 }
@@ -210,7 +210,7 @@ class SearchResultPage extends React.Component {
   render() {
     var searchTerm = this.getSearchTerm();
       return (
-        <SearchResult userID={1} searchTerm={searchTerm}/>
+        <SearchResult userID={"000000000000000000000001"} searchTerm={searchTerm}/>
       );
   }
 }
@@ -233,11 +233,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar userID={1} />
+        <Navbar userID={"000000000000000000000001"} />
         <div className="container">
           <div className = "row">
             <div className="col-md-2">
-              <Sidebar userID={1} />
+              <Sidebar userID={"000000000000000000000001"} />
             </div>
             <div className="col-md-10">
               <div className="row">
