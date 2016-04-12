@@ -936,12 +936,6 @@ MongoClient.connect(url, function(err, db) {
               return sendDatabaseError(res, err);
             }
             res.send(playlist.votes);
-            // resolveUserObjects(playlist.votes, function(err, userMap) {
-            //   if (err) {
-            //     return sendDatabaseError(res, err);
-            //   }
-            //   res.send(playlist.votes.map((userId) => userMap[userId]));
-            // });
           });
         }
       );
@@ -972,12 +966,6 @@ MongoClient.connect(url, function(err, db) {
               return sendDatabaseError(res, err);
             }
             res.send(playlist.votes);
-            // resolveUserObjects(playlist.votes, function(err, userMap) {
-            //   if (err) {
-            //     return sendDatabaseError(res, err);
-            //   }
-            //   res.send(playlist.votes.map((userId) => userMap[userId]));
-            // });
           });
         }
       );
