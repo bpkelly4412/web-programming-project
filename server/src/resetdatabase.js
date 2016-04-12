@@ -8,20 +8,25 @@ var initialData = {
     "1": {
       "_id": new ObjectID("000000000000000000000001"),
       "userName": "Jon Snow",
-      "playlistfeed": 1,
+      "playlistfeed": new ObjectID("000000000000000000000001"),
       "nickName" : "4TheWatch",
       "spotifyProfileName": "bbqforte",
       "about" : "Classic rock and League of Legends are my favorites",
-      "currentPlaylistID" : 101,
-      "followers" : [2,3],
-      "following" : [3],
+      "currentPlaylistID" : new ObjectID("000000000000000000000001"),
+      "followers" : [
+        new ObjectID("000000000000000000000002"),
+        new ObjectID("000000000000000000000003")
+      ],
+      "following" : [new ObjectID("000000000000000000000003")],
       "profile_public": true,
       "recommend": true,
       "status": "online",
-      "chattingWith": 2,
+      "chattingWith": new ObjectID("000000000000000000000002"),
       "recommendations":
-        [{"_id": 201, "plid": "101", "artist": "Amon Amarth", "song": "Live for the Kill", "reason": " other heavy metal songs"},
-          {"_id": 202, "plid": "101",  "artist": "Gaelic Storm", "song": "What's the Rumpus?", "reason": " other irish rock songs"}]
+        [{"_id": new ObjectID("000000000000000000000201"), "plid": "101", "artist": "Amon Amarth", "song": "Live for" +
+        " the Kill", "reason": " other heavy metal songs"},
+          {"_id": new ObjectID("000000000000000000000202"), "plid": "101",  "artist": "Gaelic Storm", "song": "What's" +
+          " the Rumpus?", "reason": " other irish rock songs"}]
     },
     "2": {
       "_id": new ObjectID("000000000000000000000002"),

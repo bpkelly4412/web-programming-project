@@ -63,7 +63,7 @@ MongoClient.connect(url, function(err, db) {
       var tokenObj = JSON.parse(regularString);
       var id = tokenObj['id'];
       // Check that id is a number.
-      if (typeof id === 'number') {
+      if (typeof id === 'string') {
         return id;
       } else {
         // Not a number. Return -1, an invalid ID.
@@ -73,6 +73,46 @@ MongoClient.connect(url, function(err, db) {
       // Return an invalid ID.
       return -1;
     }
+  }
+
+  /**
+   * Resolves a list of user objects. Returns an object that maps user IDs to
+   * user objects.
+   */
+  function resolveUserObjects(userList, callback) {
+    // Special case: userList is empty.
+    // It would be invalid to query the database with a logical OR
+    // query with an empty array.
+    if (userList.length === 0) {
+      callback(null, {});
+    } else {
+      // Build up a MongoDB "OR" query to resolve all of the user objects
+      // in the userList.
+      var query = {
+        $or: userList.map((id) => { return {_id: id } })
+      };
+      // Resolve 'like' counter
+      db.collection('users').find(query).toArray(function(err, users) {
+        if (err) {
+          return callback(err);
+        }
+        // Build a map from ID to user object.
+        // (so userMap["4"] will give the user with ID 4)
+        var userMap = {};
+        users.forEach((user) => {
+          userMap[user._id] = user;
+        });
+        callback(null, userMap);
+      });
+    }
+  }
+
+  /**
+   * Helper function: Sends back HTTP response with error code 500 due to
+   * a database error.
+   */
+  function sendDatabaseError(res, err) {
+    res.status(500).send("A database error occurred: " + err);
   }
 
   /*
@@ -101,10 +141,17 @@ MongoClient.connect(url, function(err, db) {
 
   app.get('/spotify/user/:userid', function (req, res) {
 
-    var userID = parseInt(req.params.userid);
+    var userID = req.params.userid;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser === userID) {
-      var scopes = ['user-read-private', 'user-read-email', 'playlist-modify-public', 'playlist-read-collaborative', 'playlist-modify-private', 'playlist-read-private'];
+      var scopes = [
+        'user-read-private',
+        'user-read-email',
+        'playlist-modify-public',
+        'playlist-read-collaborative',
+        'playlist-modify-private',
+        'playlist-read-private'
+      ];
       var state = generateRandomString(16);
       this.currentSpotifyState = state;
       var authURL = spotifyApi.createAuthorizeURL(scopes, state);
@@ -143,7 +190,7 @@ MongoClient.connect(url, function(err, db) {
    */
   app.get('/spotify/loggedin/user/:userid', function (req, res) {
     spotifyApi.refreshAccessToken();
-    var userID = parseInt(req.params.userid);
+    var userID = req.params.userid;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser === userID) {
       if (spotifyApi.getAccessToken() !== undefined && this.authorizationCode !== undefined) {
@@ -161,7 +208,7 @@ MongoClient.connect(url, function(err, db) {
    * Disconnects Spotify.
    */
   app.delete('/spotify/user/:userid', function (req, res) {
-    var userID = parseInt(req.params.userid);
+    var userID = req.params.userid;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser === userID) {
       spotifyApi.resetAccessToken();
@@ -217,7 +264,7 @@ MongoClient.connect(url, function(err, db) {
    */
   app.post('/spotify/playlistresults/:userid', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userid, 10);
+    var userID = req.params.userid;
     if (fromUser === userID) {
       if (typeof(req.body) === 'string') {
         var playlistResults = [];
@@ -267,11 +314,18 @@ MongoClient.connect(url, function(err, db) {
    */
   app.get('/user/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
     if (fromUser === userID) {
       // Send response.
-      var userData = readDocument('users', userID);
-      res.send(userData);
+      db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, userData) {
+        if (err) {
+          sendDatabaseError(err);
+        } else if (userData === null) {
+          res.send(null);
+        }
+        res.status(201);
+        res.send(userData);
+      });
     } else {
       // 401: Unauthorized request.
       res.status(401).end();
@@ -396,10 +450,16 @@ MongoClient.connect(url, function(err, db) {
   app.get('/playlistfeed/user/:userid', function (req, res) {
     var userid = req.params.userid;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var useridNumber = parseInt(userid, 10);
-    if (fromUser === useridNumber) {
-      // Send response.
-      res.send(getPlaylistFeed(userid));
+    if (fromUser === userid) {
+      getPlaylistFeed(new ObjectID(userid), function (err, playlistFeedData) {
+        if (err) {
+          res.status(500).send("Database error: " + err);
+        } else if (playlistFeedData === null) {
+          res.status(400).send("Could not look up feed for user " + userid);
+        } else {
+          res.send(playlistFeedData);
+        }
+      });
     } else {
       // 401: Unauthorized request.
       res.status(401).end();
@@ -409,11 +469,46 @@ MongoClient.connect(url, function(err, db) {
   /**
    * Given a user ID (for now), returns a PlaylistFeed object.
    */
-  function getPlaylistFeed(userID) {
-    var userData = readDocument('users', userID);
-    var playlistfeed = readDocument('playlist-feeds', userData.playlistfeed);
-    playlistfeed.contents = playlistfeed.contents.map(getPlaylist);
-    return playlistfeed;
+  function getPlaylistFeed(userID, callback) {
+    db.collection('users').findOne({ _id: userID }, function (err, userData) {
+      if (err) {
+        return callback(err);
+      } else if (userData === null) {
+        return callback(null, null);
+      }
+      db.collection('playlist-feeds').findOne({ _id: userData.playlistfeed }, function (err, playlistFeedData) {
+        if (err) {
+          return callback(err);
+        } else if (playlistFeedData === null) {
+          // Feed not found.
+          return callback(null, null);
+        }
+
+        var resolvedContents = [];
+
+        function processNextPlaylist(i) {
+          getPlaylist(playlistFeedData.contents[i], function(err, playlist) {
+            if (err) {
+              callback(err);
+            } else {
+              resolvedContents.push(playlist);
+              if (resolvedContents.length === playlistFeedData.contents.length) {
+                playlistFeedData.contents = resolvedContents;
+                callback(null, playlistFeedData);
+              } else {
+                processNextPlaylist(i + 1);
+              }
+            }
+          });
+        }
+
+        if (playlistFeedData.contents.length === 0) {
+          callback(null, playlistFeedData);
+        } else {
+          processNextPlaylist(0);
+        }
+      });
+    });
   }
 
   /**
@@ -421,9 +516,20 @@ MongoClient.connect(url, function(err, db) {
    * @param {number} playlistID The playlist _id.
    * @return {Playlist} The playlist retrieved.
    */
-  function getPlaylist(playlistID) {
-    // playlist.contents = playlist.songs.map(getSong);
-    return readDocument('playlists', playlistID);
+  function getPlaylist(playlistID, callback) {
+    db.collection('playlists').findOne({ _id: playlistID }, function (err, playlist) {
+      if (err) {
+        return callback(err);
+      } else if (playlist === null) {
+        return callback(null, null);
+      }
+
+      var userList = [playlist.author];
+      resolveUserObjects(userList, function(err, userMap) {
+        playlist.author = userMap[playlist.author];
+        callback(null, playlist);
+      });
+    });
   }
 
   /**
