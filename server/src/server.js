@@ -881,27 +881,37 @@ MongoClient.connect(url, function(err, db) {
    * This does not affect Spotify.
    */
   app.delete('/playlist/:playlistid', function (req, res) {
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var playlistID = parseInt(req.params.playlistid, 10);
-    var playlist = readDocument('playlists', playlistID);
-    if (playlist.author === fromUser) {
-      database.deleteDocument('playlists', playlistID);
-      var playlistFeeds = database.getCollection('playlist-feeds');
-      var playlistFeedIDs = Object.keys(playlistFeeds);
-      playlistFeedIDs.forEach((playlistFeedID) => {
-        var playlistFeed = playlistFeeds[playlistFeedID];
-        var itemIdx = playlistFeed.contents.indexOf(playlistID);
-        if (itemIdx !== -1) {
-          playlistFeed.contents.splice(itemIdx, 1);
-          database.writeDocument('playlist-feeds', playlistFeed);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    var playlistID = new ObjectID(req.params.playlistid);
+
+    db.collection('playlists').findOne({
+      _id: playlistID,
+      author: fromUser
+    }, function (err, playlist) {
+      if (err) {
+        return sendDatabaseError(res, err);
+      } else if (playlist === null) {
+        return res.status(400).send("Playlist not found: ");
+      }
+
+      db.collection('playlist-feeds').updateMany({}, {
+        $pull: {
+          contents: playlistID
         }
+      }, function(err) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
+        db.collection('playlists').deleteOne({
+          _id: playlistID
+        }, function(err) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          res.send();
+        });
       });
-      // Send a blank response to indicate success.
-      res.send();
-    } else {
-      // 401: Unauthorized.
-      res.status(401).end();
-    }
+    });
   });
 
   /**
