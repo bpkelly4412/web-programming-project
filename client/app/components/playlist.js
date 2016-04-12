@@ -57,7 +57,7 @@ export default class Playlist extends React.Component {
       var game = this.state.newPlaylistGame !== "" ? this.state.newPlaylistGame : this.props.data.game;
       var genre = this.state.newPlaylistGenre !== "" ? this.state.newPlaylistGenre : this.props.data.genre;
       var descrip = this.state.newPlaylistDescription !== "" ? this.state.newPlaylistDescription : this.props.data.description;
-      editPlaylist(this.props.data.userID, this.props.data._id, name, game, genre, descrip, (playlist) => {
+      editPlaylist(this.props.data._id, name, game, genre, descrip, (playlist) => {
         this.setState({title: playlist.title, game: playlist.game});
       });
     }

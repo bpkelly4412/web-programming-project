@@ -330,7 +330,7 @@ export function addPlaylist(playlist, userID, cb) {
  * @param descrip
  * @param cb
  */
-export function editPlaylist(userID, playlistID, name, game, genre, descrip, cb) {
+export function editPlaylist(playlistID, name, game, genre, descrip, cb) {
   sendXHR('PUT', 'playlist/' + playlistID, {
     name: name,
     game: game,

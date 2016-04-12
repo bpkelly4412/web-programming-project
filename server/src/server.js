@@ -560,11 +560,11 @@ MongoClient.connect(url, function(err, db) {
     callback)
   {
     var newPlaylist = {
-      "userId": userID,
+      "userId": new ObjectID(userID),
       "game": game,
       "imageURL": imageURL,
       "title": title,
-      "author": userID,
+      "author": new ObjectID(userID),
       "votes": [],
       "popularity": 0,
       "timestamp": new Date().getTime(),
@@ -849,20 +849,31 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/playlist/:playlistid', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var playlistID = parseInt(req.params.playlistid, 10);
-    var playlist = readDocument('playlists', playlistID);
-    if (playlist.author === fromUser) {
-      console.log(req.body);
-      playlist.title = req.body.name;
-      playlist.game = req.body.game;
-      playlist.genre = req.body.genre;
-      playlist.description = req.body.description;
-      writeDocument('playlists', playlist);
-      res.send(playlist);
-    } else {
-      // 401: Unauthorized.
-      res.status(401).end();
-    }
+    var playlistID = req.params.playlistid;
+    db.collection('playlists').updateOne({
+        _id: new ObjectID(playlistID),
+        author: new ObjectID(fromUser)
+      }, {
+        $set: {
+          title: req.body.name,
+          game: req.body.game,
+          genre: req.body.genre,
+          description: req.body.description
+        }
+      }, function (err, result) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        } else if (result.modifiedCount === 0) {
+          return res.status(400).send("Unable to modify playlist: " + result);
+        }
+        getPlaylist(new ObjectID(playlistID), function(err, playlist) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          res.send(playlist);
+        });
+      }
+    );
   });
 
   /**
