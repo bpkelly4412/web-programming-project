@@ -9,11 +9,11 @@ var app = express();
 var validate = require('express-jsonschema').validate;
 var bodyParser = require('body-parser');
 var database = require('./database');
-var readDocument = database.readDocument;
-var writeDocument = database.writeDocument;
-var addDocument = database.addDocument;
-var deleteDocument = database.deleteDocument;
-var getCollection = database.getCollection;
+var readDocument = database.readDocument;     // Delete once everthing is migrated
+var writeDocument = database.writeDocument;     // Delete once everthing is migrated
+var addDocument = database.addDocument;     // Delete once everthing is migrated
+var deleteDocument = database.deleteDocument;     // Delete once everthing is migrated
+var getCollection = database.getCollection;     // Delete once everthing is migrated
 
 //  Spotify API
 var SpotifyWebAPI = require('spotify-web-api-node');
@@ -34,6 +34,7 @@ var chatMessageSchema = require('./schemas/chat-message_schema.json');
 var threadSchema = require('./schemas/thread_schema.json');
 var commentSchema = require('./schemas/comment_schema.json');
 
+var ResetDatabase = require('./resetdatabase');
 
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
@@ -1358,8 +1359,9 @@ MongoClient.connect(url, function(err, db) {
    */
   app.post('/resetdb', function (req, res) {
     console.log("Resetting the database...");
-    database.resetDatabase();
-    res.send();
+    ResetDatabase(db, function() {
+      res.send();
+    });
   });
 
   /**
