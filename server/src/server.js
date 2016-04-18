@@ -1000,13 +1000,29 @@ MongoClient.connect(url, function(err, db) {
    */
   app.get('/private-chat/recent/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
 
     if (userID === fromUser) {
-      var recentConversations = readDocument('recent-conversations', req.params.userID);
+      db.collection('recent-conversations').findOne({
+        _id: new ObjectID(userID)
+      }, function(err, recentConversations) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
 
-      recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id));
-      res.send(recentConversations);
+        resolveUserObjects(recentConversations.userList, function(err, userMap) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+
+          recentConversations.userList = recentConversations.userList.map((userId) => userMap[userId]);
+          res.send(recentConversations);
+        });
+      })
+      // var recentConversations = readDocument('recent-conversations', req.params.userID);
+      //
+      // recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id));
+      // res.send(recentConversations);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1062,31 +1078,164 @@ MongoClient.connect(url, function(err, db) {
    */
   app.get('/private-chat/live-help/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
 
     if (userID === fromUser) {
-      var liveHelpData = readDocument('liveHelp', userID);
-      liveHelpData.contents.forEach((category) => {
-        category.userList = category.userList.map((id) => readDocument('users', id))
-      });
+      db.collection('liveHelp').findOne({
+        _id: new ObjectID(userID)
+      }, function(err, liveHelpData) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
 
-      res.send(liveHelpData);
+        var resolvedContents = [];
+
+        function processNextGenre(i) {
+          resolveUserObjects(liveHelpData.contents[i].userList, function(err, userMap) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            } else {
+              liveHelpData.contents[i].userList = liveHelpData.contents[i].userList.map((userId) => userMap[userId]);
+              resolvedContents.push(liveHelpData.contents[i]);
+
+              if(resolvedContents.length === liveHelpData.contents.length) {
+                liveHelpData.contents = resolvedContents;
+                res.send(liveHelpData);
+              } else {
+                processNextGenre(i + 1);
+              }
+            }
+          })
+        }
+
+        processNextGenre(0);
+        // liveHelpData.contents.forEach((category) => {
+        //   resolveUserObjects(category.userList, function(err, userMap) {
+        //     if (err) {
+        //       return sendDatabaseError(res, err);
+        //     }
+        //     category.userList = category.userList.map((userId) => userMap[userId]);
+        //   });
+        // });
+        //
+        // res.send(liveHelpData);
+      })
+      // var liveHelpData = readDocument('liveHelp', userID);
+      // liveHelpData.contents.forEach((category) => {
+      //   category.userList = category.userList.map((id) => readDocument('users', id))
+      // });
+      //
+      // res.send(liveHelpData);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
     }
   });
 
-  function getConversationsSync(userID) {
-    var conversationsData = readDocument('conversations', userID);
-    conversationsData.chatlogs.forEach((chatlog) => {
-      chatlog.otherUser = readDocument('users', chatlog.otherUser);
+  function getConversations(userID, callback) {
+    // Get the feed item with the given ID.
+  db.collection('conversations').findOne({
+    _id: new ObjectID(userID)
+  }, function(err, conversationsData) {
+    if (err) {
+      return callback(err);
+    } else if (conversationsData === null) {
+      return callback(null, null);
+    }
 
-      chatlog.messages.forEach((message) => {
-        message.author = readDocument('users', message.author);
+    var resolvedChatlogs = [];
+    var resolvedMessages = [];
+
+    function processNextChatlog(i) {
+      var otherUser = [conversationsData.chatlogs[i].otherUser];
+
+      resolveUserObjects(otherUser, function(err, userMap) {
+        if (err) {
+          return callback(err);
+        } else {
+          conversationsData.chatlogs[i].otherUser = userMap[conversationsData.chatlogs[i].otherUser];
+
+          if (conversationsData.chatlogs[i].messages.length !== 0) {
+            processNextMessage(i, 0);
+          }
+
+          // resolvedChatlogs.push(conversationsData.chatlogs[i]);
+
+          // if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+          //   conversationsData.chatlogs = resolvedChatlogs;
+          //   callback(null, conversationsData);
+          // } else {
+          //   processNextChatlog(i + 1);
+          // }
+        }
       })
-    })
-    return conversationsData;
+    }
+
+    function processNextMessage(i, j) {
+      var author = [conversationsData.chatlogs[i].messages[j].author];
+
+      resolveUserObjects(author, function(err, userMap) {
+        if (err) {
+          return callback(err);
+        } else {
+          conversationsData.chatlogs[i].messages[j].author = userMap[conversationsData.chatlogs[i].messages[j].author];
+
+          resolvedMessages.push(conversationsData.chatlogs[i].messages[j]);
+
+          if (resolvedMessages.length === conversationsData.chatlogs[i].messages.length) {
+            conversationsData.chatlogs[i].messages = resolvedMessages;
+            resolvedChatlogs.push(conversationsData.chatlogs[i]);
+            resolvedMessages = [];
+
+            if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+              conversationsData.chatlogs = resolvedChatlogs;
+              callback(null, conversationsData);
+            } else {
+              processNextChatlog(i + 1);
+            }
+          } else {
+            processNextMessage(i, j + 1);
+          }
+        }
+      })
+    }
+
+    processNextChatlog(0);
+    // conversationsData.chatlogs.forEach((chatlog) => {
+    //   var otherUser = [chatlog.otherUser];
+    //
+    //   resolveUserObjects(otherUser, function(err, userMap) {
+    //     if (err) {
+    //       return callback(err);
+    //     }
+    //
+    //     chatlog.otherUser = userMap[chatlog.otherUser];
+    //
+    //     chatlog.messages.forEach((message) => {
+    //       var author = [message.author];
+    //
+    //       resolveUserObjects(author, function(err, userMap) {
+    //         if (err) {
+    //           return callback(err);
+    //         }
+    //
+    //         message.author = userMap[message.author];
+    //       })
+    //     })
+    //   })
+    // })
+
+    // callback(null, conversationsData);
+  });
+    // var conversationsData = readDocument('conversations', userID);
+    // conversationsData.chatlogs.forEach((chatlog) => {
+    //   chatlog.otherUser = readDocument('users', chatlog.otherUser);
+    //
+    //   chatlog.messages.forEach((message) => {
+    //     message.author = readDocument('users', message.author);
+    //   })
+    // })
+    // return conversationsData;
   }
 
   /*
@@ -1094,12 +1243,16 @@ MongoClient.connect(url, function(err, db) {
    */
   app.get('/private-chat/conversations/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
 
     if (userID === fromUser) {
-      var syncedConversations = getConversationsSync(userID);
+      getConversations(userID, function(err, conversationsData) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
 
-      res.send(syncedConversations);
+        res.send(conversationsData);
+      });
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1122,7 +1275,7 @@ MongoClient.connect(url, function(err, db) {
       })
       writeDocument('conversations', conversationsData);
 
-      var syncedConversations = getConversationsSync(userID);
+      var syncedConversations = getConversations(userID);
       res.send(syncedConversations);
     } else {
       // 401: Unauthorized.
@@ -1146,7 +1299,7 @@ MongoClient.connect(url, function(err, db) {
       })
       writeDocument('conversations', conversationsData);
 
-      var syncedConversations = getConversationsSync(userID);
+      var syncedConversations = getConversations(userID);
       res.send(syncedConversations);
     } else {
       // 401: Unauthorized.

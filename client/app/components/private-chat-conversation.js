@@ -8,7 +8,7 @@ export default class PrivateChatConversation extends React.Component {
     super(props);
     this.state = { "chatlogs": [
       {
-        "otherUser": 2,
+        "otherUser": "000000000000000000000002",
         "messages": [
           {
             "author": {},

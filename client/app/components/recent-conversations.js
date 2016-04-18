@@ -78,7 +78,7 @@ export default class RecentConversations extends React.Component {
                         <div className="media-heading">
                           {user.userName}
                         </div>
-                      
+
                       </div>
                     </div>
                   </a>
