@@ -1034,18 +1034,44 @@ MongoClient.connect(url, function(err, db) {
    */
   app.post('/private-chat/recent/:userID/add/:otherUserID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
-    var otherUserID = parseInt(req.params.otherUserID, 10);
+    var userID = req.params.userID;
+    var otherUserID = req.params.otherUserID;
 
     if (userID === fromUser) {
-      var recentChatData = readDocument('recent-conversations', userID);
+      db.collection('recent-conversations').updateOne({
+        _id: new ObjectID(userID)
+      }, {
+            $addToSet: { userList: new ObjectID(otherUserID)}
+      }, function(err) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
 
-      if (recentChatData.userList.indexOf(otherUserID) === -1) {
-        recentChatData.userList.unshift(otherUserID);
-        writeDocument('recent-conversations', recentChatData);
-      }
+        db.collection('recent-conversations').findOne({
+          _id: new ObjectID(userID)
+        }, function(err, recentConversations) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
 
-      res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
+          resolveUserObjects(recentConversations.userList, function(err, userMap) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            }
+
+            recentConversations.userList = recentConversations.userList.map((userId) => userMap[userId]);
+            res.send(recentConversations);
+          });
+        })
+      })
+      // var recentChatData = readDocument('recent-conversations', userID);
+      //
+      // if (recentChatData.userList.indexOf(otherUserID) === -1) {
+      //   recentChatData.userList.unshift(otherUserID);
+      //   writeDocument('recent-conversations', recentChatData);
+      // }
+      //
+      // res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1274,12 +1300,10 @@ MongoClient.connect(url, function(err, db) {
         "otherUser": new ObjectID(otherUserID),
         "messages": []
       };
-      db.collection('conversations').insertOne(newConversation, function(err, result) {
+      db.collection('conversations').insertOne(newConversation, function(err) {
         if(err) {
           return sendDatabaseError(res, err);
         }
-
-        newConversation._id = result.insertedId;
 
         getConversations(userID, function(err, conversationsData) {
           if (err) {
@@ -1354,15 +1378,34 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/private-chat/switch/:userID/to/:otherUserID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
-    var otherUserID = parseInt(req.params.otherUserID, 10);
+    var userID = req.params.userID;
+    var otherUserID = req.params.otherUserID;
 
     if (userID === fromUser) {
-      var userData = readDocument('users', userID);
-      userData.chattingWith = otherUserID;
-      writeDocument('users', userData);
+      db.collection('users').updateOne({
+        _id: new ObjectID(userID)
+      }, {
+            $set: { chattingWith: new ObjectID(otherUserID) }
+      }, function(err) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
 
-      res.send(userData);
+        db.collection('users').findOne({
+          _id: new ObjectID(userID)
+        }, function (err, userData) {
+          if (err) {
+            sendDatabaseError(err);
+          }
+
+          res.send(userData);
+        });
+      })
+      // var userData = readDocument('users', userID);
+      // userData.chattingWith = otherUserID;
+      // writeDocument('users', userData);
+      //
+      // res.send(userData);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
