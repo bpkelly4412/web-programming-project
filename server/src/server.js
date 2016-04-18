@@ -1041,7 +1041,7 @@ MongoClient.connect(url, function(err, db) {
       db.collection('recent-conversations').updateOne({
         _id: new ObjectID(userID)
       }, {
-            $addToSet: { userList: new ObjectID(otherUserID)}
+            $addToSet: { userList: new ObjectID(otherUserID) }
       }, function(err) {
         if (err) {
           return sendDatabaseError(res, err);
@@ -1208,9 +1208,7 @@ MongoClient.connect(url, function(err, db) {
         } else {
           conversationsData.chatlogs[i].otherUser = userMap[conversationsData.chatlogs[i].otherUser];
 
-          if (conversationsData.chatlogs[i].messages.length !== 0) {
-            processNextMessage(i, 0);
-          }
+          processNextMessage(i, 0);
 
           // resolvedChatlogs.push(conversationsData.chatlogs[i]);
 
@@ -1225,32 +1223,43 @@ MongoClient.connect(url, function(err, db) {
     }
 
     function processNextMessage(i, j) {
-      var author = [conversationsData.chatlogs[i].messages[j].author];
+      if (conversationsData.chatlogs[i].messages.length !== 0) {
+        var author = [conversationsData.chatlogs[i].messages[j].author];
 
-      resolveUserObjects(author, function(err, userMap) {
-        if (err) {
-          return callback(err);
-        } else {
-          conversationsData.chatlogs[i].messages[j].author = userMap[conversationsData.chatlogs[i].messages[j].author];
-
-          resolvedMessages.push(conversationsData.chatlogs[i].messages[j]);
-
-          if (resolvedMessages.length === conversationsData.chatlogs[i].messages.length) {
-            conversationsData.chatlogs[i].messages = resolvedMessages;
-            resolvedChatlogs.push(conversationsData.chatlogs[i]);
-            resolvedMessages = [];
-
-            if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
-              conversationsData.chatlogs = resolvedChatlogs;
-              callback(null, conversationsData);
-            } else {
-              processNextChatlog(i + 1);
-            }
+        resolveUserObjects(author, function(err, userMap) {
+          if (err) {
+            return callback(err);
           } else {
-            processNextMessage(i, j + 1);
+            conversationsData.chatlogs[i].messages[j].author = userMap[conversationsData.chatlogs[i].messages[j].author];
+
+            resolvedMessages.push(conversationsData.chatlogs[i].messages[j]);
+
+            if (resolvedMessages.length === conversationsData.chatlogs[i].messages.length) {
+              conversationsData.chatlogs[i].messages = resolvedMessages;
+              resolvedChatlogs.push(conversationsData.chatlogs[i]);
+              resolvedMessages = [];
+
+              if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+                conversationsData.chatlogs = resolvedChatlogs;
+                callback(null, conversationsData);
+              } else {
+                processNextChatlog(i + 1);
+              }
+            } else {
+              processNextMessage(i, j + 1);
+            }
           }
+        })
+      } else {
+        resolvedChatlogs.push(conversationsData.chatlogs[i]);
+
+        if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+          conversationsData.chatlogs = resolvedChatlogs;
+          callback(null, conversationsData);
+        } else {
+          processNextChatlog(i + 1);
         }
-      })
+      }
     }
 
     processNextChatlog(0);
@@ -1300,7 +1309,12 @@ MongoClient.connect(url, function(err, db) {
         "otherUser": new ObjectID(otherUserID),
         "messages": []
       };
-      db.collection('conversations').insertOne(newConversation, function(err) {
+
+      db.collection('conversations').updateOne({
+        _id: new ObjectID(userID)
+      }, {
+            $push: { chatlogs: newConversation }
+      }, function(err) {
         if(err) {
           return sendDatabaseError(res, err);
         }
