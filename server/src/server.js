@@ -1019,10 +1019,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(recentConversations);
         });
       })
-      // var recentConversations = readDocument('recent-conversations', req.params.userID);
-      //
-      // recentConversations.userList = recentConversations.userList.map((id) => readDocument('users', id));
-      // res.send(recentConversations);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1064,14 +1060,6 @@ MongoClient.connect(url, function(err, db) {
           });
         })
       })
-      // var recentChatData = readDocument('recent-conversations', userID);
-      //
-      // if (recentChatData.userList.indexOf(otherUserID) === -1) {
-      //   recentChatData.userList.unshift(otherUserID);
-      //   writeDocument('recent-conversations', recentChatData);
-      // }
-      //
-      // res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1114,12 +1102,6 @@ MongoClient.connect(url, function(err, db) {
           })
         })
       })
-      // var recentChatData = readDocument('recent-conversations', userID);
-      // var userIndex = recentChatData.userList.indexOf(otherUserID);
-      // recentChatData.userList.splice(userIndex, 1);
-      // writeDocument('recent-conversations', recentChatData);
-      //
-      // res.send(recentChatData.userList.map((userID) => readDocument('users', userID)));
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1162,117 +1144,85 @@ MongoClient.connect(url, function(err, db) {
         }
 
         processNextGenre(0);
-        // liveHelpData.contents.forEach((category) => {
-        //   resolveUserObjects(category.userList, function(err, userMap) {
-        //     if (err) {
-        //       return sendDatabaseError(res, err);
-        //     }
-        //     category.userList = category.userList.map((userId) => userMap[userId]);
-        //   });
-        // });
-        //
-        // res.send(liveHelpData);
       })
-      // var liveHelpData = readDocument('liveHelp', userID);
-      // liveHelpData.contents.forEach((category) => {
-      //   category.userList = category.userList.map((id) => readDocument('users', id))
-      // });
-      //
-      // res.send(liveHelpData);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
     }
   });
 
+  /*
+   * Helper method to get Conversations objects
+   */
   function getConversations(userID, callback) {
-    // Get the feed item with the given ID.
-  db.collection('conversations').findOne({
-    _id: new ObjectID(userID)
-  }, function(err, conversationsData) {
-    if (err) {
-      return callback(err);
-    } else if (conversationsData === null) {
-      return callback(null, null);
-    }
+    db.collection('conversations').findOne({
+      _id: new ObjectID(userID)
+    }, function(err, conversationsData) {
+      if (err) {
+        return callback(err);
+      } else if (conversationsData === null) {
+        return callback(null, null);
+      }
 
-    var resolvedChatlogs = [];
-    var resolvedMessages = [];
+      var resolvedChatlogs = [];
+      var resolvedMessages = [];
 
-    function processNextChatlog(i) {
-      var otherUser = [conversationsData.chatlogs[i].otherUser];
+      function processNextChatlog(i) {
+        var otherUser = [conversationsData.chatlogs[i].otherUser];
 
-      resolveUserObjects(otherUser, function(err, userMap) {
-        if (err) {
-          return callback(err);
-        } else {
-          conversationsData.chatlogs[i].otherUser = userMap[conversationsData.chatlogs[i].otherUser];
-
-          processNextMessage(i, 0);
-
-          // resolvedChatlogs.push(conversationsData.chatlogs[i]);
-
-          // if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
-          //   conversationsData.chatlogs = resolvedChatlogs;
-          //   callback(null, conversationsData);
-          // } else {
-          //   processNextChatlog(i + 1);
-          // }
-        }
-      })
-    }
-
-    function processNextMessage(i, j) {
-      if (conversationsData.chatlogs[i].messages.length !== 0) {
-        var author = [conversationsData.chatlogs[i].messages[j].author];
-
-        resolveUserObjects(author, function(err, userMap) {
+        resolveUserObjects(otherUser, function(err, userMap) {
           if (err) {
             return callback(err);
           } else {
-            conversationsData.chatlogs[i].messages[j].author = userMap[conversationsData.chatlogs[i].messages[j].author];
+            conversationsData.chatlogs[i].otherUser = userMap[conversationsData.chatlogs[i].otherUser];
 
-            resolvedMessages.push(conversationsData.chatlogs[i].messages[j]);
-
-            if (resolvedMessages.length === conversationsData.chatlogs[i].messages.length) {
-              conversationsData.chatlogs[i].messages = resolvedMessages;
-              resolvedChatlogs.push(conversationsData.chatlogs[i]);
-              resolvedMessages = [];
-
-              if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
-                conversationsData.chatlogs = resolvedChatlogs;
-                callback(null, conversationsData);
-              } else {
-                processNextChatlog(i + 1);
-              }
-            } else {
-              processNextMessage(i, j + 1);
-            }
+            processNextMessage(i, 0);
           }
         })
-      } else {
-        resolvedChatlogs.push(conversationsData.chatlogs[i]);
+      }
 
-        if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
-          conversationsData.chatlogs = resolvedChatlogs;
-          callback(null, conversationsData);
+      function processNextMessage(i, j) {
+        if (conversationsData.chatlogs[i].messages.length !== 0) {
+          var author = [conversationsData.chatlogs[i].messages[j].author];
+
+          resolveUserObjects(author, function(err, userMap) {
+            if (err) {
+              return callback(err);
+            } else {
+              conversationsData.chatlogs[i].messages[j].author = userMap[conversationsData.chatlogs[i].messages[j].author];
+
+              resolvedMessages.push(conversationsData.chatlogs[i].messages[j]);
+
+              if (resolvedMessages.length === conversationsData.chatlogs[i].messages.length) {
+                conversationsData.chatlogs[i].messages = resolvedMessages;
+                resolvedChatlogs.push(conversationsData.chatlogs[i]);
+                resolvedMessages = [];
+
+                if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+                  conversationsData.chatlogs = resolvedChatlogs;
+                  callback(null, conversationsData);
+                } else {
+                  processNextChatlog(i + 1);
+                }
+              } else {
+                processNextMessage(i, j + 1);
+              }
+            }
+          })
         } else {
-          processNextChatlog(i + 1);
+          resolvedChatlogs.push(conversationsData.chatlogs[i]);
+
+          if (resolvedChatlogs.length === conversationsData.chatlogs.length) {
+            conversationsData.chatlogs = resolvedChatlogs;
+            callback(null, conversationsData);
+          } else {
+            processNextChatlog(i + 1);
+          }
         }
       }
-    }
 
-    processNextChatlog(0);
-  });
-    // var conversationsData = readDocument('conversations', userID);
-    // conversationsData.chatlogs.forEach((chatlog) => {
-    //   chatlog.otherUser = readDocument('users', chatlog.otherUser);
-    //
-    //   chatlog.messages.forEach((message) => {
-    //     message.author = readDocument('users', message.author);
-    //   })
-    // })
-    // return conversationsData;
+      processNextChatlog(0);
+    });
   }
 
   /*
@@ -1327,15 +1277,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(conversationsData);
         });
       })
-      // var conversationsData = readDocument('conversations', userID);
-      // conversationsData.chatlogs.push({
-      //   "otherUser": otherUserID,
-      //   "messages": []
-      // })
-      // writeDocument('conversations', conversationsData);
-      //
-      // var syncedConversations = getConversations(userID);
-      // res.send(syncedConversations);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1372,15 +1313,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(conversationsData);
         });
       })
-      // var conversationsData = readDocument('conversations', userID);
-      // conversationsData.chatlogs[otherUserIndex].messages.push({
-      //   "author": userID,
-      //   "content": req.body.content
-      // })
-      // writeDocument('conversations', conversationsData);
-      //
-      // var syncedConversations = getConversations(userID);
-      // res.send(syncedConversations);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
@@ -1415,11 +1347,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(userData);
         });
       })
-      // var userData = readDocument('users', userID);
-      // userData.chattingWith = otherUserID;
-      // writeDocument('users', userData);
-      //
-      // res.send(userData);
     } else {
       // 401: Unauthorized.
       res.status(401).end();
