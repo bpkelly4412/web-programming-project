@@ -8,7 +8,7 @@ export default class PrivateChatConversation extends React.Component {
     super(props);
     this.state = { "chatlogs": [
       {
-        "otherUser": 2,
+        "otherUser": "000000000000000000000002",
         "messages": [
           {
             "author": {},
@@ -51,6 +51,11 @@ export default class PrivateChatConversation extends React.Component {
   }
 
   getOtherUser(otherUser, cb) {
+    if (this.props.user.chattingWith === undefined) {
+      cb(0);
+      return;
+    }
+
     for (var i = 0; i < this.state.chatlogs.length; i++) {
       if (this.state.chatlogs[i].otherUser._id === otherUser) {
         cb(i);

@@ -24,7 +24,7 @@ export default class RecentConversations extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.state.userList.indexOf(nextProps.otherUserID === -1)) {
+    if(this.state.userList.indexOf(nextProps.otherUserID) === -1) {
       addRecentChat(this.props.userID, nextProps.otherUserID, (updatedList) => {
         this.setState(updatedList);
       });
@@ -60,9 +60,9 @@ export default class RecentConversations extends React.Component {
 
           <div className="panel-body panel-title-style user-list conversation-scroll">
             <br />
-            {this.state.userList.map((user) => {
+            {this.state.userList.map((user, i) => {
               return (
-                <div key={user._id}>
+                <div key={i}>
                   <a href="#" onClick={(e) => this.handleRemoveRecentChat(e, user._id)}>
                     <div className="pull-right">
                       <span className="fa fa-times-circle"></span>
@@ -78,7 +78,7 @@ export default class RecentConversations extends React.Component {
                         <div className="media-heading">
                           {user.userName}
                         </div>
-                      
+
                       </div>
                     </div>
                   </a>
