@@ -982,16 +982,34 @@ MongoClient.connect(url, function(err, db) {
    * Returns the Carousel object
    */
   app.get('/carousel/', function (req, res) {
-    var carouselData = readDocument('carousel', 1);
-    res.send(carouselData);
+    // var carouselData = readDocument('carousel', 1);
+    // res.send(carouselData);
+    db.collection('carousel').findOne({ "_id": new ObjectID("000000000000000000000001") },
+      function(err, doc){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(doc);
+        }
+      });
+
   });
 
   /*
    * Returns the NewsUpdates object
    */
   app.get('/news-updates/', function (req, res) {
-    var newsData = readDocument('newsUpdates', 1);
-    res.send(newsData);
+    // var newsData = readDocument('newsUpdates', 1);
+    // res.send(newsData);
+    // function cb()
+    db.collection('newsUpdates').findOne({ "_id": new ObjectID("000000000000000000000001") },
+      function(err, doc){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(doc);
+        }
+      });
   });
 
 
@@ -1174,39 +1192,113 @@ MongoClient.connect(url, function(err, db) {
     }
   });
 
+
+  // Return resolved playlists with playlistID
+  function resolvePlaylist(playlistID, cb){
+    db.collection('playlists').findOne({ '_id' : playlistID }, function(err, playlist){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          db.collection('users').findOne({ '_id' : playlist.author }, function(err, user){
+            if(err){
+              sendDatabaseError(err);
+            }else{
+              playlist.author = user.userName;
+              playlist.userId = user.userName;
+              console.log("end of resolve");
+              cb(playlist);
+            }
+          });
+        }
+      });
+  }
+
+function getContent(content, cb){
+
+  var resolvedPlaylists = [];
+
+  function processNextPlaylist(i) {
+      // Asynchronously resolve a feed item.
+    resolvePlaylist(content.playlists[i], function(playlist) {
+      resolvedPlaylists.push(playlist);
+      if (resolvedPlaylists.length === content.playlists.length) {
+        content.playlists = resolvedPlaylists;
+        cb(content);
+      } else {
+        processNextPlaylist(i + 1);
+      }
+    });
+  }
+
+  if(content.playlists.length === 0){
+    cb(content);
+  }else{
+    processNextPlaylist(0);
+  }
+
+}
+
+  /**
+   * Given a playlist ID returns a Playlist object.
+   */
+  function getPlaylistWithAuthor(mostPopularData, cb) {
+    var resolvedContents = [];
+
+    function processNextContent(i) {
+        // Asynchronously resolve a feed item.
+      getContent(mostPopularData.contents[i], function(content) {
+        resolvedContents.push(content);
+        if (resolvedContents.length === mostPopularData.contents.length) {
+          mostPopularData.contents = resolvedContents;
+          cb(mostPopularData);
+        } else {
+          processNextContent(i + 1);
+        }
+      });
+    }
+
+    if(mostPopularData.contents === 0){
+      cb(mostPopularData);
+    }else{
+      processNextContent(0);
+    }
+  }
+
   /*
    * Compute the 8 top playlists (according to @param compare) in database
    * and return them as Top JSON
+   * @param playlists: mongo cursor of the whole playlists collection
    */
-  function getTopCategory(compare) {
-    var playlistsJSON = getCollection('playlists');
-    // converting playlistsJSON to an array of JSON
-    var playlists = [];
-    for (var x in playlistsJSON) {
-      playlists.push(playlistsJSON[x]);
-    }
-    // sorting playlists
-    playlists.sort(compare);
-    var newCategory = {
-      ".id": 1,
-      "contents": []
-    };
-    // Traversing the top 8 top playlists and creating new entry
-    // for each playlists corresponding to different games
-    for (var i = 0; i < playlists.length && i < 8; i++) {
-      var index = indexOfGame(playlists[i].game, newCategory.contents);
-      if (index == -1) {
-        var newSection = {
-          "imageURL": playlists[i].imageURL,
-          "gameTitle": playlists[i].game,
-          "playlists": [playlists[i]._id]
+  function getTopCategory(playlists, compare, cb) {
+    var playlistsArr = [];
+    playlists.each(function(err, playlist){
+      if(err){
+        sendDatabaseError(err);
+      }else if (playlist != null){
+        playlistsArr.push(playlist);
+      } else{
+        playlistsArr.sort(compare);
+        var newCategory = {
+          ".id": 1,
+          "contents": []
         };
-        newCategory.contents.push(newSection);
-      } else {
-        newCategory.contents[index].playlists.push(playlists[i]._id);
+        for (var i = 0; i < playlistsArr.length && i < 8; i++) {
+          var index = indexOfGame(playlistsArr[i].game, newCategory.contents);
+          if (index == -1) {
+            var newSection = {
+              "imageURL": playlistsArr[i].imageURL,
+              "gameTitle": playlistsArr[i].game,
+              "playlists": [playlistsArr[i]._id]
+            };
+            newCategory.contents.push(newSection);
+          } else {
+            newCategory.contents[index].playlists.push(playlistsArr[i]._id);
+          }
+        }
+        getPlaylistWithAuthor(newCategory, cb);
       }
-    }
-    return newCategory;
+    });
+
   }
 
   /*
@@ -1224,109 +1316,103 @@ MongoClient.connect(url, function(err, db) {
    * Returns the MostPopular object
    */
   app.get('/most-popular/', function (req, res) {
-    var mostPopularData = getTopCategory(function (a, b) {
-      return b.votes.length - a.votes.length;
+    var playlists = db.collection('playlists').find();
+    getTopCategory(playlists,
+      function (a, b) {
+        return b.popularity - a.populatity;
+      },
+      function(mostPopularData){
+        res.send(mostPopularData);
     });
-    mostPopularData.contents.forEach((n) => {
-      n.playlists = n.playlists.map(getPlaylistWithAuthor)
-    });
-    res.send(mostPopularData);
   });
 
   /*
    * Returns the HighestRated object
    */
   app.get('/highest-rated/', function (req, res) {
-    var highestRatedData = getTopCategory(function (a, b) {
-      return b.votes.length - a.votes.length;
+    var playlists = db.collection('playlists').find();
+    getTopCategory(playlists,
+      function (a, b) {
+        return b.votes.length - a.votes.length;
+      },
+      function(highestRatedData){
+        res.send(highestRatedData);
     });
-
-    highestRatedData.contents.forEach((n) => {
-      n.playlists = n.playlists.map(getPlaylistWithAuthor)
-    });
-    res.send(highestRatedData);
   });
 
   /*
    * Compute the 8 Rising playlists in database and return them as Rising JSON
    */
-  function getRising() {
-    var playlistsJSON = getCollection('playlists');
+  function getRising(playlistsCursor, cb) {
     // converting playlistsJSON to an array of JSON
     var playlists = [];
     var rising = [];
-    for (var x in playlistsJSON) {
-      playlists.push(playlistsJSON[x]);
-    }
-    // sorting playlists
-    playlists.sort(function (a, b) {
-      return b.votes.length - a.votes.length;
-    });
-    for (var i = 0; i < playlists.length && rising.length < 8; i++) {
-      var year = new Date().getUTCFullYear();
-      var playlistYear = new Date(playlists[i].timestamp).getUTCFullYear();
-      console.log("yaer:" + year + " - " + "playlistYear: " + playlistYear);
-      if (year - playlistYear <= 1) {
-        rising.push(playlists[i]);
-        console.log("playlists[i]");
-        console.log(playlists[i]);
-      }
-    }
-    var newCategory = {
-      ".id": 1,
-      "contents": []
-    };
-    // Traversing the top 8 top playlists and creating new entry
-    // for each playlists corresponding to different games
-    for (var j = 0; j < rising.length && j < 8; j++) {
-      var index = indexOfGame(rising[j].game, newCategory.contents);
-      if (index == -1) {
-        var newSection = {
-          "imageURL": rising[j].imageURL,
-          "gameTitle": rising[j].game,
-          "playlists": [rising[j]._id]
+
+    playlistsCursor.each(function(err, playlist){
+      if(err){
+        sendDatabaseError(err);
+      }else if(playlist != null){
+        playlists.push(playlist);
+      }else{
+
+        playlists.sort(function (a, b) {
+          return b.votes.length - a.votes.length;
+        });
+        for (var i = 0; i < playlists.length && rising.length < 8; i++) {
+          var year = new Date().getUTCFullYear();
+          var playlistYear = new Date(playlists[i].timestamp).getUTCFullYear();
+          if (year - playlistYear <= 1) {
+            rising.push(playlists[i]);
+          }
+        }
+        var newCategory = {
+          ".id": 1,
+          "contents": []
         };
-        newCategory.contents.push(newSection);
-      } else {
-        newCategory.contents[index].playlists.push(rising[j]._id);
+        // Traversing the top 8 top playlists and creating new entry
+        // for each playlists corresponding to different games
+        for (var j = 0; j < rising.length && j < 8; j++) {
+          var index = indexOfGame(rising[j].game, newCategory.contents);
+          if (index == -1) {
+            var newSection = {
+              "imageURL": rising[j].imageURL,
+              "gameTitle": rising[j].game,
+              "playlists": [rising[j]._id]
+            };
+            newCategory.contents.push(newSection);
+          } else {
+            newCategory.contents[index].playlists.push(rising[j]._id);
+          }
       }
+      getPlaylistWithAuthor(newCategory, cb);
     }
-    return newCategory;
+    });
   }
 
   /*
    * Returns the Rising object
    */
   app.get('/rising/', function (req, res) {
-    var risingData = getRising();
-    risingData.contents.forEach((n) => {
-      n.playlists = n.playlists.map(getPlaylistWithAuthor)
+    var playlists = db.collection('playlists').find();
+    getRising(playlists,
+      function(risingData){
+        res.send(risingData);
     });
-    res.send(risingData);
   });
 
   /*
    * Returns the NewRelease object
    */
   app.get('/new-release/', function (req, res) {
-    var newReleaseData = getTopCategory(function (a, b) {
-      return b.timestamp.length - a.timestamp.length;
+    var playlists = db.collection('playlists').find();
+    getTopCategory(playlists,
+      function (a, b) {
+        return b.timestamp - a.timestamp;
+      },
+      function(newReleaseData){
+        res.send(newReleaseData);
     });
-    newReleaseData.contents.forEach((n) => {
-      n.playlists = n.playlists.map(getPlaylistWithAuthor)
-    });
-    res.send(newReleaseData);
   });
-
-  /**
-   * Given a playlist ID returns a Playlist object.
-   */
-  function getPlaylistWithAuthor(playlistID) {
-    var playlist = readDocument('playlists', playlistID);
-    var userID = playlist.author;
-    playlist.author = readDocument('users', userID).userName
-    return playlist;
-  }
 
   /*
    * Returns the Forum object
