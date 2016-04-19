@@ -1384,7 +1384,6 @@ MongoClient.connect(url, function(err, db) {
             }else{
               playlist.author = user.userName;
               playlist.userId = user.userName;
-              console.log("end of resolve");
               cb(playlist);
             }
           });
