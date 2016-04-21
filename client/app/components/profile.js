@@ -1,5 +1,6 @@
 import React from 'react';
-import { getUserData, getUserNickName, setUserName, setUserAbout} from '../server';
+import { getUserEdit, getUserData, getUserNickName, setUserName, setUserAbout} from '../server';
+import { Link } from 'react-router';
 import {hideElement} from '../util'
 
 function countLines(str) {
@@ -27,7 +28,7 @@ export default class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {editing: false, editSubmitted: false, editedNameValue: '', editedAboutValue: '', followers: [],
+    this.state = { canEdit: false, editing: false, editSubmitted: false, editedNameValue: '', editedAboutValue: '', followers: [],
                   followerNickNames: [], following: [], followingNickNames: []};
   }
 
@@ -85,7 +86,10 @@ onEdit(e) {
   }
 
   refresh() {
-    getUserData(this.props.userID, (userData) => {
+    if(this.props.profileID == this.props.userID){
+      this.state.canEdit = true;
+    }
+    getUserData(this.props.profileID, (userData) => {
       var data = userData;
       data.followers.map( (followerID) => {
         getUserNickName(followerID, (nickname) => {
@@ -149,7 +153,7 @@ onEdit(e) {
           <div
             className="btn-group pull-right"
             role="group">
-            <span className={hideElement(this.state.editing)}>
+            <span className={hideElement(this.state.editing || !this.state.canEdit)}>
               <button
                 type="button"
                 className="btn btn-default profile-button"
@@ -230,7 +234,7 @@ onEdit(e) {
           <div className="col-md-4">
             {
                 this.state.followerNickNames.map( (nickname, i ) => {
-                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                  return <Link to={"/profile/" + this.state.followers[i]}>{nickname + ", "}</Link>
                 })
             }
           </div>
@@ -243,7 +247,7 @@ onEdit(e) {
           <div className="col-md-4">
             {
                 this.state.followingNickNames.map( (nickname, i ) => {
-                  return <a href="#" key = {i}>{nickname + ", "}</a>
+                  return <Link to={"/profile/" + this.state.following[i]}>{nickname + ", "}</Link>
                 })
             }
           </div>

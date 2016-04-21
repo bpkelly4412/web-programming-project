@@ -44,7 +44,7 @@ class StartPage extends React.Component {
 class ProfilePage extends React.Component {
   render() {
     return (
-      <Profile userID={"000000000000000000000001"} />
+      <Profile userID={"000000000000000000000001"} profileID={this.props.params.id}/>
     );
   }
 }

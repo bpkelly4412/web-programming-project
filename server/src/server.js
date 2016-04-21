@@ -314,9 +314,7 @@ MongoClient.connect(url, function(err, db) {
    * Given a user ID, returns a UserData object.
    */
   app.get('/user/:userID', function (req, res) {
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
     var userID = req.params.userID;
-    if (fromUser === userID) {
       // Send response.
       db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, userData) {
         if (err) {
@@ -327,12 +325,24 @@ MongoClient.connect(url, function(err, db) {
         res.status(201);
         res.send(userData);
       });
-    } else {
-      // 401: Unauthorized request.
-      res.status(401).end();
     }
-  });
+  );
 
+/**
+  * Verifies if current user is the same as the userID
+  */
+app.get('/user/:userID/canEdit', function (req,res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userID = new ObjectID(req.params.userID);
+  if (fromUser === userID) {
+    res.status(201);
+    res.send(true);
+  }
+  else {
+    res.status(201);
+    res.send(false);
+  }
+});
 
   /**
    * Given a user ID and data, sets the users data to the new data
