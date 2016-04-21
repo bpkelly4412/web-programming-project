@@ -335,12 +335,20 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/user/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
     var userData = req.body.data;
     if (fromUser === userID) {
       // Send response.
-      var userData = writeDocument('users', userData);
-      res.send(userData);
+	db.collection('users').updateOne({ _id: new ObjectID(userID) },
+	    userData, function (err) {
+		if (err) {
+		    sendDatabaseError(err);
+		}
+		else {
+		    res.send(userData);
+		}
+	    }
+	)
     } else {
       // 401: Unauthorized request.
       res.status(401).end();
@@ -351,19 +359,38 @@ MongoClient.connect(url, function(err, db) {
    * Given a recommendation key, removes the recommendation and adds the song to the playlist
    */
   app.put('/user/:userID/recommendations/:key', function (req, res) {
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
-    if (fromUser === userID) {
-      var userData = readDocument('users', userID);
-      var playlist = readDocument('playlists', userData.recommendations[key].plid);
-      userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
-      playlist.songs.push({
-        "title": userData.recommendations[key].song,
-        "artist": userData.recommendations[key].artist
-      });
-      writeDocument('playlists', playlist);
-      writeDocument('users', userData);
-      res.send(userData);
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userID = req.params.userID;
+      var key  = parseInt(req.params.key);
+      if (fromUser === userID) {
+	  db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, userData) {
+              if (err) {
+		  sendDatabaseError(err);
+              }
+	      else {
+		  db.collection('playlists').updateOne({_id: userData.recommendations[key].plid },
+						       {$push: {songs: {$each: [{title: userData.recommendations[key].song, artist: userData.recommendations[key].artist}]}}},
+						       function (err) {
+							   if (err) {
+							       sendDatabaseError(err);
+							   }
+							   else {
+							       db.collection('users').updateOne({ _id: new ObjectID(userID) },
+												{$pull: {recommendations: {_id: key}}},
+												function(err) {
+												    if (err) {
+													sendDatabaseError(err);
+												    }
+												    else {
+													res.send(userData);
+												    }
+												});
+							   }
+						       });
+              }
+
+              res.send(userData);
+	  });
     }
     else {
       res.status(401).end();
@@ -375,11 +402,19 @@ MongoClient.connect(url, function(err, db) {
    */
   app.delete('/user/:userID/recommendations/:key', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+      var userID = parseInt(req.params.userID, 10);
+      var key = parseInt(req.params.key);
     if (fromUser === userID) {
-      var userData = readDocument('users', userID);
-      userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
-      res.send(userData);
+	db.collection('users').updateOne({ _id: new ObjectID(userID) },
+					 {$pull: {recommendations: {_id: key}}},
+					 function(err) {
+					     if (err) {
+						 sendDatabaseError(err);
+					     }
+					     else {
+						 res.send(userData);
+					     }
+					 });
     }
     else {
       res.status(401).end();

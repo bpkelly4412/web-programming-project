@@ -1,6 +1,6 @@
 import React from 'react';
 import Recommendation from './recommendation'
-import {getUserData, setUserData, useRecommendation} from '../server';
+import {getUserData, setUserData, useRecommendation, delRecommendation} from '../server';
 
 export default class Recommend extends React.Component {
 
@@ -25,6 +25,10 @@ export default class Recommend extends React.Component {
 	useRecommendation(this.props.userID, id, () => this.refresh());
     }
 
+    delRec(id) {
+	delRecommendation(this.props.userID, id, () => this.refresh());
+    }
+
     render() {
 	if(this.state.userInfo) {
 	    return (
@@ -39,7 +43,9 @@ export default class Recommend extends React.Component {
 				    song={recommendation.song}
 				    artist={recommendation.artist}
 				    reason={recommendation.reason}
-				    onAdd={this.addRec.bind(this)} />)})}
+		    onAdd={this.addRec.bind(this)}
+		    onDel={this.delRec.bind(this)}
+		    />)})}
 		</div>
 		</div>
 		</div>
