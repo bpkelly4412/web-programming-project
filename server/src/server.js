@@ -371,7 +371,8 @@ MongoClient.connect(url, function(err, db) {
               if (err) {
 		  sendDatabaseError(err);
               }
-	      db.collection('playlists').find
+	      else {
+		  db.collection('playlists').find
               }
 
               res.send(userData);
@@ -389,7 +390,8 @@ MongoClient.connect(url, function(err, db) {
     }
     else {
       res.status(401).end();
-    });
+    }
+  });
 
   /*
    * Given a recommendation key, removes the recommendation and adds the song to the playlist
