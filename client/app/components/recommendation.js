@@ -10,6 +10,10 @@ export default class Recommendation extends React.Component {
 	this.props.onAdd(this.key);
     }
 
+    handleDel(){
+	this.props.onDel(this.key);
+    }
+
     render() {
 
 	return (
@@ -23,6 +27,10 @@ export default class Recommendation extends React.Component {
 		    <button type="button" className="btn btn-default playlist-button playlist-button-small"
 			    onClick = {this.handleAdd.bind(this)}>
 		      <span className="glyphicon glyphicon-plus"></span>
+		    </button>
+		    <button type="button" className="btn btn-default playlist-button playlist-button-small"
+			    onClick = {this.handleDel.bind(this)}>
+		      <span className="glyphicon glyphicon-remove-circle"></span>
 		    </button>
 		  </div>
 		</div>

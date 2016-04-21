@@ -433,7 +433,7 @@ export function setUserData(userID, data, cb) {
     sendXHR('PUT', '/user/' + userID, { data: data }, (xhr) => {
 	cb(JSON.parse(xhr.responseText));
     });
-  }
+}
 
 export function setUserName(userID, nickname, cb) {
   sendXHR('PUT', '/user/' + userID + '/name', nickname, xhr => {
