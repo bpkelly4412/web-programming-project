@@ -1609,9 +1609,6 @@ function getContent(content, cb){
    * Returns the Topics object
    */
   app.get('/forum/category/:category/topic/:topicID', function (req, res) {
-//    var forumData = readDocument('forums', 1);
-//    var topic = forumData.categories[parseInt(req.params.category)].topics[parseInt(req.params.topicID)];
-//    res.send(topic);
   var category = parseInt(req.params.category);
   var topicID = parseInt(req.params.topicID);
   db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
@@ -1633,7 +1630,7 @@ function getContent(content, cb){
    * Adds a Thread object
    */
 
-  function postThread(category, topicId, title, author, contents, res) {
+  function postThread(category, topicId, title, author, contents, res, callback) {
     var time = new Date().getTime();
     var newThread = {
       "title": title,
@@ -1646,12 +1643,14 @@ function getContent(content, cb){
         }
       ]
     };
+    var newThreadId;
     db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
     function(err, doc){
       if(err){
         sendDatabaseError(res, err);
       }else{
-        doc.categories[category].topics[topicId].threads.push(newThread);
+        var query = doc.categories[category].topics[topicId].threads;
+        query.push(newThread);
         db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")}, doc,
           function(err, forumData){
             if(err){
@@ -1671,17 +1670,27 @@ function getContent(content, cb){
                         if(err){
                           sendDatabaseError(res, err);
                         }});
-                      }});
                     }});
-                  }});
+            }});
+      }});
+    var theId = {"_id": new ObjectID("000000000000000000000001") };
+    theId["categories." + category + ".topics"]  = topicId;
+    var count = {$size : "$threads"};
+    callback(null, db.collection('forums').aggregate({$match : theId}, count));
+
   }
 
   app.post('/forum/category/:category/topic/:topicId/newTopic', function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser == body.author) {
-      postThread(parseInt(req.params.category), parseInt(req.params.topicId), body.title, body.author, body.contents, res)
-      res.status(201);
+      postThread(parseInt(req.params.category), parseInt(req.params.topicId), body.title, body.author, body.contents, res, function (error, newThreadId) {
+      if(error){
+        sendDatabaseError(res, err);
+      }
+      res.set('Location', '/forum/category/:category/topic/:topicId/thread/' + newThreadId);
+      res.status(201).end();
+    });
     }
     else {
       res.status(401).end();
@@ -1692,7 +1701,7 @@ function getContent(content, cb){
    * Adds a Comment object
    */
 
-  function postComment(user, category, topicID, threadID, contents) {
+  function postComment(user, category, topicID, threadID, contents, res, callback) {
     var time = new Date().getTime();
     var newPost = {
       "author": user,
@@ -1728,14 +1737,23 @@ function getContent(content, cb){
                       }});
                     }});
                   }});
+   var theId = {"_id": new ObjectID("000000000000000000000001") };
+    theId["categories." + category + ".topics." +  topicID + ".thread"]  = threadID;
+    var count = {$size : "$posts"};
+    callback(null, db.collection('forums').aggregate({$match : theId}, count));
   }
 
   app.post('/forum/category/:category/topic/:topicId/thread/:threadid', function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser == body.author) {
-      postComment(body.author, body.category, body.topicId, body.threadId, body.contents)
-      res.status(201);
+      postComment(body.author, body.category, body.topicId, body.threadId, body.contents, res, function (error, newPostId) {
+      if(error){
+        sendDatabaseError(res, err);
+      }
+      res.set('Location', '/forum/category/:category/topic/:topicId/thread/:threadid/post/' + newPostId);
+      res.status(201).end();
+    });
     }
     else {
       res.status(401).end();
