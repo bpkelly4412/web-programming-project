@@ -335,14 +335,14 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/user/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = req.params.userID;
+    var userID = new ObjectID(req.params.userID);
     var userData = req.body.data;
     if (fromUser === userID) {
       // Send response.
-	db.collection('users').updateOne({ _id: new ObjectID(userID) },
+	db.collection('users').updateOne({ _id: userID },
 	    userData, function (err) {
 		if (err) {
-		    sendDatabaseError(err);
+		    sendDatabaseError(res, err);
 		}
 		else {
 		    res.send(userData);
@@ -365,21 +365,21 @@ MongoClient.connect(url, function(err, db) {
       if (fromUser === userID) {
 	  db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, userData) {
               if (err) {
-		  sendDatabaseError(err);
+		  sendDatabaseError(res, err);
               }
 	      else {
 		  db.collection('playlists').updateOne({_id: userData.recommendations[key].plid },
 						       {$push: {songs: {$each: [{title: userData.recommendations[key].song, artist: userData.recommendations[key].artist}]}}},
 						       function (err) {
 							   if (err) {
-							       sendDatabaseError(err);
+							       sendDatabaseError(res, err);
 							   }
 							   else {
 							       db.collection('users').updateOne({ _id: new ObjectID(userID) },
 												{$pull: {recommendations: {_id: key}}},
 												function(err) {
 												    if (err) {
-													sendDatabaseError(err);
+													sendDatabaseError(res, err);
 												    }
 												    else {
 													res.send(userData);
@@ -409,7 +409,7 @@ MongoClient.connect(url, function(err, db) {
 					 {$pull: {recommendations: {_id: key}}},
 					 function(err) {
 					     if (err) {
-						 sendDatabaseError(err);
+						 sendDatabaseError(res, err);
 					     }
 					     else {
 						 res.send(userData);
