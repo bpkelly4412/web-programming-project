@@ -1512,7 +1512,7 @@ function getContent(content, cb){
       } else{
         playlistsArr.sort(compare);
         var newCategory = {
-          ".id": 1,
+          "_id": 1,
           "contents": []
         };
         for (var i = 0; i < playlistsArr.length && i < 8; i++) {
@@ -1599,7 +1599,7 @@ function getContent(content, cb){
           }
         }
         var newCategory = {
-          ".id": 1,
+          "_id": 1,
           "contents": []
         };
         // Traversing the top 8 top playlists and creating new entry
@@ -1616,9 +1616,13 @@ function getContent(content, cb){
           } else {
             newCategory.contents[index].playlists.push(rising[j]._id);
           }
-      }
-      getPlaylistWithAuthor(newCategory, cb);
-    }
+        }
+        if(newCategory.contents.length === 0){
+          cb(newCategory);
+        }else{
+          getPlaylistWithAuthor(newCategory, cb);
+        }
+        }
     });
   }
 

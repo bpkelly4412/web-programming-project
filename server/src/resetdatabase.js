@@ -171,7 +171,7 @@ var initialData = {
       "author": new ObjectID("000000000000000000000001"),
       "votes": [new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000003")],
       "popularity": 45,
-      "timestamp": 140000000000,
+      "timestamp": 1461268525014,
       "genre": "Classical",
       "description": "Epic orchestra music.",
       "spotify_id": "3ZYMZPBcsIKT61hOInhRJ6",
