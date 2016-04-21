@@ -435,10 +435,16 @@ MongoClient.connect(url, function(err, db) {
   });
 
   app.get('/user/:userID/nickName', function (req, res) {
-    var userID = parseInt(req.params.userID, 10);
+    var userid = req.params.userID;
     // Send response.
-    var userData = readDocument('users', userID);
-    res.send(JSON.stringify(userData.nickName));
+    db.collection('users').findOne({ _id: new ObjectID(userid) },
+      function(err, userData){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(JSON.stringify(userData.nickName));
+        }
+      });
   });
 
   /*

@@ -26,10 +26,10 @@ export default class ForumThread extends React.Component {
 
   refresh() {
      getTopic(this.props.category, this.props.tid, (topicData) => {
-       this.setState({thread: topicData[0].threads[this.props.thid]});
-     });
-     getTopic(this.props.category, this.props.tid, (topicData) => {
-       this.setState({topic: topicData[0].title});
+       this.setState({
+         thread: topicData[0].threads[this.props.thid],
+         topic: topicData[0].title
+       });
      });
   }
 

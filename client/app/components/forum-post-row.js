@@ -1,25 +1,32 @@
 import React from 'react';
 import {unixTimeToString} from '../util';
 import { Link } from 'react-router';
-import { getUserName } from '../server';
+import { getUserNickName } from '../server';
 
 export default class ForumPostRow extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      "userName": "Empty"
+      "userData": "Empty"
       }
     }
 
   refresh() {
-     getUserName(this.props.author, (userName) => {
-       this.setState({userName: userName})
-     });
+    if(this.props.author){
+      getUserNickName(this.props.author, (userData) => {
+        this.setState({userData})
+      });
+    }
   }
 
-  
+  componentDidMount() {
+    this.refresh();
+  }
 
+  componentDidUpdate() {
+    this.refresh();
+  }
 
   render() {
     return (
@@ -33,7 +40,7 @@ export default class ForumPostRow extends React.Component {
       </tr>
       <tr>
         <td>
-          <Link to={"/profile/" + this.props.author}>{this.state.userName}</Link>
+          <Link to={"/profile/" + this.props.author}>{this.state.userData}</Link>
         </td>
         <td>
           {this.props.contents}

@@ -280,7 +280,7 @@ var initialData = {
                 "posts": [
                   {
                     "_id": 1,
-                    "author": 1,
+                    "author": 3,
                     "postDate": 1453668480000,
                     "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
                   },
