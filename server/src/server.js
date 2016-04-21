@@ -343,20 +343,16 @@ MongoClient.connect(url, function(err, db) {
     var userData = req.body.data;
     if (fromUser === userID) {
       // Send response.
-	db.collection('users').updateOne({ _id: new ObjectID(userID) }
-	    {$push: {contents}}, function (err, userData) {
-            if (err) {
-		sendDatabaseError(err);
-            }
-	    else {
-		db.collection;
+	db.collection('users').updateOne({ _id: new ObjectID(userID) },
+	    userData, function (err) {
+		if (err) {
+		    sendDatabaseError(err);
+		}
+		else {
+		    res.send(userData);
+		}
 	    }
-
-        }
-
-
-    });
-      res.send(userData);
+	)
     } else {
       // 401: Unauthorized request.
       res.status(401).end();
