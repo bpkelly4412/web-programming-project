@@ -3,21 +3,9 @@
   "id": "/",
   "type": "object",
   "properties": {
-    "category": {
-      "id": "category",
-      "type": "integer"
-    },
-    "topicId": {
-      "id": "topicId",
-      "type": "integer"
-    },
-    "threadId": {
-      "id": "threadId",
-      "type": "integer"
-    },
     "author": {
       "id": "author",
-      "type": "integer"
+      "type": "string"
     },
     "contents": {
       "id": "contents",
@@ -26,9 +14,6 @@
   },
   "additionalProperties": false,
   "required": [
-    "category",
-    "topicId",
-    "threadId",
     "author",
     "contents"
   ]

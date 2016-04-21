@@ -1686,7 +1686,7 @@ function getContent(content, cb){
 
   }
 
-  app.post('/forum/category/:category/topic/:topicId/newTopic', function (req, res) {
+  app.post('/forum/category/:category/topic/:topicId/newTopic', validate({body: threadSchema}), function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser == body.author) {
@@ -1749,15 +1749,15 @@ function getContent(content, cb){
     callback(null, db.collection('forums').aggregate({$match : theId}, count));
   }
 
-  app.post('/forum/category/:category/topic/:topicId/thread/:threadid', function (req, res) {
+  app.post('/forum/category/:category/topic/:topicId/thread/:threadId', validate({body: commentSchema}), function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser == body.author) {
-      postComment(body.author, body.category, body.topicId, body.threadId, body.contents, res, function (error, newPostId) {
+      postComment(body.author, parseInt(req.params.category), parseInt(req.params.topicId), parseInt(req.params.threadId), body.contents, res, function (error, newPostId) {
       if(error){
         sendDatabaseError(res, err);
       }
-      res.set('Location', '/forum/category/:category/topic/:topicId/thread/:threadid/post/' + newPostId);
+      res.set('Location', '/forum/category/:category/topic/:topicId/thread/:threadId/post/' + newPostId);
       res.status(201).end();
     });
     }

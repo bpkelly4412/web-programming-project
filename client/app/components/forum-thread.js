@@ -37,6 +37,7 @@ export default class ForumThread extends React.Component {
     this.refresh();
   }
 
+
   render() {
     return (
     <div className="col-md-12 main">

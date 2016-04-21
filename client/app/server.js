@@ -437,12 +437,9 @@ export function postThread(author, category, topicId, title, contents) {
   /**
   * Adds a Comment object.
   */
-export function postComment( user, category, topicId, threadId, contents) {
-  sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/thread/" + threadId , {
-    category: category,
-    topicId : topicId,
-    threadId : threadId,
-    author: user,
+export function postComment( author, category, topicId, threadId, contents) {
+  sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/thread/" + threadId, {
+    author: author,
     contents : contents})
 }
 
