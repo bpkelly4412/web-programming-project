@@ -339,11 +339,23 @@ MongoClient.connect(url, function(err, db) {
    */
   app.put('/user/:userID', function (req, res) {
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
     var userData = req.body.data;
     if (fromUser === userID) {
       // Send response.
-      var userData = writeDocument('users', userData);
+	db.collection('users').updateOne({ _id: new ObjectID(userID) }
+	    {$push: {contents}}, function (err, userData) {
+            if (err) {
+		sendDatabaseError(err);
+            }
+	    else {
+		db.collection;
+	    }
+
+        }
+
+
+    });
       res.send(userData);
     } else {
       // 401: Unauthorized request.
@@ -355,9 +367,19 @@ MongoClient.connect(url, function(err, db) {
    * Given a recommendation key, removes the recommendation and adds the song to the playlist
    */
   app.put('/user/:userID/recommendations/:key', function (req, res) {
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
-    if (fromUser === userID) {
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userID = req.params.userID;
+      var key  = parseInt(req.params.key)
+      if (fromUser === userID) {
+	  db.collection('users').findOne({ _id: new ObjectID(userID) }, function (err, userData) {
+              if (err) {
+		  sendDatabaseError(err);
+              }
+	      db.collection('playlists').find
+              }
+
+              res.send(userData);
+	  });
       var userData = readDocument('users', userID);
       var playlist = readDocument('playlists', userData.recommendations[key].plid);
       userData.recommendations = userData.recommendations.filter(recommendation => recommendation._id !== key);
@@ -371,8 +393,7 @@ MongoClient.connect(url, function(err, db) {
     }
     else {
       res.status(401).end();
-    }
-  });
+    });
 
   /*
    * Given a recommendation key, removes the recommendation and adds the song to the playlist
