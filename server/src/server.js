@@ -388,10 +388,11 @@ MongoClient.connect(url, function(err, db) {
 
 
   app.put('/user/:userID/name', function (req, res) {
-    console.log("Server Side attempting to set nickname");
+    //console.log("Server Side attempting to set nickname");
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    //var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
     if (fromUser == userID) {
       // Send response.
       if (typeof(req.body) !== 'string') {
@@ -399,10 +400,18 @@ MongoClient.connect(url, function(err, db) {
         res.status(400).end();
         return;
       }
-      var userData = readDocument('users', userID);
-      userData.userName = body;
-      writeDocument('users', userData)
-      res.send(userData);
+      db.collection('users').updateOne({ _id: new ObjectID(userID) }, { $set: { "userName": req.body } },
+       function(err, userData){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(userData);
+        }
+      });
+      // var userData = readDocument('users', userID);
+      // userData.userName = body;
+      // writeDocument('users', userData)
+      // res.send(userData);
     } else {
       // 401: Unauthorized request.
       res.status(401).end();
@@ -412,7 +421,8 @@ MongoClient.connect(url, function(err, db) {
   app.put('/user/:userID/about', function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userID = parseInt(req.params.userID, 10);
+    //var userID = parseInt(req.params.userID, 10);
+    var userID = req.params.userID;
     if (fromUser == userID) {
       // Send response.
       if (typeof(body) !== 'string') {
@@ -420,10 +430,18 @@ MongoClient.connect(url, function(err, db) {
         res.status(400).end();
         return;
       }
-      var userData = readDocument('users', userID);
-      userData.about = body;
-      writeDocument('users', userData)
-      res.send(userData);
+      db.collection('users').updateOne({ _id: new ObjectID(userID) }, { $set: { "about": req.body } },
+       function(err, userData){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(userData);
+        }
+      });
+      // var userData = readDocument('users', userID);
+      // userData.about = body;
+      // writeDocument('users', userData)
+      // res.send(userData);
     } else {
       // 401: Unauthorized request.
       res.status(401).end();

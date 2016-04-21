@@ -207,23 +207,7 @@ onEdit(e) {
         </div>
         </div>
         {/*end of 4th row*/}
-        <div className="row profile-row">
-          <div className="col-md-2 col-md-offset-4">
-            Favorite Artists:
-          </div>
-          <div className="col-md-4">
-            Artist1, Artist2, Artist3, Artist5, Artist6, Artist Seven, Artist Eight
-          </div>
-        </div>
-        {/*end of 5th row*/}
-        <div className="row profile-row">
-          <div className="col-md-2 col-md-offset-4">
-            Favorite Games:
-          </div>
-          <div className="col-md-4">
-            Game1, Game2, Game3, Game4, Game Five, Game Six, Game Seven
-          </div>
-        </div>
+        
         {/*end of 6th row*/}
         <div className="row profile-row">
           <div className="col-md-2 col-md-offset-4">
