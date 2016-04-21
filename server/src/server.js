@@ -1633,35 +1633,54 @@ function getContent(content, cb){
    * Adds a Thread object
    */
 
-  function postThread(category, topicId, title, author, contents) {
+  function postThread(category, topicId, title, author, contents, res) {
     var time = new Date().getTime();
-    var forumData = readDocument('forums', 1);
-
-    forumData.categories[category].topics[topicId].threads.push({
+    var newThread = {
       "title": title,
       "postCount": 0,
       "posts": [
         {
-          "_id": forumData.categories[category].topics[topicId].threads.length,
           "author": author,
           "postDate": time,
           "contents": contents
         }
       ]
-    })
-    writeDocument('forums', forumData);
-    forumData.categories[category].topics[topicId].postCount = forumData.categories[category].topics[topicId].postCount + 1;
-    writeDocument('forums', forumData);
-    forumData.categories[category].topics[topicId].threadCount = forumData.categories[category].topics[topicId].threadCount + 1;
-    writeDocument('forums', forumData);
-
+    };
+    db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
+    function(err, doc){
+      if(err){
+        sendDatabaseError(res, err);
+      }else{
+        doc.categories[category].topics[topicId].threads.push(newThread);
+        db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")}, doc,
+          function(err, forumData){
+            if(err){
+              sendDatabaseError(res, err);
+            }else{
+                  var update = {$inc: {}};
+                  update.$inc["categories." + category + ".topics." + topicId + ".postCount"]  = 1;
+              db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")},update,
+                function(err, forumData){
+                  if(err){
+                    sendDatabaseError(res, err);
+                  }else{
+                    var update = {$inc: {}};
+                    update.$inc["categories." + category + ".topics." + topicId + ".threadCount"]  = 1;
+                    db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")},update,
+                      function(err, forumData){
+                        if(err){
+                          sendDatabaseError(res, err);
+                        }});
+                      }});
+                    }});
+                  }});
   }
 
   app.post('/forum/category/:category/topic/:topicId/newTopic', function (req, res) {
     var body = req.body;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if (fromUser == body.author) {
-      postThread(req.params.category, req.params.topicId, body.title, body.author, body.contents)
+      postThread(parseInt(req.params.category), parseInt(req.params.topicId), body.title, body.author, body.contents, res)
       res.status(201);
     }
     else {
@@ -1675,18 +1694,40 @@ function getContent(content, cb){
 
   function postComment(user, category, topicID, threadID, contents) {
     var time = new Date().getTime();
-    var forumData = readDocument('forums', 1);
-
-    forumData.categories[category].topics[topicID].threads[threadID].posts.push({
+    var newPost = {
       "author": user,
       "postDate": time,
       "contents": contents
-    });
-    writeDocument('forums', forumData);
-    forumData.categories[category].topics[topicID].postCount = forumData.categories[category].topics[topicID].postCount + 1;
-    writeDocument('forums', forumData);
-    forumData.categories[category].topics[topicID].threads[threadID].postCount = forumData.categories[category].topics[topicID].threads[threadID].postCount + 1;
-    writeDocument('forums', forumData);
+    };
+
+    db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
+    function(err, doc){
+      if(err){
+        sendDatabaseError(res, err);
+      }else{
+        doc.categories[category].topics[topicID].threads[threadID].posts.push(newPost);
+        db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")}, doc,
+          function(err, forumData){
+            if(err){
+              sendDatabaseError(res, err);
+            }else{
+                  var update = {$inc: {}};
+                  update.$inc["categories." + category + ".topics." + topicID + ".postCount"]  = 1;
+              db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")},update,
+                function(err, forumData){
+                  if(err){
+                    sendDatabaseError(res, err);
+                  }else{
+                    var update = {$inc: {}};
+                    update.$inc["categories." + category + ".topics." + topicID + ".threads." + threadID + ".postCount"]  = 1;
+                    db.collection('forums').updateOne({"_id": new ObjectID("000000000000000000000001")},update,
+                      function(err, forumData){
+                        if(err){
+                          sendDatabaseError(res, err);
+                        }});
+                      }});
+                    }});
+                  }});
   }
 
   app.post('/forum/category/:category/topic/:topicId/thread/:threadid', function (req, res) {

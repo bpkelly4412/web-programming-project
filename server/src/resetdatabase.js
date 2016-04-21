@@ -268,7 +268,7 @@ var initialData = {
               "_id": new ObjectID("000000000000000000000001"),
               "title": "General Forte Discussion",
               "category": "forte",
-              "threadCount": 2,
+              "threadCount": 1,
               "postCount": 2,
               "threads": [
                 {
@@ -278,23 +278,17 @@ var initialData = {
                   "posts": [
                     {
                       "_id": new ObjectID("000000000000000000000001"),
-                      "author": new ObjectID("000000000000000000000001"),
+                      "author": new ObjectID("000000000000000000000002"),
                       "postDate": 1453668480000,
                       "contents": "Aut si rem a me pecuniam in Midiam elit. Nec ego in imperio elit. Id quod sum sub potestate felis. Etiam Id est - problema solvenda. Skyler est simplex partitio - introducam pecuniam, pecuniam launder. Id quod vobis deerat. Qui nunc loqueris? Ecce qui cogitatis? Vos scitis quanta ego faciam annum Id est, ut ego dixi vobis non credunt. Scis quid si ne subito placuit ire in opus?"
                     },
                     {
                       "_id": new ObjectID("000000000000000000000002"),
-                      "author": new ObjectID("000000000000000000000002"),
+                      "author": new ObjectID("000000000000000000000001"),
                       "postDate": 1453668480000,
                       "contents": "Sum expectantes. Ego hodie expectantes. Expectantes, et misit unum de pueris Gus interficere. Et suus vos. Nescio quis, qui est bonus usus liberi ad Isai? Qui nosti ... Quis dimisit filios ad necem ... hmm? Gus! Est, ante me factus singulis decem gradibus. Et nunc ad aliud opus mihi tandem tollendum est puer ille consensus et nunc fugit. Ipse suus obtinuit eam. Non solum autem illa, sed te tractantur in se trahens felis."
                     }
                   ]
-                },
-                {
-                  "_id": new ObjectID("000000000000000000000002"),
-                  "title": "Let's Discuss",
-                  "postCount": 0,
-                  "posts": []
                 }
               ]
             },
