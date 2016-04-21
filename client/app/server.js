@@ -426,12 +426,17 @@ export function getTopic(category, topicID, cb ) {
   });
 }
 
+/**
+* Adds a Thread object.
+*/
 export function postThread(author, category, topicId, title, contents) {
   sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/newTopic" ,
   {  author: author, title: title, contents : contents})
   }
 
-
+  /**
+  * Adds a Comment object.
+  */
 export function postComment( user, category, topicId, threadId, contents) {
   sendXHR('POST', "/forum/" +  "category/" + category + "/topic/" + topicId + "/thread/" + threadId , {
     category: category,

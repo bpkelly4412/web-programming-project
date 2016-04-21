@@ -1596,17 +1596,36 @@ function getContent(content, cb){
    * Returns the Forum object
    */
   app.get('/forum/', function (req, res) {
-    var forumData = readDocument('forums', 1);
-    res.send(forumData);
+    db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
+      function(err, doc){
+        if(err){
+          sendDatabaseError(err);
+        }else{
+          res.send(doc);
+        }
+      });
   });
-
   /*
    * Returns the Topics object
    */
   app.get('/forum/category/:category/topic/:topicID', function (req, res) {
-    var forumData = readDocument('forums', 1);
-    var topic = forumData.categories[parseInt(req.params.category)].topics[parseInt(req.params.topicID)];
-    res.send(topic);
+//    var forumData = readDocument('forums', 1);
+//    var topic = forumData.categories[parseInt(req.params.category)].topics[parseInt(req.params.topicID)];
+//    res.send(topic);
+  var category = parseInt(req.params.category);
+  var topicID = parseInt(req.params.topicID);
+  db.collection('forums').findOne({ "_id": new ObjectID("000000000000000000000001") },
+  function(err, doc){
+    if(err){
+      sendDatabaseError(err);
+    }else{
+      function processTopic(i,j){
+        var topic = [doc.categories[i].topics[j]];
+        return topic;
+      }
+      res.send(processTopic(category,topicID));
+      }
+    });
   });
 
 
@@ -1633,7 +1652,7 @@ function getContent(content, cb){
     writeDocument('forums', forumData);
     forumData.categories[category].topics[topicId].postCount = forumData.categories[category].topics[topicId].postCount + 1;
     writeDocument('forums', forumData);
-    forumData.categories[parseInt(category)].topics[topicId].threadCount = forumData.categories[category].topics[topicId].threadCount + 1;
+    forumData.categories[category].topics[topicId].threadCount = forumData.categories[category].topics[topicId].threadCount + 1;
     writeDocument('forums', forumData);
 
   }

@@ -19,13 +19,17 @@ export default class ForumThread extends React.Component {
             "contents": "Empty"
           }
         ]
-      }
+      },
+      "topic" : "Empty"
     }
   }
 
   refresh() {
      getTopic(this.props.category, this.props.tid, (topicData) => {
-       this.setState({thread: topicData.threads[this.props.thid]})
+       this.setState({thread: topicData[0].threads[this.props.thid]});
+     });
+     getTopic(this.props.category, this.props.tid, (topicData) => {
+       this.setState({topic: topicData[0].title});
      });
   }
 
@@ -44,7 +48,7 @@ export default class ForumThread extends React.Component {
                 <Link to={"/forum/" + this.props.userId}>Forums</Link>
               </li>
               <li>
-                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userId}>General Forte Discussion</Link>
+                <Link to={"/forum-topic/" + this.props.tid + "/" + this.props.category + "/" + this.props.userId}>{this.state.topic}</Link>
               </li>
               <li className="active">
                 {this.state.thread.title}
@@ -84,7 +88,7 @@ export default class ForumThread extends React.Component {
               </Link>
             </button>
           </div>
-        
+
         </div>
       </div>
 )
