@@ -119,25 +119,83 @@ export function spotifyLogoutUser(userID, cb) {
 // Steam API
 var steamKey = '0FA3A4F28AF88CB432578F4EAE64D2A5';
 
-export function steamGetSteamId(userName, cb){
-  sendXHR('GET', 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/' + '?key=' + steamKey + '&vanityurl=' + userName, undefined, () => {
-    cb();
-  });
+// Create the XHR object.
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
 }
 
+// Helper method to parse the title tag from the response.
+function getTitle(text) {
+  return text.match('<title>(.*)?</title>')[1];
+}
+
+// Make the actual CORS request.
+function makeCorsRequest() {
+  // All HTML5 Rocks properties support CORS.
+  var url = 'http://updates.html5rocks.com';
+
+  var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  // Response handlers.
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    var title = getTitle(text);
+    alert('Response from CORS request to ' + url + ': ' + title);
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  xhr.send();
+}
+/**
+ * Returns the steamid of the given userName.
+ */
+export function steamGetSteamId(userName, cb){
+  var url = 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/' + '?key=' + steamKey + '&vanityurl=' + userName;
+  var xhr = createCORSRequest('GET', url);
+  xhr.send();
+  cb(JSON.parse(xhr.responseText));
+}
+
+/**
+ * Returns the owned games of the account belonging to the given steamid.
+ */
 export function steamOwnedGames(steamId, cb){
   sendXHR('GET', 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v2' + '?key=' + steamKey + '&steamid=' + steamId, undefined, () => {
     cb();
   });
 }
 
-
+/**
+ * Returns information about the game tied to the given appid.
+ */
 export function steamGameSchema(appId, cb) {
   sendXHR('GET', 'https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/' + '?key=' + steamKey + '&appid=' + appId, undefined, () => {
     cb();
   });
 }
 
+/**
+ * Returns information about the user tied to the given steamid.
+ */
 export function steamProfileSchema(steamId, cb) {
   sendXHR('GET', 'https://api.steampowered.com/ISteamUserStats/GetPlayerSummaries/v2/' + '?key=' + steamKey + '&steamids=' + steamId, undefined, () => {
     cb();

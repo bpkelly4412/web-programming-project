@@ -32,8 +32,6 @@ export default class Profile extends React.Component {
                   followerNickNames: [], following: [], followingNickNames: []};
   }
 
-
-
   onEditClick(e) {
     e.preventDefault();
     this.setState({
@@ -234,7 +232,7 @@ onEdit(e) {
           <div className="col-md-4">
             {
                 this.state.followerNickNames.map( (nickname, i ) => {
-                  return <Link to={"/profile/" + this.state.followers[i]}>{nickname + ", "}</Link>
+                  return <Link to={"/profile/" + this.state.followers[i]} key = {i}>{nickname + ", "}</Link>
                 })
             }
           </div>
@@ -247,15 +245,13 @@ onEdit(e) {
           <div className="col-md-4">
             {
                 this.state.followingNickNames.map( (nickname, i ) => {
-                  return <Link to={"/profile/" + this.state.following[i]}>{nickname + ", "}</Link>
+                  return <Link to={"/profile/" + this.state.following[i]} key = {i}>{nickname + ", "}</Link>
                 })
             }
           </div>
         </div>
         {/*end of 8th row*/}
       </div>
-
     )
   }
-
 }

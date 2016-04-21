@@ -328,21 +328,7 @@ MongoClient.connect(url, function(err, db) {
     }
   );
 
-/**
-  * Verifies if current user is the same as the userID
-  */
-app.get('/user/:userID/canEdit', function (req,res) {
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  var userID = new ObjectID(req.params.userID);
-  if (fromUser === userID) {
-    res.status(201);
-    res.send(true);
-  }
-  else {
-    res.status(201);
-    res.send(false);
-  }
-});
+
 
   /**
    * Given a user ID and data, sets the users data to the new data
@@ -1645,7 +1631,6 @@ function getContent(content, cb){
   /*
    * Adds a Thread object
    */
-
   function postThread(category, topicId, title, author, contents, res, callback) {
     var time = new Date().getTime();
     var newThread = {
@@ -1716,7 +1701,6 @@ function getContent(content, cb){
   /*
    * Adds a Comment object
    */
-
   function postComment(user, category, topicID, threadID, contents, res, callback) {
     var time = new Date().getTime();
     var newPost = {
@@ -1775,7 +1759,6 @@ function getContent(content, cb){
       res.status(401).end();
     }
   });
-
 
   /**
    * Reset the database
